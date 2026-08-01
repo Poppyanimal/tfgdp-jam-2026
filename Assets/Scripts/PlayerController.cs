@@ -82,6 +82,7 @@ public class PlayerController : MonoBehaviour
         Physics.Raycast(r, out hit, raycast_dist, LayerMask.GetMask("Default"), QueryTriggerInteraction.UseGlobal);
         if(hit.collider != null && hit.distance <= raycast_dist)
         {
+            Debug.Log("hit: "+(hit.distance - raycast_offset));
             Vector3 pos = body.position;
             pos.y -= hit.distance - raycast_offset;
             body.position = pos;
