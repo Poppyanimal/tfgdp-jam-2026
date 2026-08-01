@@ -7,7 +7,7 @@ public class PlayerController : MonoBehaviour
     const float move_speed = 5f, max_rotate_speed = 20f, move_deadzone = .2f, turn_deadzone = 40f, angle_difference_for_cam_snap = 15;
     public GameObject rotationBody; float targetAngle; bool doRotation = true; float cached_input_angle;
     CinemachineBrain cam_brain; CinemachineCamera active_cam; CinemachineCamera cam_to_turnoff;
-    public GameObject camera_tracking_point;
+    public GameObject camera_tracking_point, ground_raycast_point; const float raycast_dist = .15f, raycast_offset = .1f;
     Rigidbody body;
 
     //
@@ -47,7 +47,7 @@ public class PlayerController : MonoBehaviour
             if(moving) 
                 updateTargetAngle(movementdir);
 
-            body.linearVelocity = new Vector3(movementdir.x, 0f, movementdir.y)  * move_speed;
+            body.linearVelocity = new Vector3(movementdir.x, 0f, movementdir.y)  * move_speed + Vector3.up * body.linearVelocity.y;
         }
         else //tank controls
         {
@@ -65,6 +65,31 @@ public class PlayerController : MonoBehaviour
                 //do turn
             }
         }
+
+        if(!moving)
+        {
+            Vector3 linV = body.linearVelocity;
+            linV.x = 0f;
+            linV.y = 0f;
+            body.linearVelocity = linV;
+        }
+
+        
+        //if grounded, keep grounded and remove y velocity, snap if within certain distance of ground
+
+        RaycastHit hit;
+        Ray r = new Ray(ground_raycast_point.transform.position, Vector3.down);
+        Physics.Raycast(r, out hit, raycast_dist, LayerMask.GetMask("Default"), QueryTriggerInteraction.UseGlobal);
+        if(hit.collider != null && hit.distance <= raycast_dist)
+        {
+            Vector3 pos = body.position;
+            pos.y -= hit.distance - raycast_offset;
+            body.position = pos;
+            Vector3 linV = body.linearVelocity;
+            linV.y = 0f;
+            body.linearVelocity = linV;
+        }
+
     }
 
     void FixedUpdate()
