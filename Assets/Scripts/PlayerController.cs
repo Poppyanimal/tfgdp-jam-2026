@@ -34,7 +34,7 @@ public class PlayerController : MonoBehaviour
         if(GlobalSettings.get().useModernControls)
         {
             //preserve direction between cameras unless turn too much / stop moving
-            float input_angle = SharedLib.angleToTarget(Vector2.one, inputdir);
+            float input_angle = SharedLib.angleToTarget(Vector2.up, inputdir);
             if(active_cam == (CinemachineCamera)cam_brain.ActiveVirtualCamera)
                 cached_input_angle = input_angle;
             if(!moving || Mathf.Abs(cached_input_angle - input_angle) >= angle_difference_for_cam_snap)
@@ -51,11 +51,19 @@ public class PlayerController : MonoBehaviour
         }
         else //tank controls
         {
-            //todo
-            //if forward, move forward
-            //if side, turn in place
-            //if back, quick turn
-            //ignore camera
+            if(SharedLib.angleToTarget(Vector2.up, inputdir) <= turn_deadzone)
+            {
+                //do forward
+            }
+            else if(SharedLib.angleToTarget(Vector2.down, inputdir) <= turn_deadzone)
+            {
+                //and if started from neutral
+                //do quickturn
+            }
+            else
+            {
+                //do turn
+            }
         }
     }
 

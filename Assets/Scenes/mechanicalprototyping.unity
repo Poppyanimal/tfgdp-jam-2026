@@ -956,11 +956,11 @@ MonoBehaviour:
     m_Bits: 1
   m_VolumeTrigger: {fileID: 0}
   m_VolumeFrameworkUpdateModeOption: 2
-  m_RenderPostProcessing: 0
+  m_RenderPostProcessing: 1
   m_Antialiasing: 0
   m_AntialiasingQuality: 2
   m_StopNaN: 0
-  m_Dithering: 0
+  m_Dithering: 1
   m_ClearDepth: 1
   m_AllowXRRendering: 1
   m_AllowHDROutput: 1
@@ -1044,8 +1044,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 961739749}
   serializedVersion: 2
-  m_LocalRotation: {x: 0.27720344, y: -0.27778614, z: 0.08407128, w: 0.91592854}
-  m_LocalPosition: {x: 4.139, y: 5.955, z: -9.476}
+  m_LocalRotation: {x: 0.18742223, y: -0.28460866, z: 0.056842096, w: 0.9384241}
+  m_LocalPosition: {x: 4.139, y: 4.09, z: -9.476}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -3497,6 +3497,7 @@ GameObject:
   - component: {fileID: 2106560076}
   - component: {fileID: 2106560075}
   - component: {fileID: 2106560077}
+  - component: {fileID: 2106560078}
   m_Layer: 0
   m_Name: Cam B
   m_TagString: Untagged
@@ -3555,8 +3556,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2106560074}
   serializedVersion: 2
-  m_LocalRotation: {x: 0.27720344, y: -0.27778614, z: 0.08407128, w: 0.91592854}
-  m_LocalPosition: {x: 1.599, y: 5.955, z: -5.8859997}
+  m_LocalRotation: {x: 0.18742223, y: -0.28460866, z: 0.056842096, w: 0.9384241}
+  m_LocalPosition: {x: 1.599, y: 4.09, z: -5.8859997}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -3575,6 +3576,23 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   LookAtOffset: {x: 0, y: 0, z: 0}
+--- !u!114 &2106560078
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2106560074}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 68bb026fafb42b14791938953eaace77, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  NoiseProfile: {fileID: 11400000, guid: 46965f9cbaf525742a6da4c2172a99cd, type: 2}
+  PivotOffset: {x: 0, y: 0, z: 0}
+  AmplitudeGain: 1
+  FrequencyGain: 0.1
+  m_NoiseOffsets: {x: 0, y: 0, z: 0}
 --- !u!1 &2121685621
 GameObject:
   m_ObjectHideFlags: 0
@@ -3586,6 +3604,7 @@ GameObject:
   - component: {fileID: 2121685623}
   - component: {fileID: 2121685622}
   - component: {fileID: 2121685624}
+  - component: {fileID: 2121685625}
   m_Layer: 0
   m_Name: Cam A
   m_TagString: Untagged
@@ -3664,6 +3683,23 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   LookAtOffset: {x: 0, y: 0, z: 0}
+--- !u!114 &2121685625
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2121685621}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 68bb026fafb42b14791938953eaace77, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  NoiseProfile: {fileID: 11400000, guid: 46965f9cbaf525742a6da4c2172a99cd, type: 2}
+  PivotOffset: {x: 0, y: 0, z: 0}
+  AmplitudeGain: 1
+  FrequencyGain: 0.1
+  m_NoiseOffsets: {x: 0, y: 0, z: 0}
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0
