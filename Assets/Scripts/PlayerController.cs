@@ -99,6 +99,7 @@ public class PlayerController : MonoBehaviour
                 break;
 
             case Ground_State.GROUND_STEEP_SLOPE:
+                //TODO define Steep Slope Behavior.
                 break;
             default: break;
         }
