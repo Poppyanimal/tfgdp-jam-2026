@@ -1,9 +1,11 @@
+using NUnit.Framework.Constraints;
+using System;
 using Unity.Cinemachine;
 using UnityEngine;
 
 public class PlayerController : MonoBehaviour
 {
-    const float move_speed = 5f, max_rotate_speed = 20f, move_deadzone = .2f, turn_deadzone = 40f, angle_difference_for_cam_snap = 15;
+    const float move_speed = 5f, max_rotate_speed = 20f, move_deadzone = .2f, turn_deadzone = 40f, angle_difference_for_cam_snap = 35;
     public GameObject rotationBody; float targetAngle; bool doRotation = true; float cached_input_angle;
     CinemachineBrain cam_brain; CinemachineCamera active_cam; CinemachineCamera cam_to_turnoff;
     public GameObject camera_tracking_point;
@@ -12,6 +14,7 @@ public class PlayerController : MonoBehaviour
 
     Rigidbody body;
     const float ground_check_dist = 2f, ground_snap = 1.2f, ground_snap_min =1.15f, ground_snap_offset = 1.0f, high_slope_threshhold = 50f, slope_normal_projection_length = .5f;
+    const float check_wall_dist = .75f, check_wall_deg= 25.0f;
 
     public enum Ground_State { GROUND_FLAT, GROUND_GENTLE_SLOPE, GROUND_STEEP_SLOPE, AIR }
     public Ground_State groundState = Ground_State.GROUND_FLAT;
@@ -42,14 +45,21 @@ public class PlayerController : MonoBehaviour
             if (!moving || Mathf.Abs(cached_input_angle - input_angle) >= angle_difference_for_cam_snap)
                 active_cam = (CinemachineCamera)cam_brain.ActiveVirtualCamera;
 
-            Vector2 movementdir = skewByCamera(inputdir).normalized;
+            Vector2 movementdir2 = skewByCamera(inputdir).normalized;
+            Vector3 movementdir3 = new Vector3(movementdir2.x, 0.0f, movementdir2.y);
 
             //anim.SetBool("isMoving", moving);
 
-            if (moving)
-                updateTargetAngle(movementdir);
+            if (moving) 
+                updateTargetAngle(movementdir2);
 
-            body.linearVelocity = new Vector3(movementdir.x, 0f, movementdir.y) * move_speed + Vector3.up * body.linearVelocity.y;
+            movementdir3= slideAlongWall(movementdir3, true);
+            Debug.DrawRay(body.position, movementdir3, Color.black, 1.0f);
+
+
+
+
+            body.linearVelocity = movementdir3 * move_speed + Vector3.up * body.linearVelocity.y;
         }
         else //tank controls
         {
@@ -78,11 +88,10 @@ public class PlayerController : MonoBehaviour
         }
 
 
-        //if grounded, keep grounded and remove y velocity, snap if within certain distance of ground
-
+        //Determine ground_state then switch upon it.
         RaycastHit ground = checkGround();
         groundState = determineGroundState(ground);
-        Debug.Log("The groundState is: " + groundState);
+        //Debug.Log("The groundState is: " + groundState);
         switch (groundState)
         {
             case Ground_State.AIR:
@@ -105,32 +114,60 @@ public class PlayerController : MonoBehaviour
         }
 
 
-
-        // if(ground.collider != null && ground.distance-snap_offset>snap_min) CheckAndDoGroundSnap(ground);
-
     }
 
-    RaycastHit checkGround()
+    Vector3 slideAlongWall(Vector3 movedir3, bool drawCast=false)
     {
-        RaycastHit ground;
-        Ray r = new Ray(body.position, Vector3.down);
-        Physics.Raycast(r, out ground, ground_check_dist, LayerMask.GetMask("Default"), QueryTriggerInteraction.UseGlobal);
-        return ground;
+
+
+        Vector3 dir3clockwise   = new Vector3(Mathf.Sin(Mathf.Deg2Rad * (targetAngle + check_wall_deg)), 0.0f, Mathf.Cos(Mathf.Deg2Rad * (targetAngle + check_wall_deg)));
+        Vector3 dir3windershins = new Vector3(Mathf.Sin(Mathf.Deg2Rad * (targetAngle - check_wall_deg)), 0.0f, Mathf.Cos(Mathf.Deg2Rad * (targetAngle - check_wall_deg)));
+
+        RaycastHit wallBlockT = castInDirection(movedir3, check_wall_dist, drawCast, Color.red);
+        RaycastHit wallBlockC = castInDirection(dir3clockwise, check_wall_dist, drawCast, Color.green);
+        RaycastHit wallBlockW = castInDirection(dir3windershins, check_wall_dist, drawCast, Color.blue);
+
+        Vector3 projectClockwise = Vector3.zero, projectWindershins = Vector3.zero;
+        if (wallBlockC.collider != null) projectClockwise   = Vector3.ProjectOnPlane(dir3windershins, wallBlockC.normal);
+        if (wallBlockW.collider != null) projectWindershins = Vector3.ProjectOnPlane(dir3clockwise  , wallBlockW.normal);
+        Vector3 projectSum = (projectClockwise + projectWindershins).normalized;
+       
+
+        if (drawCast)
+        {
+            Debug.DrawRay(wallBlockW.point, projectWindershins, Color.cyan   , 1.0f);
+            Debug.DrawRay(wallBlockC.point, projectClockwise  , Color.magenta, 1.0f);
+        }
+
+        return (projectSum.Equals(Vector3.zero) ? movedir3 : projectSum).normalized;
+
+        //if   (projectClockwise.Equals(Vector3.zero)) return (projectWindershins.Equals(Vector3.zero))                                                  ? dir3true         : projectWindershins;       
+        //else                                         return (projectWindershins.Equals(Vector3.zero) || (projectClockwise.Equals(projectWindershins))) ? projectClockwise : dir3true;
     }
+
+
+    RaycastHit castInDirection(Vector3 direction, float checkDist, bool drawCast = false, Color castColor = default(Color))
+    {
+        RaycastHit hit;
+        Ray r = new Ray(body.position, direction);
+        Physics.Raycast(r, out hit, checkDist, LayerMask.GetMask("Default"), QueryTriggerInteraction.UseGlobal);
+
+        if (drawCast) Debug.DrawRay(body.position, direction * ((hit.collider==null)?checkDist:hit.distance), castColor, .5f);
+        return hit;
+
+    }
+    RaycastHit checkGround() { return castInDirection(Vector3.down, ground_check_dist); }
+
+
     Ground_State determineGroundState(RaycastHit ground)
     {
         float slopeGradient = normalToDegGrade(ground.normal);
 
-        //No Ground In Range
-        if (ground.collider == null)                return Ground_State.AIR;
-
-        //Ground Below is flat                              //Ground is far away            
+        if (ground.collider == null)                return Ground_State.AIR;                              //Ground is far away            
         if (ground.normal.Equals(Vector3.up))       return (ground.distance > ground_snap) ? Ground_State.AIR : Ground_State.GROUND_FLAT;
-
-        //Ground Below is steeply sloped
         if (slopeGradient > high_slope_threshhold)  return Ground_State.GROUND_STEEP_SLOPE;
 
-        //If still here, by elimination, the ground below exists and is gently sloped.
+        //If still here, by elimination, the ground below exists and it is gently sloped.
         // Check that the character is within a reasonable distance of the slope.
         return (isDistanceToSlopeLessThanK(ground.distance - ground_snap_offset, slopeGradient)) ? Ground_State.AIR : Ground_State.GROUND_GENTLE_SLOPE;
 
@@ -152,7 +189,6 @@ public class PlayerController : MonoBehaviour
         return kk < distance;
     }
 
-
     void SnapToGround (RaycastHit ground)
     {
         if (ground.distance < ground_snap_min) return;
@@ -168,6 +204,25 @@ public class PlayerController : MonoBehaviour
         body.linearVelocity = linV;
 
     }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -222,8 +277,8 @@ public class PlayerController : MonoBehaviour
 
     Vector2 skewByCamera(Vector2 inputs)
     {
-        float camAngle = 360f - active_cam.transform.eulerAngles.y;
-        return SharedLib.rotateVector2eul(camAngle, inputs);
+        float camAngle = 360f - active_cam.transform.eulerAngles.y; //eulerAngles.y in typical math represent pitch, but because Unity:tm:, eulerAngles.y is acting as yaw.
+        return SharedLib.rotateVector2(camAngle, inputs);
     }
     void updateTargetAngle(Vector2 dir)
     {
