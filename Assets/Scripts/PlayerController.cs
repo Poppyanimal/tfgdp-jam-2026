@@ -1,18 +1,19 @@
 using Unity.Cinemachine;
 using UnityEngine;
-using UnityEngine.InputSystem;
 
 public class PlayerController : MonoBehaviour
 {
     const float move_speed = 5f, max_rotate_speed = 20f, move_deadzone = .2f, turn_deadzone = 40f, angle_difference_for_cam_snap = 15;
     public GameObject rotationBody; float targetAngle; bool doRotation = true; float cached_input_angle;
     CinemachineBrain cam_brain; CinemachineCamera active_cam; CinemachineCamera cam_to_turnoff;
-    public GameObject camera_tracking_point, ground_raycast_point; const float raycast_dist = .15f, raycast_offset = .1f;
+    public GameObject camera_tracking_point, ground_raycast_point;
+
+    const float groundCheck = 1.5f, snap_offset = 1f, snap_min=.12f, snap_max=.15f;
+
+
     Rigidbody body;
 
-    //
-    //
-    //
+  
     
     void Start()
     {
@@ -77,21 +78,72 @@ public class PlayerController : MonoBehaviour
         
         //if grounded, keep grounded and remove y velocity, snap if within certain distance of ground
 
-        RaycastHit hit;
-        Ray r = new Ray(ground_raycast_point.transform.position, Vector3.down);
-        Physics.Raycast(r, out hit, raycast_dist, LayerMask.GetMask("Default"), QueryTriggerInteraction.UseGlobal);
-        if(hit.collider != null && hit.distance <= raycast_dist)
+        RaycastHit ground;
+        Ray r = new Ray(body.position, Vector3.down);
+        Physics.Raycast(r, out ground, groundCheck, LayerMask.GetMask("Default"), QueryTriggerInteraction.UseGlobal);
+        if(ground.collider != null && ground.distance-snap_offset>snap_min) CheckAndDoGroundSnap(ground);
+ 
+    }
+
+    void CheckAndDoGroundSnap(RaycastHit ground)
+    {
+        if (ground.distance == 0) return;
+        if (ground.normal.Equals(Vector3.up))
         {
-            Debug.Log("hit: "+(hit.distance - raycast_offset));
-            Vector3 pos = body.position;
-            pos.y -= hit.distance - raycast_offset;
-            body.position = pos;
-            Vector3 linV = body.linearVelocity;
-            linV.y = 0f;
-            body.linearVelocity = linV;
+            if (ground.distance - snap_offset < snap_max) SnapToGround(ground.distance - snap_offset);
         }
+        else
+        {
+            float slopeDist = CalculateSlopeSnap(ground);
+            if (slopeDist == 0) StayOnGround(); 
+            else if (slopeDist < snap_max) SnapToGround(slopeDist);
+            
+
+        }   
 
     }
+
+    void SnapToGround(float snap_dist)
+    {
+        Vector3 snap_pos = body.position;
+        snap_pos.y -= snap_dist;
+        body.position = snap_pos;
+
+        Vector3 linV = body.linearVelocity;
+        linV.y = Mathf.Max(0f, linV.y);
+        body.linearVelocity = linV;
+    }
+    void StayOnGround()
+    {
+        Vector3 linV = body.linearVelocity;
+        linV.y = Mathf.Max(0f, linV.y);
+        body.linearVelocity = linV;
+    }
+
+    float CalculateSlopeSnap(RaycastHit ground)
+    {
+        
+        float stair_size = .25f;
+
+        //float xz = Mathf.Sqrt((ground.normal.x * ground.normal.x) + (ground.normal.z * ground.normal.z));
+        //float beta_rad = Mathf.Atan(ground.normal.y / xz);
+        //float alpha_deg = 90 - Mathf.Rad2Deg*beta_rad;
+        //float k_one = stair_size * Mathf.Tan(Mathf.Deg2Rad*alpha_deg);
+        //float feet_dist_adjust = ground.distance - k_one;
+        
+        Vector3 feet_pos = body.position; feet_pos.y -= snap_offset;
+        Debug.DrawRay(feet_pos,      Vector3.down * (ground.distance - snap_offset), Color.red , 10f);
+        Debug.DrawRay(ground.point,  ground.normal*stair_size                      , Color.blue, 10f);
+
+        Vector3 secondpoint = ground.point;
+        secondpoint += ground.normal * stair_size;
+        Debug.DrawRay(secondpoint, Vector3.right * stair_size*2, Color.green, 10f);
+
+        float imaginary_floor_dist = feet_pos.y - secondpoint.y;
+
+        return imaginary_floor_dist;
+    }
+
 
     void FixedUpdate()
     {
