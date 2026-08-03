@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.UIElements;
 
 public class SharedLib
 {
@@ -38,7 +39,7 @@ public class SharedLib
 
     //
 
-
+    //Returns the Angle between two vectors.
     public static float angleBetweenVectors(Vector2 aa, Vector2 bb)
     {
         return Mathf.Atan2(CrossProduct(aa,bb), DotProduct(aa,bb)) ;
@@ -56,4 +57,10 @@ public class SharedLib
         return e;
     }
     
+    public static Vector3 angleToVector(float angle)
+    {
+        return new Vector3(Mathf.Cos(angle), 0f, Mathf.Sin(angle));
+
+    }
+
 }

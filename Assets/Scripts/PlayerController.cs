@@ -1,11 +1,14 @@
 using NUnit.Framework.Constraints;
 using System;
 using Unity.Cinemachine;
+using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.InputSystem;
+using UnityEngine.UIElements;
 
 public class PlayerController : MonoBehaviour
 {
-    const float move_speed = 5f, max_rotate_speed = 20f, move_deadzone = .2f, turn_deadzone = 40f, angle_difference_for_cam_snap = 35;
+    const float move_speed = 5f, max_rotate_degree = 15f, move_deadzone = .2f, turn_deadzone = 40f, angle_difference_for_cam_snap = 35;
     public GameObject rotationBody; float targetAngle; bool doRotation = true; float cached_input_angle;
     CinemachineBrain cam_brain; CinemachineCamera active_cam; CinemachineCamera cam_to_turnoff;
     public GameObject camera_tracking_point;
@@ -14,7 +17,7 @@ public class PlayerController : MonoBehaviour
 
     Rigidbody body;
     const float ground_check_dist = 2f, ground_snap = 1.2f, ground_snap_min =1.15f, ground_snap_offset = 1.0f, high_slope_threshhold = 50f, slope_normal_projection_length = .5f;
-    const float check_wall_dist = .75f, check_wall_deg= 25.0f;
+    const float check_wall_dist = .78f, check_wall_deg= 35.0f;
 
     public enum Ground_State { GROUND_FLAT, GROUND_GENTLE_SLOPE, GROUND_STEEP_SLOPE, AIR }
     public Ground_State groundState = Ground_State.GROUND_FLAT;
@@ -32,63 +35,44 @@ public class PlayerController : MonoBehaviour
 
     void Update()
     {
+        Vector3 bp = body.position;
+        //Debug.DrawRay(bp - Vector3.up * .2f, Vector3.right, Color.black, .1f);
+        //Debug.DrawRay(bp - Vector3.up * .2f, Vector3.forward, Color.grey, .1f);
+        Debug.DrawRay(body.position, SharedLib.angleToVector(targetAngle), Color.cyan, .1f);
+
+        if (Input.GetKey("k"))
+            updateTargetAngle();
+
         Vector2 input = new Vector2(Input.GetAxis("Horizontal"), Input.GetAxis("Vertical"));
         Vector2 inputdir = input.normalized;
         bool moving = input.magnitude > move_deadzone;
 
         if (GlobalSettings.get().useModernControls)
         {
-            //preserve direction between cameras unless turn too much / stop moving
-            float input_angle = SharedLib.angleToTarget(Vector2.up, inputdir);
+
+
+            float input_angle = SharedLib.angleBetweenVectors(Vector2.right, inputdir);
+
+
+            //character movement follows the camera
             if (active_cam == (CinemachineCamera)cam_brain.ActiveVirtualCamera)
                 cached_input_angle = input_angle;
             if (!moving || Mathf.Abs(cached_input_angle - input_angle) >= angle_difference_for_cam_snap)
                 active_cam = (CinemachineCamera)cam_brain.ActiveVirtualCamera;
 
-            Vector2 movementdir2 = skewByCamera(inputdir).normalized;
-            Vector3 movementdir3 = new Vector3(movementdir2.x, 0.0f, movementdir2.y);
+            Vector2 movedir2 = skewByCamera(inputdir).normalized;
+            Vector3 movedir3 = new Vector3(movedir2.x, 0, movedir2.y);
 
-            //anim.SetBool("isMoving", moving);
+            if (moving) updateTargetAngle(movedir2);
 
-            if (moving) 
-                updateTargetAngle(movementdir2);
+            movedir3 = slideAlongWall(movedir3, false);
 
-            movementdir3= slideAlongWall(movementdir3, true);
-            Debug.DrawRay(body.position, movementdir3, Color.black, 1.0f);
+            body.linearVelocity = movedir3 * move_speed + Vector3.up * body.linearVelocity.y;
 
-
-
-
-            body.linearVelocity = movementdir3 * move_speed + Vector3.up * body.linearVelocity.y;
-        }
-        else //tank controls
-        {
-            if (SharedLib.angleToTarget(Vector2.up, inputdir) <= turn_deadzone)
-            {
-                //do forward
-            }
-            else if (SharedLib.angleToTarget(Vector2.down, inputdir) <= turn_deadzone)
-            {
-                //and if started from neutral
-                //do quickturn
-            }
-            else
-            {
-                //do turn
-            }
         }
 
-        if (!moving)
-        {
-            Vector3 linV = body.linearVelocity;
-            linV.x = 0f;
-            linV.y = Mathf.Min(0f, linV.y);
-            linV.z = 0f;
-            body.linearVelocity = linV;
-        }
+        if (!moving) StopMoving();
 
-
-        //Determine ground_state then switch upon it.
         RaycastHit ground = checkGround();
         groundState = determineGroundState(ground);
         //Debug.Log("The groundState is: " + groundState);
@@ -113,33 +97,73 @@ public class PlayerController : MonoBehaviour
             default: break;
         }
 
-
     }
 
-    Vector3 slideAlongWall(Vector3 movedir3, bool drawCast=false)
+    void StopMoving()
+    { 
+        Vector3 linV = body.linearVelocity;
+        linV.x = 0f;
+        linV.y = Mathf.Min(0f, linV.y);
+        linV.z = 0f;
+        body.linearVelocity = linV;
+    }
+
+
+
+
+    //        body.linearVelocity = movementdir3 * move_speed + Vector3.up * body.linearVelocity.y;
+    //    }
+    //    else //tank controls
+    //    {
+    //        if (SharedLib.angleToTarget(Vector2.up, inputdir) <= turn_deadzone)
+    //        {
+    //            //do forward
+    //        }
+    //        else if (SharedLib.angleToTarget(Vector2.down, inputdir) <= turn_deadzone)
+    //        {
+    //            //and if started from neutral
+    //            //do quickturn
+    //        }
+    //        else
+    //        {
+    //            //do turn
+    //        }
+    //    }
+
+
+
+
+    //Determine ground_state then switch upon it.
+    
+
+Vector3 slideAlongWall(Vector3 movedir3, bool drawCast=false)
     {
+        Vector3 dir3clockwise   = SharedLib.angleToVector(Mathf.Deg2Rad * (Mathf.Rad2Deg*targetAngle - check_wall_deg));
+        Vector3 dir3windershins = SharedLib.angleToVector(Mathf.Deg2Rad * (Mathf.Rad2Deg*targetAngle + check_wall_deg));
 
-
-        Vector3 dir3clockwise   = new Vector3(Mathf.Sin(Mathf.Deg2Rad * (targetAngle + check_wall_deg)), 0.0f, Mathf.Cos(Mathf.Deg2Rad * (targetAngle + check_wall_deg)));
-        Vector3 dir3windershins = new Vector3(Mathf.Sin(Mathf.Deg2Rad * (targetAngle - check_wall_deg)), 0.0f, Mathf.Cos(Mathf.Deg2Rad * (targetAngle - check_wall_deg)));
-
-        RaycastHit wallBlockT = castInDirection(movedir3, check_wall_dist, drawCast, Color.red);
-        RaycastHit wallBlockC = castInDirection(dir3clockwise, check_wall_dist, drawCast, Color.green);
+        RaycastHit wallBlockC = castInDirection(dir3clockwise  , check_wall_dist, drawCast, Color.green);
         RaycastHit wallBlockW = castInDirection(dir3windershins, check_wall_dist, drawCast, Color.blue);
 
         Vector3 projectClockwise = Vector3.zero, projectWindershins = Vector3.zero;
         if (wallBlockC.collider != null) projectClockwise   = Vector3.ProjectOnPlane(dir3windershins, wallBlockC.normal);
         if (wallBlockW.collider != null) projectWindershins = Vector3.ProjectOnPlane(dir3clockwise  , wallBlockW.normal);
         Vector3 projectSum = (projectClockwise + projectWindershins).normalized;
-       
+
 
         if (drawCast)
         {
-            Debug.DrawRay(wallBlockW.point, projectWindershins, Color.cyan   , 1.0f);
-            Debug.DrawRay(wallBlockC.point, projectClockwise  , Color.magenta, 1.0f);
+            Debug.DrawRay(wallBlockW.point, wallBlockW.normal, Color.yellow, 1.0f);
+            
+            Debug.DrawRay(wallBlockC.point, projectClockwise  , Color.cyan, 1.0f);
+            Debug.DrawRay(wallBlockW.point, projectWindershins, Color.magenta, 1.0f);
         }
 
-        return (projectSum.Equals(Vector3.zero) ? movedir3 : projectSum).normalized;
+        Vector3 toReturn = (projectSum.Equals(Vector3.zero) ? movedir3 : projectSum).normalized;
+        if (drawCast) Debug.DrawRay(body.position, toReturn, Color.red, 1.0f);
+
+        return toReturn;
+
+        //return movedir3;
 
         //if   (projectClockwise.Equals(Vector3.zero)) return (projectWindershins.Equals(Vector3.zero))                                                  ? dir3true         : projectWindershins;       
         //else                                         return (projectWindershins.Equals(Vector3.zero) || (projectClockwise.Equals(projectWindershins))) ? projectClockwise : dir3true;
@@ -152,7 +176,11 @@ public class PlayerController : MonoBehaviour
         Ray r = new Ray(body.position, direction);
         Physics.Raycast(r, out hit, checkDist, LayerMask.GetMask("Default"), QueryTriggerInteraction.UseGlobal);
 
-        if (drawCast) Debug.DrawRay(body.position, direction * ((hit.collider==null)?checkDist:hit.distance), castColor, .5f);
+        if (drawCast) 
+        {
+            Debug.DrawRay(body.position, direction * ((hit.collider == null) ? checkDist : hit.distance), castColor, .5f);
+            Debug.DrawRay(hit.point, hit.normal, Color.yellow, .5f);        
+        }
         return hit;
 
     }
@@ -215,45 +243,18 @@ public class PlayerController : MonoBehaviour
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
     void FixedUpdate()
     {
-        if(doRotation)
+        if (doRotation)
         {
-            Vector3 rotation = rotationBody.transform.rotation.eulerAngles;
-            float curAngle = SharedLib.simplifyEuler(rotation.y);
-            float dif = targetAngle - curAngle; 
-
-            if(dif > 180f)
-                dif -= 360f;
-            else if(dif < -180f)
-                dif+= 360f;
-
-            if(dif > max_rotate_speed)
-                dif = max_rotate_speed;
-            else if(dif < -max_rotate_speed)
-                dif = -max_rotate_speed;
-
-            rotation.y = curAngle + dif;
-            rotationBody.transform.rotation = Quaternion.Euler(rotation);
+            Quaternion quatStart = rotationBody.transform.rotation;
+            Quaternion quatTarget = Quaternion.LookRotation(SharedLib.angleToVector(targetAngle));
+            Quaternion quatNew = Quaternion.RotateTowards(quatStart, quatTarget, max_rotate_degree);
+            rotationBody.transform.rotation = quatNew;
         }
     }
 
-    //
-    //
-    //
+
 
     void OnTriggerEnter(Collider other)
     {
@@ -271,19 +272,13 @@ public class PlayerController : MonoBehaviour
         }
     }
 
-    //
-    //
-    //
 
     Vector2 skewByCamera(Vector2 inputs)
     {
         float camAngle = 360f - active_cam.transform.eulerAngles.y; //eulerAngles.y in typical math represent pitch, but because Unity:tm:, eulerAngles.y is acting as yaw.
         return SharedLib.rotateVector2(camAngle, inputs);
     }
-    void updateTargetAngle(Vector2 dir)
-    {
-        float newAngle = 180f - SharedLib.angleToTarget(Vector2.up, dir) * 2f;
-        targetAngle = SharedLib.simplifyEuler(newAngle);
-    }
+    void updateTargetAngle(){ targetAngle += .01f; }
+    void updateTargetAngle(Vector2 dir) { targetAngle = SharedLib.angleBetweenVectors(Vector2.right, dir); }
 
 }
