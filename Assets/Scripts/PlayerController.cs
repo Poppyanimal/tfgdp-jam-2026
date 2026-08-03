@@ -8,7 +8,7 @@ using UnityEngine.UIElements;
 
 public class PlayerController : MonoBehaviour
 {
-	const float move_speed = 5f, max_rotate_degree = 15f, move_deadzone = .2f, turn_deadzone = 40f, angle_difference_for_cam_snap = 35;
+	const float move_speed = 3f, max_rotate_degree = 5f, move_deadzone = .2f, turn_deadzone = 40f, angle_difference_for_cam_snap = 35;
 	public GameObject rotationBody; float targetAngle; bool doRotation = true; float cached_input_angle;
 	CinemachineBrain cam_brain; CinemachineCamera active_cam; CinemachineCamera cam_to_turnoff;
 	public GameObject camera_tracking_point;
@@ -32,7 +32,7 @@ public class PlayerController : MonoBehaviour
 		active_cam = (CinemachineCamera)cam_brain.ActiveVirtualCamera;
 		cam_to_turnoff = active_cam;
 		if (rotationBody != null)
-			targetAngle = rotationBody.transform.rotation.eulerAngles.y;
+			targetAngle = rotationBody.transform.rotation.eulerAngles.y + (Mathf.PI / 2f);
 	}
 
 
@@ -211,6 +211,7 @@ Vector3 slideAlongWall( bool drawCast=false)
 	{
 		if (doRotation)
 		{
+			Debug.Log("target angle: "+targetAngle);
 			Quaternion quatStart = rotationBody.transform.rotation;
 			Quaternion quatTarget = Quaternion.LookRotation(SharedLib.angleToVector(targetAngle));
 			Quaternion quatNew = Quaternion.RotateTowards(quatStart, quatTarget, max_rotate_degree);
@@ -242,7 +243,6 @@ Vector3 slideAlongWall( bool drawCast=false)
 		float camAngle = 360f - active_cam.transform.eulerAngles.y; //eulerAngles.y in typical math represent pitch, but because Unity:tm:, eulerAngles.y is acting as yaw.
 		return SharedLib.rotateVector2(camAngle, inputs);
 	}
-	void updateTargetAngle(){ targetAngle += .01f; }
 	void updateTargetAngle(Vector2 dir) { targetAngle = SharedLib.angleBetweenVectors(Vector2.right, dir); }
 
 }

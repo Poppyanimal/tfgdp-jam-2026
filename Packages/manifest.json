@@ -1,6 +1,7 @@
 {
   "dependencies": {
     "com.coffee.ui-particle": "https://github.com/mob-sakai/ParticleEffectForUGUI.git",
+    "com.cyanilux.shadergraph-customlighting": "https://github.com/Cyanilux/URP_ShaderGraphCustomLighting.git#6000.0",
     "com.unity.ai.navigation": "2.0.13",
     "com.unity.animation.rigging": "1.4.1",
     "com.unity.cinemachine": "3.1.7",

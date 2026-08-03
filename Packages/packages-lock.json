@@ -10,6 +10,13 @@
       },
       "hash": "5a305705f84549e50223d897bb95495edd78bf1a"
     },
+    "com.cyanilux.shadergraph-customlighting": {
+      "version": "https://github.com/Cyanilux/URP_ShaderGraphCustomLighting.git#6000.0",
+      "depth": 0,
+      "source": "git",
+      "dependencies": {},
+      "hash": "92b8718f8537a45a831d14b87099879bf006c885"
+    },
     "com.unity.ai.navigation": {
       "version": "2.0.13",
       "depth": 0,
