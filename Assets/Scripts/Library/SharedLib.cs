@@ -40,10 +40,7 @@ public class SharedLib
     //
 
     //Returns the Angle between two vectors.
-    public static float angleBetweenVectors(Vector2 aa, Vector2 bb)
-    {
-        return Mathf.Atan2(CrossProduct(aa,bb), DotProduct(aa,bb)) ;
-    }
+    public static float angleBetweenVectors(Vector2 aa, Vector2 bb) { return Mathf.Atan2(CrossProduct(aa,bb), DotProduct(aa,bb)) ; }
     private static float DotProduct  (Vector2 aa, Vector2 bb) { return aa.x * bb.x + aa.y * bb.y; }
     private static float CrossProduct(Vector2 aa, Vector2 bb) { return aa.x * bb.y - aa.y * bb.x; }
 
@@ -57,10 +54,7 @@ public class SharedLib
         return e;
     }
     
-    public static Vector3 angleToVector(float angle)
-    {
-        return new Vector3(Mathf.Cos(angle), 0f, Mathf.Sin(angle));
-
-    }
+    //Takes an angl(radians) and returns a vector of length 1 at that angle on the XZ plane)
+    public static Vector3 angleToVector(float angle) { return new Vector3(Mathf.Cos(angle), 0f, Mathf.Sin(angle)).normalized; }
 
 }
