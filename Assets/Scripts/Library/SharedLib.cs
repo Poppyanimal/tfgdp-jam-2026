@@ -86,15 +86,15 @@ public class SharedLib
     }
 
     //Takes an origin, and facing angle, a fov angle, a distance and returns a raycastHit[3] of raycasts windershins to, at, and clockwise off the facing angle (seporated by the FOV
-    public static RaycastHit[] castWFC(Vector3 origin, float facing, float fov, float dist, bool drawCast) { return castWFC(origin, facing, fov,dist, "Default", drawCast); }
+    public static RaycastHit[] castWFC(Vector3 origin, float facing, float fov, float dist, bool drawCast) { return castWFC(origin, facing, fov, dist, "Default", drawCast); }
     public static RaycastHit[] castWFC(Vector3 origin, float facing, float fov, float dist, string layerMask="Default", bool drawCast=false)
     {        
-		float windershinsAngle = Mathf.Deg2Rad * (facing + fov);
-        float clockwiseAngle   = Mathf.Deg2Rad * (facing - fov);
+		float windershinsAngle = facing + fov;
+        float clockwiseAngle   = facing - fov;
 
-		Vector3 dir3windershins = angleToVector(windershinsAngle);
-        Vector3 dir3facing      = angleToVector(facing);
-		Vector3 dir3clockwise   = angleToVector(clockwiseAngle);
+		Vector3 dir3windershins = angleToVector(Mathf.Deg2Rad * windershinsAngle    );
+        Vector3 dir3facing      = angleToVector(Mathf.Deg2Rad * facing              );
+		Vector3 dir3clockwise   = angleToVector(Mathf.Deg2Rad * clockwiseAngle      );
         
         RaycastHit[] hitWFC = new RaycastHit[3];
         if (drawCast) {

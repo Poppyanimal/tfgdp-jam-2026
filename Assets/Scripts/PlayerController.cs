@@ -60,10 +60,9 @@ public class PlayerController : MonoBehaviour
 
 	}
 
-	void determineState()
-	{
+	void determineState() {
 		Ground_State	=	determineGroundState(true);
-		Wall_State		=	determineWallState();
+		Wall_State		=	determineWallState(true);
 	}
 
 	GROUND_STATE determineGroundState(bool drawCast=false) { 
@@ -81,8 +80,8 @@ public class PlayerController : MonoBehaviour
 		return (isDistanceToSlopeLessThanK(ground.distance - ground_snap_offset, slopeGradient)) ? GROUND_STATE.AIR : GROUND_STATE.GENTLE;
 	
 		}
-	WALL_STATE determineWallState(){
-		lookingAtWFC = SharedLib.castWFC(body.position, targetAngle, check_wall_deg, check_wall_dist);
+	WALL_STATE determineWallState(bool drawCast=false ){
+		lookingAtWFC = SharedLib.castWFC(body.position, Mathf.Rad2Deg*targetAngle, check_wall_deg, check_wall_dist, drawCast);
 
 		//Check which rays found objects then use binary addition to determine wallState.
 		bool[] FCWsuccesses = new bool[3];
