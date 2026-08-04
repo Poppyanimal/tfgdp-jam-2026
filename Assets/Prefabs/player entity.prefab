@@ -285,10 +285,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1afd78ba3151674449eecf7ae15dee2b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  rotationBody: {fileID: 4895692333506963406}
   camera_tracking_point: {fileID: 9016423704104939456}
-  groundState: 0
-  wallState: 0
+  rotationBody: {fileID: 4895692333506963406}
 --- !u!136 &1999174795725512578
 CapsuleCollider:
   m_ObjectHideFlags: 0
