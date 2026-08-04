@@ -21,7 +21,6 @@ public class PlayerController : MonoBehaviour
 					ground_snap_offset				=	 1.0f	, 
 					high_slope_threshhold			=	50.0f	, 
 					slope_normal_projection_length	=	  .5f	;
-	
 
 	public enum WALL_STATE { FREE, CLIPPED_WINDERSHINS, HEAD_ON, OBSTRUCTED_WINDERSHINS, CLIPPED_CLOCKWISE, PINCHED, OBSTRUCTED_CLOCKWISE, OBSTRUCTED }
 	public WALL_STATE Wall_State = WALL_STATE.FREE;
@@ -30,21 +29,16 @@ public class PlayerController : MonoBehaviour
 					check_wall_deg		= 35.0f		, 
 					wall_slide_penalty	=   .5f		;
 
-	Rigidbody body;
 
+	Rigidbody body;
 	public GameObject rotationBody; float targetAngle; bool doRotation = true; float cached_input_angle;
 	
-
-
-
 	const float move_speed = 3f, max_rotate_degree = 5f, move_deadzone = .2f, turn_deadzone = 40f, angle_difference_for_cam_snap = 35;
 	
-
 	
 
 
-	void Start()
-	{
+	void Start() {
 		body = GetComponent<Rigidbody>();
 		cam_brain = FindFirstObjectByType<CinemachineBrain>();
 		active_cam = (CinemachineCamera)cam_brain.ActiveVirtualCamera;
@@ -54,11 +48,17 @@ public class PlayerController : MonoBehaviour
 	}
 
 
-	void Update()
-	{
+	void Update() {
 		determineState();
 
+		handleInputs();
+
+		//applyTransforms();
+
+
 	}
+
+	#region States Determination
 
 	void determineState() {
 		Ground_State	=	determineGroundState(true);
@@ -80,8 +80,9 @@ public class PlayerController : MonoBehaviour
 		return (isDistanceToSlopeLessThanK(ground.distance - ground_snap_offset, slopeGradient)) ? GROUND_STATE.AIR : GROUND_STATE.GENTLE;
 	
 		}
+	
 	WALL_STATE determineWallState(bool drawCast=false ){
-		lookingAtWFC = SharedLib.castWFC(body.position, Mathf.Rad2Deg*targetAngle, check_wall_deg, check_wall_dist, drawCast);
+		lookingAtWFC = SharedLib.castWFC(body.position, rotationBody.transform.eulerAngles.y, check_wall_deg, check_wall_dist, drawCast);
 
 		//Check which rays found objects then use binary addition to determine wallState.
 		bool[] FCWsuccesses = new bool[3];
@@ -97,35 +98,106 @@ public class PlayerController : MonoBehaviour
 			SharedLib.castInDirection(body.position,Vector3.down, ground_check_dist, Color.red	)	:
 			SharedLib.castInDirection(body.position,Vector3.down* ground_check_dist				)	;
 	}
-	
+
 	bool isDistanceToSlopeLessThanK(float distance, float SlopeGradient) { return slope_normal_projection_length*Mathf.Cos(Mathf.Deg2Rad*SlopeGradient) < distance; }
+
+	#endregion
+
+	#region Input Processing
+	void handleInputs() {
+		Vector2 inputRaw = new Vector2(Input.GetAxis("Horizontal"), Input.GetAxis("Vertical"));
+		bool moving = inputRaw.magnitude > move_deadzone;
+
+		Vector2 inputNorm = inputRaw.normalized;
+
+		Vector3 facing
+		if (moving) {
+          (GlobalSettings.get().useModernControls) interpretInputWithModernControls(inputNorm);
+		else                                        interpretInputWithTankControls  ();
+	}
+
+	void interpretInputWithModernControls() {
+		float input_angle = SharedLib.angleBetweenVectors(Vector2.right, inputNorm);
+		if (active_cam == (CinemachineCamera)cam_brain.ActiveVirtualCamera)
+				cached_input_angle = input_angle;
+ 		if (!moving || Mathf.Abs(cached_input_angle - input_angle) >= angle_difference_for_cam_snap)
+				active_cam = (CinemachineCamera)cam_brain.ActiveVirtualCamera;
+
+			Vector2 movedir2 = skewByCamera(inputdir).normalized;
+			Vector3 movedir3 = new Vector3(movedir2.x, 0, movedir2.y);
+		
+		
+	}
+	void interpretInputWithTankControls() { }
+
+
+
+	#endregion
+
+
+
+
+
+
+
+
+
+
+
+
+	
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+	void applyTransforms() {
+		applyRotation();	
+	}
+	
+	void applyRotation() {
+		rotationBody.transform.Rotate(Vector3.down, .1f);
+	}
+
+
+
+
+	
+	
+
+
 
 
 
 }
 
 
+//		
+//		
 
-
-//		Vector3 bp = body.position;
-
-//		Vector2 input = new Vector2(Input.GetAxis("Horizontal"), Input.GetAxis("Vertical"));
-//		Vector2 inputdir = input.normalized;
-//		bool moving = input.magnitude > move_deadzone;
-
-//		if (GlobalSettings.get().useModernControls)
+//		
 //		{
-//			float input_angle = SharedLib.angleBetweenVectors(Vector2.right, inputdir);
+//			
 
 
 //			//character movement follows the camera
-//			if (active_cam == (CinemachineCamera)cam_brain.ActiveVirtualCamera)
-//				cached_input_angle = input_angle;
-//			if (!moving || Mathf.Abs(cached_input_angle - input_angle) >= angle_difference_for_cam_snap)
-//				active_cam = (CinemachineCamera)cam_brain.ActiveVirtualCamera;
-
-//			Vector2 movedir2 = skewByCamera(inputdir).normalized;
-//			Vector3 movedir3 = new Vector3(movedir2.x, 0, movedir2.y);
+//			
 
 
 //			if (moving) updateTargetAngle(movedir2);
