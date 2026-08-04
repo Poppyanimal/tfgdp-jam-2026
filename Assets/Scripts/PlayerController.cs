@@ -3,7 +3,6 @@ using System;
 using Unity.Cinemachine;
 using Unity.VisualScripting;
 using UnityEngine;
-using UnityEngine.InputSystem;
 using UnityEngine.UIElements;
 
 public class PlayerController : MonoBehaviour
