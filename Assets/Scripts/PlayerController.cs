@@ -5,6 +5,7 @@ using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.UIElements;
+using UnityEngine.UIElements.Experimental;
 
 public class PlayerController : MonoBehaviour
 {
@@ -12,8 +13,9 @@ public class PlayerController : MonoBehaviour
 	CinemachineCamera	active_cam	, cam_to_turnoff;
 	public GameObject	camera_tracking_point;
 
-	public enum GROUND_STATE { FLAT, GENTLE, STEEP, AIR }
-	public GROUND_STATE Ground_State = GROUND_STATE.FLAT;
+
+	GROUND_STATE Ground_State = GROUND_STATE.FLAT;
+	enum GROUND_STATE { FLAT, GENTLE, STEEP, AIR }
 	RaycastHit		ground;
 	const float		ground_check_dist				=	 2.0f	, 
 					ground_snap						=	 1.2f	, 
@@ -22,18 +24,36 @@ public class PlayerController : MonoBehaviour
 					high_slope_threshhold			=	50.0f	, 
 					slope_normal_projection_length	=	  .5f	;
 
-	public enum WALL_STATE { FREE, CLIPPED_WINDERSHINS, HEAD_ON, OBSTRUCTED_WINDERSHINS, CLIPPED_CLOCKWISE, PINCHED, OBSTRUCTED_CLOCKWISE, OBSTRUCTED }
-	public WALL_STATE Wall_State = WALL_STATE.FREE;
+
+
+	WALL_STATE Wall_State = WALL_STATE.FREE;
+	enum WALL_STATE { FREE, CLIPPED_WINDERSHINS, HEAD_ON, OBSTRUCTED_WINDERSHINS, CLIPPED_CLOCKWISE, PINCHED, OBSTRUCTED_CLOCKWISE, OBSTRUCTED }
 	RaycastHit[] lookingAtWFC;
 	const float		check_wall_dist		=   .78f	, 
 					check_wall_deg		= 35.0f		, 
 					wall_slide_penalty	=   .5f		;
 
 
+
+	MOVE_STATE Move_State= MOVE_STATE.IDLE;
+	enum MOVE_STATE			{ IDLE,		WALK,	SPRINT,		CROUCH,		PORT_WALL_SLIDING,	STAR_WALL_SLIDING,	FALL_UP,	FALL_DOWN	}
+	float[] move_speed =	{ 0f,		10f,	10f,		4f,			4.5f,				4.5f,				5f,			3f			};
+	const float move_deadzone      =  .2f	; 
+	const int   stop_lerp_duration = 30	    ;
+		  int   stop_lerp_elapsed  = 0		;
+		  bool  moving             =false	;
+	Vector2 movedir2;
+	Vector3 movedir3;
+
+
+
+
+
+
+
 	Rigidbody body;
 	public GameObject rotationBody; float targetAngle; bool doRotation = true; float cached_input_angle;
-	
-	const float move_speed = 3f, max_rotate_degree = 5f, move_deadzone = .2f, turn_deadzone = 40f, angle_difference_for_cam_snap = 35;
+	const float max_rotate_degree = 5f, turn_deadzone = 40f, angle_difference_for_cam_snap = 35;
 	
 	
 
@@ -49,18 +69,17 @@ public class PlayerController : MonoBehaviour
 
 
 	void Update() {
-		determineState();
+		determineSimpleState();
 
 		handleInputs();
 
-		//applyTransforms();
-
+		applyTransforms();
 
 	}
 
-	#region States Determination
+	#region Simple States which don't need to consider inputs
 
-	void determineState() {
+	void determineSimpleState() {
 		Ground_State	=	determineGroundState(true);
 		Wall_State		=	determineWallState(true);
 	}
@@ -105,79 +124,121 @@ public class PlayerController : MonoBehaviour
 
 	#region Input Processing
 	void handleInputs() {
+		Move_State= handleMovementInput_to_DetermineWalkState();
+
+	}
+
+	//TODO: Impliment sprint/crouch keys if desired.
+	MOVE_STATE handleMovementInput_to_DetermineWalkState()  {
+
+		//Take raw arrow movements and check against deadzone. If against deadzone choose exit early betwixt IDLE, FALL_UP, and FALL_DOWN
 		Vector2 inputRaw = new Vector2(Input.GetAxis("Horizontal"), Input.GetAxis("Vertical"));
-		bool moving = inputRaw.magnitude > move_deadzone;
+		moving = inputRaw.magnitude > move_deadzone;
+		if (!moving) return (body.linearVelocity.y>0) ? MOVE_STATE.FALL_UP: ((body.linearVelocity.y<0)? MOVE_STATE.FALL_DOWN: MOVE_STATE.IDLE);
+		stop_lerp_elapsed=0;
 
-		Vector2 inputNorm = inputRaw.normalized;
+		//So, now you know you're moving in the XZ. Seporate your magnatude from your direction.
+		float   inputMag	= inputRaw.magnitude;
+		Vector2 inputNorm	= inputRaw.normalized;
 
-		Vector3 facing
-		if (moving) {
-          (GlobalSettings.get().useModernControls) interpretInputWithModernControls(inputNorm);
-		else                                        interpretInputWithTankControls  ();
+		//Use the Input to pan the camera if necessary
+	
+		if (GlobalSettings.get().useModernControls) panCameraModern(inputNorm);
+		else                                        panCameraTank  (inputNorm);
+
+		//Use the Camera to skew the input to it if necessary
+		movedir2 = rotateVectorToCamera(inputNorm).normalized;
+		movedir3 = new Vector3(movedir2.x, body.linearVelocity.y, movedir2.y);
+
+		//ToDo Impliment this.
+		MOVE_STATE modifierMoveState = handleMovementModifierInput();
+		switch (modifierMoveState){	default: break;	}
+
+		if (Ground_State==GROUND_STATE.AIR ) return (movedir3.y>0?MOVE_STATE.FALL_UP:MOVE_STATE.FALL_DOWN);
+		switch (Wall_State) {
+			case WALL_STATE.CLIPPED_CLOCKWISE  : case WALL_STATE.OBSTRUCTED_CLOCKWISE							: return MOVE_STATE.STAR_WALL_SLIDING;
+			case WALL_STATE.CLIPPED_WINDERSHINS: case WALL_STATE.OBSTRUCTED_WINDERSHINS: case WALL_STATE.PINCHED: return MOVE_STATE.PORT_WALL_SLIDING; 
+			default:																							  return MOVE_STATE.WALK;
+		}		
+		
+	} 
+
+	MOVE_STATE handleMovementModifierInput() {return MOVE_STATE.IDLE;} //TODO: Impliment sprint/crouch keys if desired.
+
+	void panCameraModern(Vector2 panDir) { 
+		float input_angle = SharedLib.vectorToFlatAngle(panDir);
+		if (active_cam == (CinemachineCamera)cam_brain.ActiveVirtualCamera)						cached_input_angle = input_angle;
+		if ( Mathf.Abs(cached_input_angle - input_angle) >= angle_difference_for_cam_snap)		active_cam = (CinemachineCamera)cam_brain.ActiveVirtualCamera;	
 	}
 
-	void interpretInputWithModernControls() {
-		float input_angle = SharedLib.angleBetweenVectors(Vector2.right, inputNorm);
-		if (active_cam == (CinemachineCamera)cam_brain.ActiveVirtualCamera)
-				cached_input_angle = input_angle;
- 		if (!moving || Mathf.Abs(cached_input_angle - input_angle) >= angle_difference_for_cam_snap)
-				active_cam = (CinemachineCamera)cam_brain.ActiveVirtualCamera;
+	void panCameraTank(Vector2 panDir) { return; } //TODO: impliment?
 
-			Vector2 movedir2 = skewByCamera(inputdir).normalized;
-			Vector3 movedir3 = new Vector3(movedir2.x, 0, movedir2.y);
-		
-		
+	Vector2 rotateVectorToCamera(Vector2 inputs) {
+		float camAngle = 360f - active_cam.transform.eulerAngles.y; //eulerAngles.y acts as yaw in unity.
+		return SharedLib.rotateVector2(camAngle, inputs);
 	}
-	void interpretInputWithTankControls() { }
-
-
 
 	#endregion
 
-
-
-
-
-
-
-
-
-
-
-
-	
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 	void applyTransforms() {
-		applyRotation();	
+		applyRotation();
+		if (moving)	applyMovement();
+		else        stopMovement();
 	}
 	
 	void applyRotation() {
-		rotationBody.transform.Rotate(Vector3.down, .1f);
+		targetAngle-=.1f;
+		rotationBody.transform.rotation = Quaternion.AngleAxis(targetAngle,Vector3.down);
+	}
+
+	void applyMovement() {
+		movedir2            = respectWalls();
+		movedir3.x= movedir2.x * move_speed[(int)Move_State];
+		movedir3.z= movedir2.y * move_speed[(int)Move_State];
+
+		body.linearVelocity = movedir3;
+
+	}
+
+	void stopMovement() {
+		Vector3 linV = body.linearVelocity;
+		linV.x = 0f;
+		linV.y = Mathf.Min(0f, linV.y);
+		linV.z = 0f;
+		body.linearVelocity = linV;
+
+		//Vector3 currV = body.linearVelocity;
+		//Vector3 targV = Vector3.zero;
+		//Vector3 lerpV = new Vector3();
+
+		//if (stop_lerp_elapsed <= stop_lerp_duration) {
+		//	lerpV.x= Mathf.Lerp(currV.x,targV.x, stop_lerp_elapsed/stop_lerp_duration);
+		//	lerpV.z= Mathf.Lerp(currV.z,targV.z, stop_lerp_elapsed/stop_lerp_duration);
+		//	stop_lerp_elapsed+=1;
+		//}
+		//lerpV.y = Mathf.Min(0f, currV.y);
+
+		//body.linearVelocity = lerpV;
+	}
+
+	 Vector3 respectWalls() {
+		Vector3[] dir3WFC= SharedLib.generateWFC(body.position, rotationBody.transform.eulerAngles.y, check_wall_deg);
+		Vector3 projectdir3= movedir3;
+		switch (Wall_State) {
+			case WALL_STATE.CLIPPED_WINDERSHINS		: projectdir3 = Vector3.ProjectOnPlane(dir3WFC[2], lookingAtWFC[0].normal); break;
+			case WALL_STATE.CLIPPED_CLOCKWISE		: projectdir3 = Vector3.ProjectOnPlane(dir3WFC[1], lookingAtWFC[2].normal); break;
+			case WALL_STATE.OBSTRUCTED_WINDERSHINS	: projectdir3 = Vector3.ProjectOnPlane(dir3WFC[2], lookingAtWFC[1].normal); break;
+			case WALL_STATE.OBSTRUCTED_CLOCKWISE	: projectdir3 = Vector3.ProjectOnPlane(dir3WFC[0], lookingAtWFC[1].normal); break;
+			case WALL_STATE.HEAD_ON					: projectdir3 = Vector3.ProjectOnPlane(dir3WFC[0], lookingAtWFC[1].normal); break;
+			case WALL_STATE.OBSTRUCTED				: projectdir3 = Vector3.ProjectOnPlane(dir3WFC[1], lookingAtWFC[1].normal); break;
+			case WALL_STATE.PINCHED:
+			case WALL_STATE.FREE:
+			default: break;
+		}
+		return new Vector2(projectdir3.x,projectdir3.z).normalized;
 	}
 
 
-
-
 	
 	
 
@@ -185,25 +246,9 @@ public class PlayerController : MonoBehaviour
 
 
 
-}
 
 
-//		
-//		
 
-//		
-//		{
-//			
-
-
-//			//character movement follows the camera
-//			
-
-
-//			if (moving) updateTargetAngle(movedir2);
-
-
-//			movedir3 = slideAlongWall(true);
 
 //			body.linearVelocity = movedir3 * move_speed + Vector3.up * body.linearVelocity.y;
 
@@ -235,36 +280,6 @@ public class PlayerController : MonoBehaviour
 
 //	}
 
-//	void StopMoving()
-//	{ 
-//		Vector3 linV = body.linearVelocity;
-//		linV.x = 0f;
-//		linV.y = Mathf.Min(0f, linV.y);
-//		linV.z = 0f;
-//		body.linearVelocity = linV;
-//	}
-
-//Vector3 slideAlongWall( bool drawCast=false)
-//	{
-//		
-
-//		//Switch treatment of to return based on wallstate.
-//		Vector3 toReturn=dir3facing;
-//		switch (wallState)
-//		{
-//			case Wall_State.CLIPPED_WINDERSHINS		:	toReturn=Vector3.ProjectOnPlane(dir3clockwise	, wallHitWindershins.normal	);	break;
-//			case Wall_State.CLIPPED_CLOCKWISE		:	toReturn=Vector3.ProjectOnPlane(dir3windershins	, wallHitClockwise.normal	);	break;
-//			case Wall_State.OBSTRUCTED_WINDERSHINS	:	toReturn=Vector3.ProjectOnPlane(dir3clockwise	, wallHitFacing.normal		);	break;
-//			case Wall_State.OBSTRUCTED_CLOCKWISE	:	toReturn=Vector3.ProjectOnPlane(dir3windershins	, wallHitFacing.normal		);	break;
-//			case Wall_State.HEAD_ON					:	toReturn=Vector3.ProjectOnPlane(dir3windershins	, wallHitFacing.normal		);	break;
-//			case Wall_State.OBSTRUCTED				:	toReturn=Vector3.ProjectOnPlane(dir3facing		, wallHitFacing.normal		);	break;
-//			case Wall_State.PINCHED:
-//			case Wall_State.FREE: 
-//			default: break;
-//		}
-//		return toReturn.normalized* (wallState.Equals(Wall_State.FREE)?1:wall_slide_penalty);
-
-
 //	//Takes a plane's normal and returns the plane's Grade(angle) in degrees.
 
 
@@ -288,19 +303,17 @@ public class PlayerController : MonoBehaviour
 //	}
 
 
-//	void FixedUpdate()
-//	{
-//		if (doRotation)
-//		{
-//			Debug.Log("target angle: "+targetAngle);
-//			Quaternion quatStart = rotationBody.transform.rotation;
-//			Quaternion quatTarget = Quaternion.LookRotation(SharedLib.angleToVector(targetAngle));
-//			Quaternion quatNew = Quaternion.RotateTowards(quatStart, quatTarget, max_rotate_degree);
-//			rotationBody.transform.rotation = quatNew;
-//		}
+//void FixedUpdate() {
+//	if (doRotation) {
+//		Debug.Log("target angle: " + targetAngle);
+//		Quaternion quatStart = rotationBody.transform.rotation;
+//		Quaternion quatTarget = Quaternion.LookRotation(SharedLib.angleToVector3(Mathf.Deg2Rad*targetAngle));
+//		Quaternion quatNew = Quaternion.RotateTowards(quatStart, quatTarget, max_rotate_degree);
+//		rotationBody.transform.rotation = quatNew;
 //	}
+//}
 
-
+}
 
 //	void OnTriggerEnter(Collider other)
 //	{

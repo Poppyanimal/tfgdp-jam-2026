@@ -40,6 +40,7 @@ public class SharedLib
     //
 
     //Returns the Angle between two vectors.
+    public static float vectorToFlatAngle(Vector2 aa) { return angleBetweenVectors( aa, Vector2.right) ;}
     public static float angleBetweenVectors(Vector2 aa, Vector2 bb) { return Mathf.Atan2(CrossProduct(aa,bb), DotProduct(aa,bb)) ; }
     private static float DotProduct  (Vector2 aa, Vector2 bb) { return aa.x * bb.x + aa.y * bb.y; }
     private static float CrossProduct(Vector2 aa, Vector2 bb) { return aa.x * bb.y - aa.y * bb.x; }
@@ -55,7 +56,8 @@ public class SharedLib
     }
     
     //Takes an angl(radians) and returns a vector of length 1 at that angle on the XZ plane)
-    public static Vector3 angleToVector(float angle) { return new Vector3(Mathf.Cos(angle), 0f, Mathf.Sin(angle)).normalized; }
+    public static Vector2 angleToVector2(float angle) { return new Vector3(Mathf.Sin(angle),     Mathf.Cos(angle)).normalized; }
+    public static Vector3 angleToVector3(float angle) { return new Vector3(Mathf.Sin(angle), 0f, Mathf.Cos(angle)).normalized; }
 
 
     //Takes a vector and returns that vector's grade in degrees (that is, the angle Y forms with the XZ plane.)
@@ -89,28 +91,35 @@ public class SharedLib
     public static RaycastHit[] castWFC(Vector3 origin, float facing, float fov, float dist, bool drawCast) { return castWFC(origin, facing, fov, dist, "Default", drawCast); }
     public static RaycastHit[] castWFC(Vector3 origin, float facing, float fov, float dist, string layerMask="Default", bool drawCast=false)
     {        
-		float windershinsAngle = facing + fov;
-        float clockwiseAngle   = facing - fov;
-
-		Vector3 dir3windershins = angleToVector(Mathf.Deg2Rad * windershinsAngle    );
-        Vector3 dir3facing      = angleToVector(Mathf.Deg2Rad * facing              );
-		Vector3 dir3clockwise   = angleToVector(Mathf.Deg2Rad * clockwiseAngle      );
+		Vector3[] dir3WFC = generateWFC(origin, facing, fov);
         
         RaycastHit[] hitWFC = new RaycastHit[3];
         if (drawCast) {
-            hitWFC[0] = castInDirection(origin, dir3windershins  , dist, layerMask, Color.blue);
-		    hitWFC[1] = castInDirection(origin, dir3facing       , dist, layerMask, Color.cyan);
-		    hitWFC[2] = castInDirection(origin, dir3clockwise    , dist, layerMask, Color.green);
+            hitWFC[0] = castInDirection(origin, dir3WFC[0], dist, layerMask, Color.blue );
+		    hitWFC[1] = castInDirection(origin, dir3WFC[1], dist, layerMask, Color.cyan );
+		    hitWFC[2] = castInDirection(origin, dir3WFC[2], dist, layerMask, Color.green);
         }
         else {
-            hitWFC[0] = castInDirection(origin, dir3windershins  , dist, layerMask);
-		    hitWFC[1] = castInDirection(origin, dir3facing       , dist, layerMask);
-		    hitWFC[2] = castInDirection(origin, dir3clockwise    , dist, layerMask);
+            hitWFC[0] = castInDirection(origin, dir3WFC[0], dist, layerMask);
+		    hitWFC[1] = castInDirection(origin, dir3WFC[1], dist, layerMask);
+		    hitWFC[2] = castInDirection(origin, dir3WFC[2], dist, layerMask);
         }
 
         return hitWFC;
     }
 
+    public static Vector3[] generateWFC(Vector3 origin, float facing, float fov) {
+        float windershinsAngle = facing + fov;
+        float clockwiseAngle   = facing - fov;
+
+        Vector3[] dir3WFC= new Vector3[3];
+		dir3WFC[0] = angleToVector3(Mathf.Deg2Rad * windershinsAngle    );
+        dir3WFC[1] = angleToVector3(Mathf.Deg2Rad * facing              );
+		dir3WFC[2] = angleToVector3(Mathf.Deg2Rad * clockwiseAngle      );
+
+        return dir3WFC;
+
+    }
 
 
 
