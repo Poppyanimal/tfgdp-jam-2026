@@ -81,14 +81,15 @@ public class PlayerController : MonoBehaviour
 
 		applyTransforms();
 
+		applyGroundStateConsequences();
 		
 	}
 
 	#region Simple States which don't need to consider inputs
 
 	void determineSimpleState() {
-		Ground_State	=	determineGroundState(true);
-		Wall_State		=	determineWallState(true);
+		Ground_State	=	determineGroundState();
+		Wall_State		=	determineWallState();
 	}
 
 	GROUND_STATE determineGroundState(bool drawCast=false) { 
@@ -107,7 +108,6 @@ public class PlayerController : MonoBehaviour
 	
 		}
 	
-	WALL_STATE determineWallState(bool drawCast=false ){
 	void applyGroundStateConsequences() {
 		switch (Ground_State) {
 			case GROUND_STATE.AIR:
