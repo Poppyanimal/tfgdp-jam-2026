@@ -17,7 +17,6 @@ public class SharedLib
         return newIndex;
     }
 
-
     #region Angle to Angle :: 1
 
     //Bounds a angle to the degrees of 0 <= x < 360
@@ -44,8 +43,6 @@ public class SharedLib
     }
 
 	#endregion
-
-
 
     #region Vector to Angle :: 3 - 2
 
@@ -96,13 +93,11 @@ public class SharedLib
 
 	#endregion
 
-
-
 	#region Angle on Angle :: 0
 
 	#endregion
 
-#region Angle on Vector :: 1 -1
+    #region Angle on Vector :: 1 -1
 
 	//applies the rotation matrix ( [[cosA, -sinA], [sinA, cosA]] ) to the vector.
 	public static Vector2 rotateVector2(float angle, Vector2 startV) { return rotateVector2rad(Mathf.Deg2Rad * angle, startV); }
@@ -114,6 +109,7 @@ public class SharedLib
     }
 
 	#endregion
+
 
     
     #region create RaycastHit :: 2 ~4

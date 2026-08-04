@@ -1,11 +1,5 @@
-using NUnit.Framework.Constraints;
-using System;
 using Unity.Cinemachine;
-using Unity.VisualScripting;
 using UnityEngine;
-using UnityEngine.InputSystem;
-using UnityEngine.UIElements;
-using UnityEngine.UIElements.Experimental;
 
 public class PlayerController : MonoBehaviour
 {
@@ -32,7 +26,7 @@ public class PlayerController : MonoBehaviour
 	const float		check_wall_dist		=   .78f	, 
 					check_wall_deg		= 35.0f		, 
 					wall_slide_penalty	=   .5f		;
-
+	//TODO Implement 'Slidedirection lock when near camera 
 
 
 	MOVE_STATE Move_State= MOVE_STATE.IDLE;
@@ -47,16 +41,12 @@ public class PlayerController : MonoBehaviour
 
 
 
-
-
-
-
 	Rigidbody body;
 	
 	public GameObject rotationBody; 
-	const float rotate_body_max = 3.5f;
-		  float targetAngle; 
-		  bool  rotate_toward_move_dir = true;
+	const float rotate_body_max			= 3.5f;
+		  float targetAngle				= 0.0f; 
+		  bool  rotate_toward_move_dir	= true;
 	
 	float cached_input_angle;
 	const float turn_deadzone = 40f, angle_difference_for_cam_snap = 35;
@@ -76,11 +66,8 @@ public class PlayerController : MonoBehaviour
 
 	void Update() {
 		determineSimpleState();
-
 		handleInputs();
-
 		applyTransforms();
-
 		applyGroundStateConsequences();
 		
 	}
@@ -225,6 +212,8 @@ public class PlayerController : MonoBehaviour
 
 	#endregion
 
+	#region Applying Movement
+
 	void applyTransforms() {
 		applyRotation();
 		if (moving)	applyMovement();
@@ -232,7 +221,8 @@ public class PlayerController : MonoBehaviour
 	}
 	
 	void applyRotation() {
-		if (rotate_toward_move_dir) targetAngle= Quaternion.LookRotation( new Vector3(movedir2.x, 0, movedir2.y)).eulerAngles.y; 
+
+		if (rotate_toward_move_dir && !movedir2.Equals(Vector2.zero)) targetAngle= Quaternion.LookRotation( new Vector3(movedir2.x, 0, movedir2.y)).eulerAngles.y; 
 
 		Quaternion qFrom = rotationBody.transform.rotation;
 		Quaternion qToward = Quaternion.AngleAxis(targetAngle, Vector3.up);
@@ -288,9 +278,11 @@ public class PlayerController : MonoBehaviour
 		return new Vector2(projectdir3.x,projectdir3.z).normalized;
 	}
 
+	#endregion
 
 
 
+	#region Camera Controls
 
 	void OnTriggerEnter(Collider other) {
 		CameraSwitchTrigger cwt = other.GetComponent<CameraSwitchTrigger>();
@@ -304,17 +296,9 @@ public class PlayerController : MonoBehaviour
 			if (cwt.lookAtTarget)
 				cwt.cam.LookAt = camera_tracking_point.transform;
 		}
-
-
-
 	}
+
+	#endregion
+
+
 }
-
-
-
-
-
-
-
-
-
