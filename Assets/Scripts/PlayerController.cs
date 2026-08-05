@@ -46,7 +46,7 @@ public class PlayerController : MonoBehaviour
 	Rigidbody body;
 	
 	public GameObject rotationBody; 
-	const float rotate_body_max			= 3.5f;
+	const float rotate_body_max			= 6.5f;
 		  float targetAngle				= 0.0f; 
 		  bool  rotate_toward_move_dir	= true;
 	
@@ -230,7 +230,7 @@ public class PlayerController : MonoBehaviour
 		Quaternion qFrom = rotationBody.transform.rotation;
 		Quaternion qToward = Quaternion.AngleAxis(targetAngle, Vector3.up);
 
-		rotationBody.transform.rotation = Quaternion.RotateTowards(qFrom,qToward,rotate_body_max);;
+		rotationBody.transform.rotation = Quaternion.RotateTowards(qFrom,qToward,rotate_body_max * Time.deltaTime * 60f);;
 	}
 
 	void applyMovement() {
