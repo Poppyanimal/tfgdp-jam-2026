@@ -7,10 +7,13 @@ using UnityEngine.UIElements;
 
 public class PlayerController : MonoBehaviour
 {
-	const float move_speed = 3f, max_rotate_degree = 5f, move_deadzone = .2f, turn_deadzone = 40f, angle_difference_for_cam_snap = 35;
+	public float move_speed = 2.5f;
+	const float max_rotate_degree = 5f, move_deadzone = .2f, turn_deadzone = 40f, angle_difference_for_cam_snap = 35;
 	public GameObject rotationBody; float targetAngle; bool doRotation = true; float cached_input_angle;
 	CinemachineBrain cam_brain; CinemachineCamera active_cam; CinemachineCamera cam_to_turnoff;
 	public GameObject camera_tracking_point;
+
+	public Animator playerAnimator;
 
 
 
@@ -42,6 +45,7 @@ public class PlayerController : MonoBehaviour
 		Vector2 input = new Vector2(Input.GetAxis("Horizontal"), Input.GetAxis("Vertical"));
 		Vector2 inputdir = input.normalized;
 		bool moving = input.magnitude > move_deadzone;
+		playerAnimator.SetBool("isWalking", moving);
 
 		if (GlobalSettings.get().useModernControls)
 		{
