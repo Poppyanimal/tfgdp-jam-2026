@@ -7,6 +7,8 @@ public class PlayerController : MonoBehaviour
 	CinemachineCamera	active_cam	, cam_to_turnoff;
 	public GameObject	camera_tracking_point;
 
+	public Animator playerAnimator;
+
 
 	GROUND_STATE Ground_State = GROUND_STATE.FLAT;
 	enum GROUND_STATE { FLAT, GENTLE, STEEP, AIR }
@@ -31,7 +33,7 @@ public class PlayerController : MonoBehaviour
 
 	MOVE_STATE Move_State= MOVE_STATE.IDLE;
 	enum MOVE_STATE			{ IDLE,		WALK,	SPRINT,		CROUCH,		PORT_WALL_SLIDING,	STAR_WALL_SLIDING,	FALL_UP,	FALL_DOWN	} //TODO: Seporate FALL_UP and FALL_DOWN into own enum;
-	float[] move_speed =	{ 0f,		5f,		10f,		4f,			4.5f,				4.5f,				5f,			3f			};
+	float[] move_speed =	{ 0f,		1.9f,		3f,		1.5f,			1.5f,				1.5f,				5f,			3f			};
 	const float move_deadzone      =  .2f	; 
 	const int   stop_lerp_duration = 30	    ;
 		  int   stop_lerp_elapsed  = 0		;
@@ -166,6 +168,7 @@ public class PlayerController : MonoBehaviour
 		//Take raw arrow movements and check against deadzone. If against deadzone choose exit early betwixt IDLE, FALL_UP, and FALL_DOWN
 		Vector2 inputRaw = new Vector2(Input.GetAxis("Horizontal"), Input.GetAxis("Vertical"));
 		moving = inputRaw.magnitude > move_deadzone;
+		playerAnimator.SetBool("isWalking", moving);
 		if (!moving) return (body.linearVelocity.y>0) ? MOVE_STATE.FALL_UP: ((body.linearVelocity.y<0)? MOVE_STATE.FALL_DOWN: MOVE_STATE.IDLE);
 		stop_lerp_elapsed=0;
 
