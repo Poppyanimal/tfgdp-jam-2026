@@ -1,0 +1,18 @@
+
+Camera
+ -Fixed
+ -Rotate to Follow Player
+ -On Trigger, Switch
+
+Player
+ -Model
+  --The Girl Exists
+    ---EmptyHanded Idle
+ -Movement
+  --WASD with respect to camera
+    ---Slide Along Wall
+ -Enum states for (hopefully) easier animation keying.
+ 
+Interactable
+ -Framework for making Interactables
+

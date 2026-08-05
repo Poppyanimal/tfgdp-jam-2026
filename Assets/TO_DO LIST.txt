@@ -1,0 +1,71 @@
+Player 
+ -Model
+  --Add Animations for Walking
+  --Add Umbrella
+    ---Add Attack animations.
+    ---Implement HitChecks.
+    ---Ranged Attacks
+       ----Aim ?
+       ----Bullet Projectiles
+  --Add Other animations (?)
+ -Health/Death/Respawn            
+
+Enemy
+ -Implement Basic Class     *
+  --Health and Take Damage  *
+  --Attack and Deal Damage  *
+  --Basic PathFinding Algor
+ -Create Model
+  --Animate/Polish
+
+ -Dream Eater
+  --Dialogue, see dialogue boxes
+  --BossFight
+
+Interactable
+ -Dialogue           *AfterDialogueBoxesExist
+ -Item Pickup                     
+  --Umbrella
+  --Ammo
+  --Memories
+ -PushBox?
+ -SceneTransitionTrigger*
+
+Story
+ -Write a Story ?
+  --Something something childhood toy possessed by dream eater.
+
+Level Design
+ -The House/Cave/Garden/Dream
+ -The Boss Arena
+ -Decorations
+
+Music and Folio
+ -Music
+  --Explore
+  --Combat
+  --Boss
+ -Folio
+  --Walking
+  --UmbrellaAttack
+    ---Melee
+    ---Ranged
+       ----For each, Hit/Mis?
+  --Enemy Attack
+    --Hit
+ -Ambient Sound
+ -Dialogue
+  --Vocal Quips
+  --Girl laughter (O-hohohohohohoho)
+
+UI and UX
+ -Main Menu
+ -Dialogue Boxes*
+  --They Do Dialogue.
+  --Multiple Sequencial Pages
+ -Pause*
+ -Save
+ -Options Menu
+  --Sound
+  --Keybinds?
+    ---WORK-AROUND FOR THE UNITY X-QUERTY PROBLEM.
