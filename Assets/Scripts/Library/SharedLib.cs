@@ -128,6 +128,7 @@ public class SharedLib
         return hit;
     }
 
+    //ToDo Re-impliment and refactor to a more general horizontalSweep
     //Takes an origin, and facing angle, a fov angle, a distance. returns a RaycastHit[3] through generateWFC(...) and castInDirection(...). Draws all three of the Rays if passed a boolean.
     public static RaycastHit[] castWFC(Vector3 origin, float facing, float fov, float dist, bool drawCast) { return castWFC(origin, facing, fov, dist, "Default", drawCast); }
     public static RaycastHit[] castWFC(Vector3 origin, float facing, float fov, float dist, string layerMask="Default", bool drawCast=false)
@@ -148,6 +149,20 @@ public class SharedLib
 
         return hitWFC;
     }
+
+    public static RaycastHit[] verticalScan(Vector3 origin, Vector3 direction, float[] vertDists, float dist,                             bool forcePositive=true, bool drawCast=false) {  return verticalScan(origin, direction, vertDists, dist, "Default", forcePositive, drawCast);   }
+    public static RaycastHit[] verticalScan(Vector3 origin, Vector3 direction, float[] vertDists, float dist, string layerMask="Default", bool forcePositive=true, bool drawCast=false) {
+        RaycastHit[] toReturn = new RaycastHit[vertDists.Length];
+
+        if (forcePositive) direction.y= Mathf.Max(0f,direction.y);
+        for (int ii=0; ii<vertDists.Length; ii+=1) {
+            
+            toReturn[ii]=  castInDirection(origin-Vector3.up*vertDists[ii], direction, dist, layerMask, drawCast? Color.HSVToRGB((ii*30%360)/360f, 1,1): default(Color) );
+        }
+        return toReturn;
+
+    }
+
 
 	#endregion
 

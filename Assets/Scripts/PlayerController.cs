@@ -1,5 +1,7 @@
 using Unity.Cinemachine;
+using Unity.VisualScripting.Antlr3.Runtime.Tree;
 using UnityEngine;
+using UnityEngine.Rendering;
 
 public class PlayerController : MonoBehaviour
 {
@@ -10,30 +12,34 @@ public class PlayerController : MonoBehaviour
 	public Animator playerAnimator;
 
 
+	WALL_STATE Wall_State = WALL_STATE.FREE;
+	enum WALL_STATE { FREE, CLIPPED_WINDERSHINS, HEAD_ON, OBSTRUCTED_WINDERSHINS, CLIPPED_CLOCKWISE, PINCHED, OBSTRUCTED_CLOCKWISE, OBSTRUCTED }
+	RaycastHit[] lookingAtWFC;               
+	const float		check_wall_dist		=   .78f	, 
+					check_wall_deg		= 35.00f	;
+
+			
+	//TODO Implement 'SlideDirLock when near camera 
 	GROUND_STATE Ground_State = GROUND_STATE.FLAT;
-	enum GROUND_STATE { FLAT, GENTLE, STEEP, AIR }
+	enum GROUND_STATE { FLAT, GENTLE, STEEP, AIR, STEP, HOP }
 	RaycastHit		ground;
-	const float		ground_check_dist				=	 2.0f	, 
-					ground_snap						=	 1.2f	, 
-					ground_snap_min					=	 1.15f	, 
-					ground_snap_offset				=	 1.0f	, 
+	RaycastHit[]    lookingAtFSH;
+	const float		ground_check_dist				=	 2.0f	,
+					origin_feet_dist				=	 1.0f	,  
+					ground_snap						=	 1.2f	,
 					high_slope_threshhold			=	50.0f	, 
 					slope_normal_projection_length	=	  .5f	;
 
+	const float		step_max			=   .24f	, hop_max	=   .60f	,
+		            step_hop_dist       =   .50f	;
+	const int       step_frame				=  3	, hop_frame				=  7 ;
+		  int		step_hop_frame_target	= -1	, step_hop_frame_curr	= -1 ;
 
-
-	WALL_STATE Wall_State = WALL_STATE.FREE;
-	enum WALL_STATE { FREE, CLIPPED_WINDERSHINS, HEAD_ON, OBSTRUCTED_WINDERSHINS, CLIPPED_CLOCKWISE, PINCHED, OBSTRUCTED_CLOCKWISE, OBSTRUCTED }
-	RaycastHit[] lookingAtWFC;
-	const float		check_wall_dist		=   .78f	, 
-					check_wall_deg		= 35.0f		, 
-					wall_slide_penalty	=   .5f		;
-	//TODO Implement 'Slidedirection lock when near camera 
 
 
 	MOVE_STATE Move_State= MOVE_STATE.IDLE;
-	enum MOVE_STATE			{ IDLE,		WALK,	SPRINT,		CROUCH,		PORT_WALL_SLIDING,	STAR_WALL_SLIDING,	FALL_UP,	FALL_DOWN	} //TODO: Seporate FALL_UP and FALL_DOWN into own enum;
-	float[] move_speed =	{ 0f,		1.9f,		3f,		1.5f,			1.5f,				1.5f,				5f,			3f			};
+	enum MOVE_STATE			{ IDLE,		WALK,	SPRINT,		CROUCH,		PORT_WALL_SLIDING,	STAR_WALL_SLIDING,	FALL_UP,	FALL_DOWN		} //TODO: Seporate FALL_UP and FALL_DOWN into own enum;
+	float[] move_speed =	{ 0f,		1.9f,	3f,			1.5f,		1.5f,				1.5f,				5f,			3f				};
 	const float move_deadzone      =  .2f	; 
 	const int   stop_lerp_duration = 30	    ;
 		  int   stop_lerp_elapsed  = 0		;
@@ -77,26 +83,81 @@ public class PlayerController : MonoBehaviour
 	#region Simple States which don't need to consider inputs
 
 	void determineSimpleState() {
+		Wall_State		=	determineWallState(true);
 		Ground_State	=	determineGroundState();
-		Wall_State		=	determineWallState();
+		
 	}
+
+	#region Wall State
+
+	WALL_STATE determineWallState(bool drawCast=false ){
+		lookingAtWFC = SharedLib.castWFC(body.position, rotationBody.transform.eulerAngles.y, check_wall_deg, check_wall_dist, drawCast);
+
+		//Check which rays found objects then use binary addition to determine wallState.
+		bool[] WFCsuccesses = new bool[3];
+		WFCsuccesses[0] = lookingAtWFC[0].collider != null;
+		WFCsuccesses[1] = lookingAtWFC[1].collider != null;
+		WFCsuccesses[2] = lookingAtWFC[2].collider != null;
+
+		return (WALL_STATE)( (WFCsuccesses[0]?1:0) + (WFCsuccesses[1]?2:0) + (WFCsuccesses[2]?4:0)) ;
+
+	}
+
+	#endregion
+
+	#region Ground State
 
 	GROUND_STATE determineGroundState(bool drawCast=false) { 
 		ground = checkGround(drawCast);
-
 		if (ground.collider==null) return GROUND_STATE.AIR;
 
-		float slopeGradient = SharedLib.vectorToGrade(ground.normal);
+		//calculate 
 
-		if (ground.normal.Equals(Vector3.up)) return (ground.distance > ground_snap) ? GROUND_STATE.AIR : GROUND_STATE.FLAT;
-		if (slopeGradient > high_slope_threshhold) return GROUND_STATE.STEEP;
+		float[] arg=new float[3] {origin_feet_dist, step_max, hop_max};
+		lookingAtFSH = SharedLib.verticalScan(body.position, Vector3.ProjectOnPlane(SharedLib.angleToVector3(rotationBody.transform.eulerAngles.y), ground.normal), arg, check_wall_dist, true, drawCast);
+		
+		float gradeAtFeet        =                                   SharedLib.vectorToGrade(ground.normal         )   ;
+		float gradeInFrontOfFeet = (lookingAtFSH[0].collider!=null)? SharedLib.vectorToGrade(lookingAtFSH[0].normal):0f;
 
-		//If still here, by elimination, the ground below exists and it is gently sloped.
-		// Check that the character is within a reasonable distance of the slope.
-		return (isDistanceToSlopeLessThanK(ground.distance - ground_snap_offset, slopeGradient)) ? GROUND_STATE.AIR : GROUND_STATE.GENTLE;
+
+		//if (ground.normal.Equals(Vector3.up)) return (ground.distance > ground_snap) ? 
+		//if (gradeAtFeet > high_slope_threshhold) return GROUND_STATE.STEEP;
+
+		////If still here, by elimination, the ground below exists and it is gently sloped.
+		//// Check that the character is within a reasonable distance of the slope.
+		//return (isDistanceToSlopeLessThanK(ground.distance - origin_feet_dist, gradeAtFeet)) ? GROUND_STATE.AIR : GROUND_STATE.GENTLE;
 	
-		}
+
+		//Be mindful of downward slopes? This is Probably Bugged
+		bool ignoreFSH = Mathf.Max(gradeInFrontOfFeet, gradeInFrontOfFeet+(gradeAtFeet*((body.linearVelocity.y>0)?-1f:1f))) < high_slope_threshhold || lookingAtFSH[0].collider==null;
+		
+		if (ignoreFSH && ground.normal.Equals(Vector3.up) ) return (ground.distance> ground_snap) ? GROUND_STATE.AIR : GROUND_STATE.FLAT;
+
+		else return GROUND_STATE.AIR;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+	}
 	
+		RaycastHit checkGround(bool drawCast=false) { return SharedLib.castInDirection(body.position,Vector3.down, ground_check_dist, drawCast? Color.red: default(Color));	}
+
+		bool isDistanceToSlopeLessThanK(float distance, float SlopeGradient) { return slope_normal_projection_length*Mathf.Cos(Mathf.Deg2Rad*SlopeGradient) < distance; }
+
+
 	void applyGroundStateConsequences() {
 		switch (Ground_State) {
 			case GROUND_STATE.AIR:
@@ -117,12 +178,11 @@ public class PlayerController : MonoBehaviour
 				break;
 			default: break;
 		}
+
 	}
 
 		void SnapToGround (RaycastHit ground) {
-			if (ground.distance < ground_snap_min) return;
-
-			float snapDist = ground.distance - ground_snap_offset;
+			float snapDist = ground.distance - origin_feet_dist;
 
 			Vector3 snapPos = body.position;
 			snapPos.y -= snapDist;
@@ -133,29 +193,11 @@ public class PlayerController : MonoBehaviour
 			body.linearVelocity = linV;
 		}
 
-
-		WALL_STATE determineWallState(bool drawCast=false ){
-		lookingAtWFC = SharedLib.castWFC(body.position, rotationBody.transform.eulerAngles.y, check_wall_deg, check_wall_dist, drawCast);
-
-		//Check which rays found objects then use binary addition to determine wallState.
-		bool[] FCWsuccesses = new bool[3];
-		FCWsuccesses[0] = lookingAtWFC[0].collider != null;
-		FCWsuccesses[1] = lookingAtWFC[1].collider != null;
-		FCWsuccesses[2] = lookingAtWFC[2].collider != null;
-		return (WALL_STATE) ( (FCWsuccesses[0]?1:0) + (FCWsuccesses[1]?2:0) + (FCWsuccesses[2]?4:0)) ;
-
-	}
-
-	RaycastHit checkGround(bool drawCast=false) { 
-		return drawCast?
-			SharedLib.castInDirection(body.position,Vector3.down, ground_check_dist, Color.red	)	:
-			SharedLib.castInDirection(body.position,Vector3.down* ground_check_dist				)	;
-	}
-
-	bool isDistanceToSlopeLessThanK(float distance, float SlopeGradient) { return slope_normal_projection_length*Mathf.Cos(Mathf.Deg2Rad*SlopeGradient) < distance; }
+	#endregion
 
 	#endregion
 
+	
 	#region Input Processing
 	void handleInputs() {
 		Move_State= handleMovementInput_to_DetermineWalkState();
@@ -234,15 +276,64 @@ public class PlayerController : MonoBehaviour
 	}
 
 	void applyMovement() {
+		
+
+
 		Vector2 respectfulMovedir2            = respectWalls().normalized;
 		respectfulMovedir2= (respectfulMovedir2 * move_speed[(int)Move_State]);
-		movedir3.x= respectfulMovedir2.x;
-		movedir3.z= respectfulMovedir2.y;
+		if (Ground_State == GROUND_STATE.AIR) {
+			movedir3.x = respectfulMovedir2.x;
+			movedir3.z= respectfulMovedir2.y;
+		}
+		else {
+			movedir3= respectGround(respectfulMovedir2);
+			snapToGround();
+		}
+
+		Debug.DrawRay(body.position-Vector3.up*1, movedir3, Color.cyan, .5f);
+
 
 		body.linearVelocity = movedir3;
-
 	}
-	
+
+		Vector3 respectWalls() {
+			Vector3[] dir3WFC= SharedLib.generateWFC(body.position, rotationBody.transform.eulerAngles.y, check_wall_deg);
+			Vector3 projectdir3= movedir3;
+			switch (Wall_State) {
+				case WALL_STATE.CLIPPED_WINDERSHINS		: projectdir3 = Vector3.ProjectOnPlane(dir3WFC[2], lookingAtWFC[0].normal); break;
+				case WALL_STATE.CLIPPED_CLOCKWISE		: projectdir3 = Vector3.ProjectOnPlane(dir3WFC[1], lookingAtWFC[2].normal); break;
+				case WALL_STATE.OBSTRUCTED_WINDERSHINS	: projectdir3 = Vector3.ProjectOnPlane(dir3WFC[2], lookingAtWFC[1].normal); break;
+				case WALL_STATE.OBSTRUCTED_CLOCKWISE	: projectdir3 = Vector3.ProjectOnPlane(dir3WFC[0], lookingAtWFC[1].normal); break;
+				case WALL_STATE.HEAD_ON					: projectdir3 = Vector3.ProjectOnPlane(dir3WFC[0], lookingAtWFC[1].normal); break;
+				case WALL_STATE.OBSTRUCTED				: projectdir3 = Vector3.ProjectOnPlane(dir3WFC[1], lookingAtWFC[1].normal); break;
+				case WALL_STATE.PINCHED:
+				case WALL_STATE.FREE:
+				default: break;
+			}
+			return new Vector2(projectdir3.x,projectdir3.z).normalized;
+		}
+
+		Vector3 respectGround(Vector2 dir2) { return Vector3.ProjectOnPlane( SharedLib.vector2to3(dir2),ground.normal);	}
+
+		Vector3 respectAndExecuteStepHop( bool drawCast=false) {
+			//bool    isStep    = Wall_State==WALL_STATE.STEP;
+			//float   lookAngle = rotationBody.transform.eulerAngles.y,
+			//        dist      = lookingAtFSH[0].distance,
+		 //           height    = (isStep?step_max:hop_max)*1.01f,
+			//		magnitude = movedir2.magnitude;
+		
+
+			//return new Vector3 ( dist*Mathf.Sin(Mathf.Deg2Rad*lookAngle),0f, dist*Mathf.Cos(Mathf.Deg2Rad*lookAngle) ).normalized*magnitude+ Vector3.up*height;
+			return Vector3.zero;
+
+		}
+
+		void snapToGround() {
+
+		}
+
+
+
 	void stopMovement() {
 		Vector3 linV = body.linearVelocity;
 		linV.x = 0f;
@@ -264,26 +355,9 @@ public class PlayerController : MonoBehaviour
 		//body.linearVelocity = lerpV;
 	}
 
-	Vector3 respectWalls() {
-		Vector3[] dir3WFC= SharedLib.generateWFC(body.position, rotationBody.transform.eulerAngles.y, check_wall_deg);
-		Vector3 projectdir3= movedir3;
-		switch (Wall_State) {
-			case WALL_STATE.CLIPPED_WINDERSHINS		: projectdir3 = Vector3.ProjectOnPlane(dir3WFC[2], lookingAtWFC[0].normal); break;
-			case WALL_STATE.CLIPPED_CLOCKWISE		: projectdir3 = Vector3.ProjectOnPlane(dir3WFC[1], lookingAtWFC[2].normal); break;
-			case WALL_STATE.OBSTRUCTED_WINDERSHINS	: projectdir3 = Vector3.ProjectOnPlane(dir3WFC[2], lookingAtWFC[1].normal); break;
-			case WALL_STATE.OBSTRUCTED_CLOCKWISE	: projectdir3 = Vector3.ProjectOnPlane(dir3WFC[0], lookingAtWFC[1].normal); break;
-			case WALL_STATE.HEAD_ON					: projectdir3 = Vector3.ProjectOnPlane(dir3WFC[0], lookingAtWFC[1].normal); break;
-			case WALL_STATE.OBSTRUCTED				: projectdir3 = Vector3.ProjectOnPlane(dir3WFC[1], lookingAtWFC[1].normal); break;
-			case WALL_STATE.PINCHED:
-			case WALL_STATE.FREE:
-			default: break;
-		}
-		return new Vector2(projectdir3.x,projectdir3.z).normalized;
-	}
+	
 
 	#endregion
-
-
 
 	#region Camera Controls
 
