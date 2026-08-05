@@ -23,6 +23,7 @@ public class InteractableController : MonoBehaviour
 
 	private void Start() {
 		if (playerController !=null) rotationBody=playerController.rotationBody;
+        emptyAndHidePrompt();
 	}
 
 	// Update is called once per frame
@@ -88,7 +89,6 @@ public class InteractableController : MonoBehaviour
         if (prevTargetedInteractable == null) { return targetedInteractable!=null;}
         return ! prevTargetedInteractable.Equals(targetedInteractable);
 
-
     }
 
 	#endregion
@@ -98,9 +98,9 @@ public class InteractableController : MonoBehaviour
 	#region Cleanup
 	void cleanupPrevTarget() {
         switch (prevTargetedInteractable.Interaction_State){
-            case a_Interactable.INTERACTION_STATE.ACTIVATING: case a_Interactable.INTERACTION_STATE.ACTIVE      : prevTargetedInteractable.forceCancelInteract(); break;
-            case a_Interactable.INTERACTION_STATE.TARGETING : case a_Interactable.INTERACTION_STATE.TARGETED    : prevTargetedInteractable.endTarget()          ; break; 
-            default: Debug.Log("Unexpected Case in cleanupPrevTarget() for: " + this.ToString() );                prevTargetedInteractable.forceCancelInteract(); break;
+            case a_Interactable.INTERACTION_STATE.ACTIVATING: case a_Interactable.INTERACTION_STATE.ACTIVE                       : prevTargetedInteractable.forceCancelInteract(); break;
+            case a_Interactable.INTERACTION_STATE.TARGETING : case a_Interactable.INTERACTION_STATE.TARGETED                     : prevTargetedInteractable.endTarget()          ; break; 
+            default: Debug.LogFormat("Unexpected Case in cleanupPrevTarget() for: {0}. ForceCanceling as default", ToString() );   prevTargetedInteractable.forceCancelInteract(); break;
         }
         emptyAndHidePrompt();
     }
@@ -120,7 +120,7 @@ public class InteractableController : MonoBehaviour
 
 
     void fillAndShowPrompt() { 
-        promptContainer.text = targetedInteractable.InteractionPrompt;
+        promptContainer.text = targetedInteractable.Interaction_Prompt;
     }
 	#endregion 
 
@@ -132,17 +132,17 @@ public class InteractableController : MonoBehaviour
     void handleInteraction() {
         switch (targetedInteractable.Interaction_State) {
             case a_Interactable.INTERACTION_STATE.ACTIVATING :
-            case a_Interactable.INTERACTION_STATE.ACTIVE     :    if (checkInteractionInputContinues()) targetedInteractable.continueInteract(); else targetedInteractable.endInteract(); break;
-            default:                                              if (checkInteractionInput()         ) targetedInteractable.interact()        ; break;
+            case a_Interactable.INTERACTION_STATE.ACTIVE     :    if (checkInteractionInputEnds()) targetedInteractable.endInteract() ; break;
+            default:                                              if (checkInteractionInput()    ) targetedInteractable.interact()    ; break;
         }
 
         if (logDebugBehavior) {
-
+            Debug.LogFormat("The currently targeted interactable : {0}, was interacted with.", targetedInteractable.ToString() );
         }
     }
 
-	bool checkInteractionInput() { return Input.GetKeyDown(targetedInteractable.InteractionKey); }      //Continue or Stop Interaction
-    bool checkInteractionInputContinues() { return Input.GetKey(targetedInteractable.InteractionKey); } //Continue or Stop Interaction
+	bool checkInteractionInput()     { return  Input.GetKeyDown(targetedInteractable.Interaction_Key); } //Start Interaction
+    bool checkInteractionInputEnds() { return !Input.GetKey    (targetedInteractable.Interaction_Key); } //Continue or Stop Interaction
     #endregion
 
 }
