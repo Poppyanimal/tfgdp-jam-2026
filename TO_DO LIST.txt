@@ -63,9 +63,10 @@ UI and UX
  -Dialogue Boxes*
   --They Do Dialogue.
   --Multiple Sequencial Pages
- -Pause*
- -Save
- -Options Menu
-  --Sound
-  --Keybinds?
+ -Pause
+  --Menu
+    ---Save
+    ---Options
+       ----Sound
+       ----Keybinds?
     ---WORK-AROUND FOR THE UNITY X-QUERTY PROBLEM.

@@ -22,7 +22,7 @@ public class InteractableController : MonoBehaviour
    
 
 	private void Start() {
-		if (playerController !=null) rotationBody=playerController.rotationBody;
+		if (playerController !=null) rotationBody=playerController.PlayerRotation;
         emptyAndHidePrompt();
 	}
 
