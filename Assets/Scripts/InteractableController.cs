@@ -42,7 +42,7 @@ public class InteractableController : MonoBehaviour
         if (logDebugBehavior) {
             if ( !(prevTargetedInteractable==null && targetedInteractable==null) ) {
                 if (prevTargetedInteractable!=null) { 
-                    if(prevTargetedInteractable.Equals(targetedInteractable) ) ;
+                    if(prevTargetedInteractable.Equals(targetedInteractable) ) {}
                         //Debug.LogFormat("The current target, {0} is: {1}.", targetedInteractable?.ToString(), targetedInteractable?.Interaction_State);
                     else
                         Debug.LogFormat("The prev target, {0} is: {1}. \n The current target, {2} is: {3}.", 

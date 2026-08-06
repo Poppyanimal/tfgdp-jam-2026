@@ -67,11 +67,9 @@ public class PlayerController : MonoBehaviour {
 	readonly float[] move_speed =	{ 0f,		2.3f,	3.4f,		1.6f,		1.5f,				1.5f,				1.7f,		2.1f			};
 	bool moving=false;
 
-
 	public void Start() {
 		getComponentFields();
 		initializeNonComponentFields();
-
 	}
 	
 	void getComponentFields() {		
@@ -121,8 +119,10 @@ public class PlayerController : MonoBehaviour {
 		Vector3		adjVec	= SharedLib.angleToVector3(adjAngle);
 
 		//Debugging
+		#pragma warning disable CS0162
 		if (false) debugCalcCamInput(input, camYawVec, adjVec );
-		
+		#pragma warning restore CS0162
+
 		return adjVec.normalized;
 	}
 		void debugCalcCamInput(Vector2 input, Vector3 camYawVec, Vector3 adjVec) {
@@ -344,7 +344,9 @@ public class PlayerController : MonoBehaviour {
 		PlayerRotation.transform.rotation = Quaternion.RotateTowards(qFrom, qToward, max_yaw_rotate );
 		currentAngle= PlayerRotation.transform.rotation.eulerAngles.y;
 
+		#pragma warning disable CS0162
 		if (false) DebugRotatePlayer(qFrom, qVel, qToward);
+		#pragma warning restore CS0162
 	}
 		void DebugRotatePlayer(Quaternion qFrom,Quaternion qVel,Quaternion qToward) {
 			Vector3 flatPos= SharedLib.vectorFlatten(body.position)+Vector3.up*.4f;
