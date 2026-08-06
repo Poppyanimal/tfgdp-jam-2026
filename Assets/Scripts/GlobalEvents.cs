@@ -5,9 +5,11 @@ public class GlobalEvents
 {
     static GlobalEvents single;
 
-    public UnityEvent whatever;
+    public UnityEvent paused;
+    public UnityEvent unpaused;
+    public UnityEvent playerAttackResolved;
 
-    public GlobalEvents get()
+    public static GlobalEvents get()
     {
         if(single == null)
             single = new();
@@ -16,6 +18,16 @@ public class GlobalEvents
 
     GlobalEvents()
     {
-        
+        paused = new();
+        unpaused = new();
+        playerAttackResolved = new();
+    }
+
+    public static void setPauseState(bool state)
+    {
+        if(state)
+            get().paused.Invoke();
+        else
+            get().unpaused.Invoke();
     }
 }

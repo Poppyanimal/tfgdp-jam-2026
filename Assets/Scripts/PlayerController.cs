@@ -4,6 +4,7 @@ using Unity.VisualScripting;
 using Unity.VisualScripting.Antlr3.Runtime.Tree;
 using UnityEngine;
 using UnityEngine.Rendering;
+using ge = GlobalEvents;
 
 public class PlayerController : MonoBehaviour {
 
@@ -60,13 +61,17 @@ public class PlayerController : MonoBehaviour {
 
 	[Header ("Movement")] //---------------------------------------
 	MOVE_STATE Move_State = MOVE_STATE.IDLE;
-	enum MOVE_STATE			{ IDLE,		WALK,	SPRINT,		CROUCH,		PORT_WALL_SLIDING,	STAR_WALL_SLIDING,	FALL_UP,	FALL_DOWN		}
-	float[] move_speed =	{ 0f,		2.3f,	3.4f,		1.6f,		1.5f,				1.5f,				1.7f,		2.1f			};
+	enum MOVE_STATE			{ IDLE,		WALK,	SPRINT,		CROUCH,		PORT_WALL_SLIDING,	STAR_WALL_SLIDING,	FALL_UP,	FALL_DOWN, 	ATTACKING		}
+	float[] move_speed =	{ 0f,		2.3f,	3.4f,		1.6f,		1.5f,				1.5f,				1.7f,		2.1f,		0f			};
 	bool    moving=false;
 
 
 	[Header ("Hitbox")] //---------------------------------------
 	CapsuleCollider hitbox;
+
+	//---------------------------------------- actionability bools
+	bool isPaused;
+	bool isAttacking;
 
 
 	//General Code -----------------------------------------------------------------===========================================================
@@ -75,6 +80,9 @@ public class PlayerController : MonoBehaviour {
 	{
 		getComponentFields();
 		initializeNonComponentFields();
+		ge.get().paused.AddListener(paused);
+		ge.get().unpaused.AddListener(unpaused);
+		ge.get().playerAttackResolved.AddListener(attackingFinished);
 
 	}
 	void getComponentFields()
@@ -89,6 +97,11 @@ public class PlayerController : MonoBehaviour {
 
 	public void Update()
 	{
+		if(!isActionable())
+		{
+			playerAnimator.SetBool("isWalking", false);
+			return;
+		}
 		handleInput();
 		handleCamera();
 		scanEnvironment();
@@ -100,9 +113,38 @@ public class PlayerController : MonoBehaviour {
 
 		animate();
 
+		checkIfAttacking();
+
 		//Debug.LogFormat("State: {0}, {1}, {2}. V:{3}",Wall_State,Ground_State,Move_State, body.linearVelocity.ToString());
 
 	}
+
+	bool isActionable() { return !isPaused && !isAttacking; }
+
+	//
+	//
+
+	//below are methods called when the associated global events events are called
+	public void paused() { isPaused = true; }
+	public void unpaused() { isPaused = false; }
+	public void attackingFinished() { isAttacking = false; }
+	
+	//
+	//
+
+	void checkIfAttacking()
+	{
+		if(Input.GetButtonDown("Melee"))
+		{
+			playerAnimator.SetBool("isWalking", false);
+			isAttacking = true;
+			playerAnimator.SetTrigger("doMelee");
+			Move_State = MOVE_STATE.ATTACKING;
+			body.linearVelocity = Vector3.zero;
+			moving = false;
+		}
+	}
+
 	void handleInput() { camInput= calcCamInput();	}
 		
 	Vector3 calcCamInput()
