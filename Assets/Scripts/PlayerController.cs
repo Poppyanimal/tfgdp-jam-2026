@@ -325,7 +325,9 @@ public class PlayerController : MonoBehaviour {
 	private void RotatePlayer() {
 		Quaternion qFrom = rotationBody.transform.rotation;
 
-		Quaternion qVel = Quaternion.LookRotation( SharedLib.vectorFlatten(body.linearVelocity));
+		Vector3 vel=SharedLib.vectorFlatten(body.linearVelocity);
+		
+		Quaternion qVel = Quaternion.LookRotation( vel.magnitude==0? Vector3.forward: vel);
 		float velAngle= qVel.eulerAngles.y;
 		
 		float lookTowardAngle= moving? velAngle:lookAtAngle;
