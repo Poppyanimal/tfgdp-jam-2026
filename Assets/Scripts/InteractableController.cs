@@ -14,8 +14,8 @@ public class InteractableController : MonoBehaviour
     GameObject rotationBody;
     const float look_fov  = 15.0f ,
                 look_dist =  1.5f ;
-          float lookAngle =  0.0f ;
-    RaycastHit[] lookAt;
+          float lookAtAngle =  0.0f ;
+    RaycastHit[] scanSweepInteract;
 
     a_Interactable targetedInteractable;
     a_Interactable prevTargetedInteractable;
@@ -58,8 +58,9 @@ public class InteractableController : MonoBehaviour
 
 	#region Start of Update Housekeeping
      void updateLookAt() {
-        lookAngle=rotationBody.transform.eulerAngles.y;
-        lookAt= SharedLib.castWFC(rotationBody.transform.position, lookAngle,look_fov, look_dist, "Interact", true);
+        lookAtAngle=playerController.lookAtAngle;
+        float[] sweepAngles= new float[] { lookAtAngle-look_fov, lookAtAngle, lookAtAngle+look_fov };
+        scanSweepInteract= SharedLib.scanAngleSweep(rotationBody.transform.position, sweepAngles, look_dist, "Interact", true);
     }
 
      void storePrevInteractable() { prevTargetedInteractable=targetedInteractable; }
@@ -72,9 +73,9 @@ public class InteractableController : MonoBehaviour
     bool findNewInteractable() {
         Collider collider=null;
 
-        if      (lookAt[1].collider!=null) collider= lookAt[1].collider;
-        else if (lookAt[0].collider!=null) collider= lookAt[0].collider;
-        else if (lookAt[2].collider!=null) collider= lookAt[2].collider;
+        if      (scanSweepInteract[1].collider!=null) collider= scanSweepInteract[1].collider;
+        else if (scanSweepInteract[0].collider!=null) collider= scanSweepInteract[0].collider;
+        else if (scanSweepInteract[2].collider!=null) collider= scanSweepInteract[2].collider;
 
         a_Interactable interactComponent;
         try {

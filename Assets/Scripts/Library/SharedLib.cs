@@ -1,5 +1,6 @@
 using UnityEngine;
 using UnityEngine.UIElements;
+using static UnityEngine.UI.Image;
 
 public class SharedLib
 {
@@ -26,21 +27,9 @@ public class SharedLib
 
     #region Angle to Vector :: 2 -1
     //Takes an angl(radians) and returns a vector of length 1 at that angle on the XZ plane)
-    public static Vector3 angleToVector3     (float angle) { return new Vector3(Mathf.Sin(Mathf.Deg2Rad * angle), 0f, Mathf.Cos(Mathf.Deg2Rad * angle)).normalized; }
+    public  static Vector3 angleToVector3    (float angle) { return new Vector3(Mathf.Sin(Mathf.Deg2Rad * angle), 0f, Mathf.Cos(Mathf.Deg2Rad * angle)).normalized; }
     private static Vector3 angleToVector3_rad(float angle) { return new Vector3(Mathf.Sin(                angle), 0f, Mathf.Cos(                angle)).normalized; }
-
-    public static Vector3[] generateWFC(Vector3 origin, float facing, float fov) {
-        float windershinsAngle = facing + fov;
-        float clockwiseAngle = facing - fov;
-
-        Vector3[] dir3WFC = new Vector3[3];
-        dir3WFC[0] = angleToVector3_rad(Mathf.Deg2Rad * windershinsAngle);
-        dir3WFC[1] = angleToVector3_rad(Mathf.Deg2Rad * facing);
-        dir3WFC[2] = angleToVector3_rad(Mathf.Deg2Rad * clockwiseAngle);
-
-        return dir3WFC;
-
-    }
+ 
 
 	#endregion
 
@@ -68,27 +57,27 @@ public class SharedLib
     #region Vector to Vector :: 2 ~2
 
     //Takes a vector and adds a third axis with a value of zero. Defaults to Y
-    public static Vector3 vector2to3(Vector2 v2) { return new Vector3(v2.x,0f,v2.y); }
-    public static Vector3 vector2to3(Vector2 v2, string axis) { 
+    public static Vector3 vector2to3(Vector2 v2, string axis="Y") { 
         switch (axis) {
             case "x": case "X": return new Vector3  (0f, v2.x,v2.y);
             case "z": case "Z": return    (Vector3) v2;
-            case "y": case "Y": return vector2to3(v2);
+            case "y": case "Y": return new Vector3(v2.x,0f,v2.y);
             default: Debug.LogWarning("Unexpected String Value: defaulted to \"Y\""); return vector2to3(v2);
         }
          }
 
 
     //Takes a vector and restricts it to its planar components by removing an axis. Defaults to XZ.
-    public static Vector2 vector3to2(Vector3 v3) { return new Vector2(v3.x,   v3.z); }
-    public static Vector2 vector3to2(Vector3 v3, string plane) {
+    public static Vector2 vector3to2(Vector3 v3, string plane="XZ") {
         switch (plane) {
             case "xy": case "XY": return (Vector2) v3;
             case "yz": case "YZ": return new Vector2(v3.y, v3.z);
-            case "xz": case "XZ": return vector3to2(v3);
+            case "xz": case "XZ": return new Vector2(v3.x, v3.z);;
             default: Debug.LogWarning("Unexpected String Value: defaulted to \"XZ\""); return vector3to2(v3);
         }
     }
+
+    public static Vector3 vectorFlatten(Vector3 v3) { return new Vector3 (v3.x,0,v3.z);}
 
 
 	#endregion
@@ -111,57 +100,70 @@ public class SharedLib
 	#endregion
 
 
-    
-    #region create RaycastHit :: 2 ~4
 
-    //takes an origin, a direction, and optionally a distance, layermask, and color. Returns a Raycasthit for those values. Draws the ray if given a color.
-    public static RaycastHit castInDirection(Vector3 origin, Vector3 direction                                                                           ) { return castInDirection( origin, direction, direction.magnitude , "Default"              ) ;}
-    public static RaycastHit castInDirection(Vector3 origin, Vector3 direction,                                          Color castColor = default(Color)) { return castInDirection( origin, direction, direction.magnitude , "Default", castColor   ) ;}
-    public static RaycastHit castInDirection(Vector3 origin, Vector3 direction, float dist,                              Color castColor = default(Color)) { return castInDirection( origin, direction, dist                , "Default", castColor   ) ;}
-    public static RaycastHit castInDirection(Vector3 origin, Vector3 direction, float dist, string layerMask="Default",  Color castColor = default(Color)) {
-        RaycastHit hit;
-        Ray r = new Ray(origin, direction);
-        bool success = Physics.Raycast(r, out hit, dist, LayerMask.GetMask(layerMask), QueryTriggerInteraction.UseGlobal);
-
-        if (!castColor.Equals(default(Color))) Debug.DrawRay( origin, direction * (success?hit.distance:dist), castColor, .5f);
-
-        return hit;
-    }
-
-    //ToDo Re-impliment and refactor to a more general horizontalSweep
-    //Takes an origin, and facing angle, a fov angle, a distance. returns a RaycastHit[3] through generateWFC(...) and castInDirection(...). Draws all three of the Rays if passed a boolean.
-    public static RaycastHit[] castWFC(Vector3 origin, float facing, float fov, float dist, bool drawCast) { return castWFC(origin, facing, fov, dist, "Default", drawCast); }
-    public static RaycastHit[] castWFC(Vector3 origin, float facing, float fov, float dist, string layerMask="Default", bool drawCast=false)
-    {        
-		Vector3[] dir3WFC = generateWFC(origin, facing, fov);
-        
-        RaycastHit[] hitWFC = new RaycastHit[3];
-        if (drawCast) {
-            hitWFC[0] = castInDirection(origin, dir3WFC[0], dist, layerMask, Color.blue );
-		    hitWFC[1] = castInDirection(origin, dir3WFC[1], dist, layerMask, Color.cyan );
-		    hitWFC[2] = castInDirection(origin, dir3WFC[2], dist, layerMask, Color.green);
-        }
-        else {
-            hitWFC[0] = castInDirection(origin, dir3WFC[0], dist, layerMask);
-		    hitWFC[1] = castInDirection(origin, dir3WFC[1], dist, layerMask);
-		    hitWFC[2] = castInDirection(origin, dir3WFC[2], dist, layerMask);
-        }
-
-        return hitWFC;
-    }
-
-    public static RaycastHit[] verticalScan(Vector3 origin, Vector3 direction, float[] vertDists, float dist,                             bool forcePositive=true, bool drawCast=false) {  return verticalScan(origin, direction, vertDists, dist, "Default", forcePositive, drawCast);   }
-    public static RaycastHit[] verticalScan(Vector3 origin, Vector3 direction, float[] vertDists, float dist, string layerMask="Default", bool forcePositive=true, bool drawCast=false) {
-        RaycastHit[] toReturn = new RaycastHit[vertDists.Length];
-
-        if (forcePositive) direction.y= Mathf.Max(0f,direction.y);
-        for (int ii=0; ii<vertDists.Length; ii+=1) {
-            
-            toReturn[ii]=  castInDirection(origin-Vector3.up*vertDists[ii], direction, dist, layerMask, drawCast? Color.HSVToRGB((ii*30%360)/360f, 1,1): default(Color) );
-        }
+	#region create Rays
+    public static Ray[] rayAngleSweep(Vector3 origin, float[] angles) {
+        Ray[]     toReturn  = new Ray[angles.Length];
+        for(int ii=0; ii<angles.Length; ii += 1) { 
+            Vector3 direction= angleToVector3(angles[ii]);
+            toReturn[ii]= new Ray(origin, direction);
+            }
         return toReturn;
+    }
+
+	#endregion
+
+	#region create RaycastHit :: 3 ~3
+
+	//Takes an origin and an array of Angles and returns a horizontal sweep of Raycast Hits for the rays at those angles.
+	public static RaycastHit[] scanAngleSweep(Vector3 origin, float[] angles, float dist,                              bool drawCast       ) { return scanAngleSweep(origin, angles, dist, "Default", drawCast);}
+    public static RaycastHit[] scanAngleSweep(Vector3 origin, float[] angles, float dist, string layerMask="Default",  bool drawCast=false) {
+        
+        Vector3[] directions= new Vector3[angles.Length];
+        for(int ii=0; ii<angles.Length; ii+=1) directions[ii]= angleToVector3(angles[ii]);       
+        return scanSweep(origin, directions, dist, layerMask, drawCast);
 
     }
+
+    //Takes an origin and an array of Directions and returns a horizontal sweep of Raycast Hits for the rays in those Directions*, *Y is floored at zero.
+    public static RaycastHit[] scanSweep(Vector3 origin, Vector3[] directions, float dist,                              bool drawCast       ) { return scanSweep(origin, directions, dist, "Default", drawCast);}
+    public static RaycastHit[] scanSweep(Vector3 origin, Vector3[] directions, float dist, string layerMask="Default",  bool drawCast=false ) {
+        RaycastHit[] toReturn = new RaycastHit[directions.Length]; 
+
+        for(int ii=0; ii<directions.Length; ii+=1) {
+            directions[ii].y= 0f;
+            Physics.Raycast( new Ray(origin, directions[ii]), out toReturn[ii], dist, LayerMask.GetMask(layerMask), QueryTriggerInteraction.UseGlobal);
+            if (drawCast) Debug.DrawRay(origin, directions[ii], Color.HSVToRGB(ii/4/directions.Length+.3f, .5f,.5f), .5f);
+        }
+
+        return toReturn;
+    }
+
+
+    //Takes an array of origins and a direction and returens a slice of Raycast Hits for rays in that direction starting from those origins.
+    public static RaycastHit[] scanSlice(Vector3[] origins, Vector3 direction, float dist,                              bool drawCast       ) { return scanSlice(origins, direction, dist, "Default", drawCast);}
+    public static RaycastHit[] scanSlice(Vector3[] origins, Vector3 direction, float dist, string layerMask="Default",  bool drawCast=false ) {
+        RaycastHit[] toReturn = new RaycastHit[origins.Length]; 
+
+        direction.y= Mathf.Max(0f,direction.y);
+        for(int ii=0; ii<origins.Length; ii+=1) {
+            Physics.Raycast( new Ray(origins[ii], direction), out toReturn[ii], dist, LayerMask.GetMask(layerMask), QueryTriggerInteraction.UseGlobal);
+            if (drawCast) Debug.DrawRay(origins[ii], direction, Color.HSVToRGB(ii/4/origins.Length, .5f,.5f), .5f);
+        }
+
+        return toReturn;
+    }
+
+
+
+
+
+
+
+
+
+
+
 
 
 	#endregion
