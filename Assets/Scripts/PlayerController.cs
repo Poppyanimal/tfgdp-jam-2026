@@ -96,7 +96,7 @@ public class PlayerController : MonoBehaviour {
 
 		animate();
 
-		Debug.LogFormat("State: {0}, {1}, {2}. V:{3}",Wall_State,Ground_State,Move_State, body.linearVelocity.ToString());
+		//Debug.LogFormat("State: {0}, {1}, {2}. V:{3}",Wall_State,Ground_State,Move_State, body.linearVelocity.ToString());
 
 	}
 		private void handleInput() { camInput= calcCamInput();	}
@@ -318,7 +318,7 @@ public class PlayerController : MonoBehaviour {
 
 				cooldownGroundSnap= ground_snap_cooldown_length;
 
-				Debug.Log("Ground Snap: snap at {}");
+				//Debug.Log("Ground Snap: snap at {}");
 			}
 
 	//TODO Make Character Rotate in direction of travel when sliding
