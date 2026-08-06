@@ -90,14 +90,13 @@ public class PlayerController : MonoBehaviour {
 
 	public void Update() {
 		handleInput();
+		handleCamera();
 		Wall_State = defineWallState();
 		Ground_State = defineGroundState();
 		Move_State = defineMoveState();
 
 
 		Debug.LogFormat("State: {0}, {1}, {2}.",Wall_State,Ground_State,Move_State);
-		
-
 
 	}
 		private void handleInput() { camInput= calcCamInput();	}
@@ -129,9 +128,30 @@ public class PlayerController : MonoBehaviour {
 				return adjVec.normalized;
 			}
 		
-		
+		private void handleCamera() {
+			if (GlobalSettings.get().useModernControls) panCameraModern(rawInput.normalized);
+			else                                        panCameraTank  (rawInput.normalized);
+		}
+			void panCameraModern(Vector2 panDir) { 
+				float input_angle = SharedLib.angleBetweenVectors(panDir,Vector2.right);
+				if (active_cam == (CinemachineCamera)cam_brain.ActiveVirtualCamera)						cached_input_angle = input_angle;
+				if ( Mathf.Abs(cached_input_angle - input_angle) >= angle_difference_for_cam_snap)		active_cam = (CinemachineCamera)cam_brain.ActiveVirtualCamera;	
+			}
+			void panCameraTank(Vector2 panDir) { return; } //TODO: impliment?
 
+		void OnTriggerEnter(Collider other) {
+			CameraSwitchTrigger cwt = other.GetComponent<CameraSwitchTrigger>();
+			if (cwt != null) {
+				cam_to_turnoff.gameObject.SetActive(false);
+				cwt.cam.gameObject.SetActive(true);
+				cam_to_turnoff = cwt.cam;
 
+				if (cwt.trackTarget)
+					cwt.cam.Target.TrackingTarget = camera_tracking_point.transform;
+				if (cwt.lookAtTarget)
+					cwt.cam.LookAt = camera_tracking_point.transform;
+			}
+		}
 
 
 
@@ -396,25 +416,9 @@ public class PlayerController : MonoBehaviour {
 
 	#region Camera Controls
 
-	void OnTriggerEnter(Collider other) {
-		//CameraSwitchTrigger cwt = other.GetComponent<CameraSwitchTrigger>();
-		//if (cwt != null) {
-		//	cam_to_turnoff.gameObject.SetActive(false);
-		//	cwt.cam.gameObject.SetActive(true);
-		//	cam_to_turnoff = cwt.cam;
+	
 
-		//	if (cwt.trackTarget)
-		//		cwt.cam.Target.TrackingTarget = camera_tracking_point.transform;
-		//	if (cwt.lookAtTarget)
-		//		cwt.cam.LookAt = camera_tracking_point.transform;
-		//}
-	}
 
-	void panCameraModern(Vector2 panDir) {
-		//float input_angle = SharedLib.angleBetweenVectors(panDir, Vector2.right);
-		//if (active_cam == (CinemachineCamera)cam_brain.ActiveVirtualCamera) cached_input_angle = input_angle;
-		//if (Mathf.Abs(cached_input_angle - input_angle) >= angle_difference_for_cam_snap) active_cam = (CinemachineCamera)cam_brain.ActiveVirtualCamera;
-	}
 
 
 	#endregion
