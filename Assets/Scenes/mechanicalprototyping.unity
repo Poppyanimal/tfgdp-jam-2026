@@ -5873,7 +5873,6 @@ GameObject:
   - component: {fileID: 1124320872}
   - component: {fileID: 1124320871}
   - component: {fileID: 1124320874}
-  - component: {fileID: 1124320875}
   m_Layer: 0
   m_Name: GameStateMangementObject
   m_TagString: Untagged
@@ -5949,21 +5948,6 @@ MonoBehaviour:
   - {fileID: 901942858}
   - {fileID: 265748724}
   Player: {fileID: 353553872}
---- !u!114 &1124320875
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1124320869}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c3b7be97204623948ace3cc627522bfc, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  logDebugBehavior: 1
-  promptContainer: {fileID: 589258544}
-  playerController: {fileID: 2028672082}
 --- !u!1 &1124923876
 GameObject:
   m_ObjectHideFlags: 0
@@ -18269,22 +18253,31 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2004284129}
   m_CullTransparentMesh: 1
+--- !u!1 &2020857903 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 4895692333506963406, guid: 277402ffafc5f62449f7b0be33b27224, type: 3}
+  m_PrefabInstance: {fileID: 1468085312434210724}
+  m_PrefabAsset: {fileID: 0}
 --- !u!4 &2028672081 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 1323546249968007813, guid: 277402ffafc5f62449f7b0be33b27224, type: 3}
   m_PrefabInstance: {fileID: 1468085312434210724}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &2028672082 stripped
+--- !u!114 &2028672085
 MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 4807239732957518967, guid: 277402ffafc5f62449f7b0be33b27224, type: 3}
-  m_PrefabInstance: {fileID: 1468085312434210724}
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 353553872}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 1afd78ba3151674449eecf7ae15dee2b, type: 3}
+  m_Script: {fileID: 11500000, guid: c3b7be97204623948ace3cc627522bfc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  logDebugBehavior: 1
+  promptContainer: {fileID: 589258544}
+  PlayerRotation: {fileID: 2020857903}
 --- !u!1 &2056983582
 GameObject:
   m_ObjectHideFlags: 0
@@ -19214,6 +19207,9 @@ PrefabInstance:
       insertIndex: -1
       addedObject: {fileID: 1232342980}
     m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 9016423704104939456, guid: 277402ffafc5f62449f7b0be33b27224, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 2028672085}
     - targetCorrespondingSourceObject: {fileID: 5314480662077790251, guid: 277402ffafc5f62449f7b0be33b27224, type: 3}
       insertIndex: -1
       addedObject: {fileID: 1586904712}

@@ -20,9 +20,6 @@ public class PauseManager : MonoBehaviour {
     PlayerController PlayerController; //.enabled=false
 
     public GameObject Player;
-    
-
-
 
     void Start() {
         getComponentFields();
