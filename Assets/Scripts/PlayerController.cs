@@ -209,13 +209,27 @@ public class PlayerController : MonoBehaviour {
 	WALL_STATE defineWallState()
 	{
 		bool[] scanSweepHit = new bool[3];
-		scanSweepHit[0] = scanSweep[0].collider != null && scanSweep[0].distance < wall_block_dist ;
-		scanSweepHit[1] = scanSweep[1].collider != null && scanSweep[1].distance < wall_block_dist ;
-		scanSweepHit[2] = scanSweep[2].collider != null && scanSweep[2].distance < wall_block_dist ;
+		scanSweepHit[0] = CheckWall(scanSweep[0]);
+		scanSweepHit[1] = CheckWall(scanSweep[1]);
+		scanSweepHit[2] = CheckWall(scanSweep[2]);
 
 		return (WALL_STATE)( (scanSweepHit[0]?1:0) + (scanSweepHit[1]?2:0) + (scanSweepHit[2]?4:0)) ;
 		
 	}
+
+	bool CheckWall(RaycastHit hit ) {
+		if (hit.collider == null) return false;
+
+		//Ignore the collision if it's an interactable
+		a_Interactable interact; 
+		hit.collider.TryGetComponent<a_Interactable>(out interact);	
+		if (interact!= null) return false;
+		
+		return hit.distance < wall_block_dist;
+	}
+
+
+
 
 	GROUND_STATE defineGroundState()
 	{
