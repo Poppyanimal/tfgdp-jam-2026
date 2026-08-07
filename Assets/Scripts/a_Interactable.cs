@@ -4,7 +4,7 @@ public abstract class a_Interactable : MonoBehaviour {
 	public enum   INTERACTION_STATE { UNTARGETED, TARGETING, UNTARGETING, TARGETED, ACTIVATING, DEACTIVATING, ACTIVE, FORCE_CANCEL_ACTIVE, EXHAUSTED}
 	public INTERACTION_STATE Interaction_State  { set; get; } = INTERACTION_STATE.UNTARGETED;
 	public KeyCode           Interaction_Key    { set; get;}  = KeyCode.E;
-	public string            Interaction_Prompt { get; }      = "Press E (lying) to Interact";
+	public string            Interaction_Prompt { get; }      = "Press E to Interact";
 
 	
 	public void Start () { detarget();	}

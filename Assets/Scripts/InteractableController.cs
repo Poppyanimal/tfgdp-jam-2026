@@ -7,9 +7,9 @@ public class InteractableController : MonoBehaviour
 {
     public bool logDebugBehavior= true;
 
-    [SerializeField]
-    Canvas promptContainer;
-    TextMeshProUGUI promptTextContainer;
+    public Canvas promptContainer;
+    public TextMeshProUGUI promptTextContainer1;
+    public TextMeshProUGUI promptTextContainer2;
 
     [SerializeField]
     public GameObject PlayerRotation;
@@ -47,9 +47,10 @@ public class InteractableController : MonoBehaviour
         bool debugIEnd      =   Input.GetKeyUp  (targetInteractable.Interaction_Key);
 
         switch (targetInteractable.Interaction_State) {
+            case a_Interactable.INTERACTION_STATE.TARGETED   :    if (interact   ) targetInteractable.interact()   ; else fillAndShowPrompt (); break; 
             case a_Interactable.INTERACTION_STATE.ACTIVATING :
-            case a_Interactable.INTERACTION_STATE.ACTIVE     :    if (interactEnd) targetInteractable.endInteract() ; break;
-            default:                                              if (interact   ) targetInteractable.interact()    ; break;
+            case a_Interactable.INTERACTION_STATE.ACTIVE     :    if (interactEnd) targetInteractable.endInteract(); else emptyAndHidePrompt(); break;
+            default:                                              Debug.Log("UNEXPECTED INTERACTION STATE")                                   ; break;
         }
 
         if (logDebugBehavior) {
@@ -103,7 +104,8 @@ public class InteractableController : MonoBehaviour
     
     void fillAndShowPrompt() { 
         promptContainer.enabled=true;
-        //        promptTextContainer.text = targetedInteractable.Interaction_Prompt;
+        promptTextContainer1.text = targetInteractable.Interaction_Prompt;
+        promptTextContainer2.text = targetInteractable.Interaction_Prompt;
     }
 
     void emptyAndHidePrompt() {
