@@ -12,7 +12,6 @@ public class PlayerController : MonoBehaviour {
 	public GameObject Player;
 	public GameObject PlayerRotation;
 	public Animator   playerAnimator;
-		Transform player_trans;
 		Rigidbody body;	
 		CapsuleCollider hitbox;
 
@@ -74,6 +73,7 @@ public class PlayerController : MonoBehaviour {
 	// CODE 
 
 	public void Start() {
+		cam_track_trans=gameObject.transform;
 		getComponentFields();
 		initializeNonComponentFields();
 		initializeListeners();
@@ -98,7 +98,6 @@ public class PlayerController : MonoBehaviour {
 	public void Update() {
 
 		incrementCountersAndCooldowns();
-		updateFields();
 		handleInput();
 		handleCamera();
 		scanEnvironment();
@@ -115,10 +114,6 @@ public class PlayerController : MonoBehaviour {
 
 	void incrementCountersAndCooldowns() {
 		if (cooldownGroundSnap>0) cooldownGroundSnap-=1;
-	}
-
-	void updateFields() {
-		player_trans=Player.transform;
 	}
 
 	void handleInput() {
@@ -159,7 +154,6 @@ public class PlayerController : MonoBehaviour {
 		}
 
 	void handleCamera() {
-		cam_track_trans=player_trans;
 		if (GlobalSettings.get().useModernControls) panCameraModern(rawInput.normalized);
 		else                                        panCameraTank  (rawInput.normalized);
 	}
