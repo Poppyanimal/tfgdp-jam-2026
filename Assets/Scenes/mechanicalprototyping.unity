@@ -753,7 +753,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 0}
+      - m_Target: {fileID: 1124320874}
         m_TargetAssemblyTypeName: PauseManager, Assembly-CSharp
         m_MethodName: HeadToOptions
         m_Mode: 1
@@ -4918,8 +4918,8 @@ GameObject:
   - component: {fileID: 1124320870}
   - component: {fileID: 1124320872}
   - component: {fileID: 1124320871}
-  - component: {fileID: 1124320874}
   - component: {fileID: 1124320873}
+  - component: {fileID: 1124320874}
   m_Layer: 0
   m_Name: GameStateMangementObject
   m_TagString: Untagged
@@ -4993,6 +4993,23 @@ MonoBehaviour:
   PlayerRotation: {fileID: 1135255079}
   playerAnimator: {fileID: 1958712387}
   lookAtAngle: 0
+--- !u!114 &1124320874
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1124320869}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ca602872672609a4783b943a254fe779, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  pauseKey: 27
+  PauseCanvas: {fileID: 1660233398}
+  PauseMenus:
+  - {fileID: 901942858}
+  - {fileID: 265748724}
 --- !u!1 &1124923876
 GameObject:
   m_ObjectHideFlags: 0
@@ -8767,8 +8784,8 @@ RectTransform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 121906368}
-  - {fileID: 265748725}
   - {fileID: 901942859}
+  - {fileID: 265748725}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
@@ -10964,9 +10981,9 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 0}
+      - m_Target: {fileID: 1124320874}
         m_TargetAssemblyTypeName: PauseManager, Assembly-CSharp
-        m_MethodName: ResumeGame
+        m_MethodName: DecrementMenuState
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -11725,7 +11742,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 0}
+      - m_Target: {fileID: 1124320874}
         m_TargetAssemblyTypeName: PauseManager, Assembly-CSharp
         m_MethodName: DecrementMenuState
         m_Mode: 1
