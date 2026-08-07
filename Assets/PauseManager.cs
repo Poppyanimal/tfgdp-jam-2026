@@ -19,13 +19,17 @@ public class PauseManager : MonoBehaviour {
             //Add them to ToggleInactiveComponents(b)
     PlayerController PlayerController; //.enabled=false
 
+    public GameObject Player;
     
+
+
+
     void Start() {
         getComponentFields();
 		initializeNonComponentFields();
     }
         void getComponentFields() {
-            PlayerController= GetComponent<PlayerController>();
+            PlayerController= Player.GetComponent<PlayerController>();
         }
 
         void initializeNonComponentFields() {

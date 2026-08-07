@@ -7,7 +7,8 @@ public class InteractableController : MonoBehaviour
     public bool logDebugBehavior= true;
 
     [SerializeField]
-    TextMeshProUGUI promptContainer;
+    Canvas promptContainer;
+    TextMeshProUGUI promptTextContainer;
 
     [SerializeField]
     PlayerController playerController;
@@ -20,7 +21,6 @@ public class InteractableController : MonoBehaviour
     a_Interactable targetedInteractable;
     a_Interactable prevTargetedInteractable;
    
-
 	private void Start() {
 		if (playerController !=null) rotationBody=playerController.PlayerRotation;
         emptyAndHidePrompt();
@@ -89,7 +89,6 @@ public class InteractableController : MonoBehaviour
 
         if (prevTargetedInteractable == null) { return targetedInteractable!=null;}
         return ! prevTargetedInteractable.Equals(targetedInteractable);
-
     }
 
 	#endregion
@@ -107,7 +106,7 @@ public class InteractableController : MonoBehaviour
     }
 
     void emptyAndHidePrompt() {
-        promptContainer.text = string.Empty;
+        promptContainer.enabled=false;
     }
     
 	#endregion 
@@ -121,7 +120,8 @@ public class InteractableController : MonoBehaviour
 
 
     void fillAndShowPrompt() { 
-        promptContainer.text = targetedInteractable.Interaction_Prompt;
+        promptContainer.enabled=true;
+//        promptTextContainer.text = targetedInteractable.Interaction_Prompt;
     }
 	#endregion 
 
