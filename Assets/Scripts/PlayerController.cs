@@ -67,10 +67,6 @@ public class PlayerController : MonoBehaviour {
 	bool moving=false;
 
 
-
-
-
-
 	// CODE 
 
 	public void Start() {
@@ -388,7 +384,7 @@ public class PlayerController : MonoBehaviour {
 
 	void snapToGround()
 	{
-		if (!ground.Equals(asGround))
+		if (ground.collider==null || !ground.Equals(asGround))
 			return;
 		float snapDist = ground.distance - hitbox.height/2;
 
@@ -396,13 +392,13 @@ public class PlayerController : MonoBehaviour {
 		snapPos.y -= snapDist; //FIX THIS: CHANGED FOR TESTING. SHOULD BE -.
 		body.position = snapPos;
 
-		Vector3 linV =body.linearVelocity;
+		Vector3 linV = body.linearVelocity;
 		linV.y = Mathf.Max(0f, linV.y);
 		body.linearVelocity = linV;
 
 		body.MovePosition(snapPos);
 
-		cooldownGroundSnap= ground_snap_cooldown_length;
+		cooldownGroundSnap = ground_snap_cooldown_length;
 
 		//Debug.Log("Ground Snap: snap at {}");
 	}
