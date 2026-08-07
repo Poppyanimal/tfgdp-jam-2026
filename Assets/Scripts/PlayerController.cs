@@ -96,6 +96,7 @@ public class PlayerController : MonoBehaviour {
 
 
 	public void Update() {
+
 		incrementCountersAndCooldowns();
 		updateFields();
 		handleInput();
@@ -107,6 +108,7 @@ public class PlayerController : MonoBehaviour {
 		Move_State = defineMoveState();
 
 		animate();
+
 
 		//Debug.LogFormat("State: {0}, {1}, {2}. V:{3}",Wall_State,Ground_State,Move_State, body.linearVelocity.ToString());
 	}
@@ -291,8 +293,10 @@ public class PlayerController : MonoBehaviour {
 	{
 		switch (Move_State)
 		{ 
-			case MOVE_STATE.IDLE:	case MOVE_STATE.FALL_UP:	case MOVE_STATE.FALL_DOWN	:		playerAnimator.SetBool("isWalking", false	); break;
-			default																			:		playerAnimator.SetBool("isWalking", true	); break;
+			case MOVE_STATE.IDLE:	case MOVE_STATE.FALL_UP:	case MOVE_STATE.FALL_DOWN:	case MOVE_STATE.ATTACK:
+				playerAnimator.SetBool("isWalking", false	); break;
+			default:
+				playerAnimator.SetBool("isWalking", true	); break;
 		}
 	}
 
@@ -388,7 +392,7 @@ public class PlayerController : MonoBehaviour {
 
 	void snapToGround()
 	{
-		if (!ground.Equals(asGround))
+		if (ground.collider==null || !ground.Equals(asGround))
 			return;
 		float snapDist = ground.distance - hitbox.height/2;
 

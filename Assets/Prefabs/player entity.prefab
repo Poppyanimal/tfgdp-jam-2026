@@ -21017,8 +21017,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8309208737093205308}
   serializedVersion: 2
-  m_LocalRotation: {x: 0.29732934, y: -0.82406014, z: 0.17247516, w: 0.4503028}
-  m_LocalPosition: {x: 0.039664127, y: -0.03221744, z: -0.023639629}
+  m_LocalRotation: {x: 0.7340975, y: -0.2579225, z: 0.61829764, w: 0.11083789}
+  m_LocalPosition: {x: 0.0421, y: 0.0713, z: -0.0198}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -25907,9 +25907,9 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1323546249968007813}
-  - component: {fileID: 3662493308828064759}
   - component: {fileID: 1999174795725512578}
   - component: {fileID: 6597574436777479387}
+  - component: {fileID: 4807239732957518967}
   m_Layer: 7
   m_Name: player entity
   m_TagString: Player
@@ -25933,22 +25933,6 @@ Transform:
   - {fileID: 409899047778935418}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &3662493308828064759
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 9016423704104939456}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 1afd78ba3151674449eecf7ae15dee2b, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  playerAnimator: {fileID: 8180320795700709603}
-  camera_tracking_point: {fileID: 9016423704104939456}
-  rotationBody: {fileID: 4895692333506963406}
-  lookAtAngle: 0
 --- !u!136 &1999174795725512578
 CapsuleCollider:
   m_ObjectHideFlags: 0
@@ -25962,7 +25946,7 @@ CapsuleCollider:
     m_Bits: 0
   m_ExcludeLayers:
     serializedVersion: 2
-    m_Bits: 0
+    m_Bits: 384
   m_LayerOverridePriority: 0
   m_IsTrigger: 0
   m_ProvidesContacts: 0
@@ -25999,6 +25983,22 @@ Rigidbody:
   m_Interpolate: 1
   m_Constraints: 112
   m_CollisionDetection: 1
+--- !u!114 &4807239732957518967
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9016423704104939456}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1afd78ba3151674449eecf7ae15dee2b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Player: {fileID: 9016423704104939456}
+  PlayerRotation: {fileID: 4895692333506963406}
+  playerAnimator: {fileID: 8180320795700709603}
+  lookAtAngle: 0
 --- !u!1 &9032250823548213956
 GameObject:
   m_ObjectHideFlags: 0
