@@ -331,7 +331,7 @@ public class PlayerController : MonoBehaviour {
 				body.useGravity = true;
 				hitbox.height=2;
 				normalizeFlat=true;
-				
+	
 				break;
 			case GROUND_STATE.FLAT: case GROUND_STATE.GENTLE:
 				moveDir3= respectfulMoveDir3;
@@ -340,13 +340,16 @@ public class PlayerController : MonoBehaviour {
 				hitbox.height= Ground_State==GROUND_STATE.FLAT?2:1.98f;
 				if(cooldownGroundSnap<=0) snapToGround();
 				normalizeFlat=false;
+
 				break;
 			case GROUND_STATE.STEEP:
 				moveDir3= respectfulMoveDir3;
+
 		//		//TODO define Steep Slope Behavior.
 				body.useGravity = true;
 				hitbox.height= 1+1*Mathf.Sin(Mathf.Deg2Rad*asGrade);
 				normalizeFlat=true;
+
 				break;
 			default:
 				Debug.Log("UNIMPLIMENTED GROUNDSTATE");

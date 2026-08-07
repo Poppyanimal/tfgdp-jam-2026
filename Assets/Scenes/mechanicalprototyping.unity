@@ -4918,6 +4918,7 @@ GameObject:
   - component: {fileID: 1124320870}
   - component: {fileID: 1124320872}
   - component: {fileID: 1124320871}
+  - component: {fileID: 1124320874}
   - component: {fileID: 1124320873}
   m_Layer: 0
   m_Name: GameStateMangementObject

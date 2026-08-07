@@ -16,3 +16,5 @@ Player
 Interactable
  -Framework for making Interactables
 
+ Pause
+  -The Game can be paused and unpaused. (No menu.)
