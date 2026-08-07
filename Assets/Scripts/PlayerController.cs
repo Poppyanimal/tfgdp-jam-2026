@@ -12,7 +12,6 @@ public class PlayerController : MonoBehaviour {
 	public GameObject Player;
 	public GameObject PlayerRotation;
 	public Animator   playerAnimator;
-		Transform player_trans;
 		Rigidbody body;	
 		CapsuleCollider hitbox;
 
@@ -70,6 +69,7 @@ public class PlayerController : MonoBehaviour {
 	// CODE 
 
 	public void Start() {
+		cam_track_trans=gameObject.transform;
 		getComponentFields();
 		initializeNonComponentFields();
 		initializeListeners();
@@ -92,8 +92,8 @@ public class PlayerController : MonoBehaviour {
 
 
 	public void Update() {
+
 		incrementCountersAndCooldowns();
-		updateFields();
 		handleInput();
 		handleCamera();
 		scanEnvironment();
@@ -104,15 +104,12 @@ public class PlayerController : MonoBehaviour {
 
 		animate();
 
+
 		//Debug.LogFormat("State: {0}, {1}, {2}. V:{3}",Wall_State,Ground_State,Move_State, body.linearVelocity.ToString());
 	}
 
 	void incrementCountersAndCooldowns() {
 		if (cooldownGroundSnap>0) cooldownGroundSnap-=1;
-	}
-
-	void updateFields() {
-		player_trans=Player.transform;
 	}
 
 	void handleInput() {
@@ -153,7 +150,6 @@ public class PlayerController : MonoBehaviour {
 		}
 
 	void handleCamera() {
-		cam_track_trans=player_trans;
 		if (GlobalSettings.get().useModernControls) panCameraModern(rawInput.normalized);
 		else                                        panCameraTank  (rawInput.normalized);
 	}
@@ -287,8 +283,10 @@ public class PlayerController : MonoBehaviour {
 	{
 		switch (Move_State)
 		{ 
-			case MOVE_STATE.IDLE:	case MOVE_STATE.FALL_UP:	case MOVE_STATE.FALL_DOWN	:		playerAnimator.SetBool("isWalking", false	); break;
-			default																			:		playerAnimator.SetBool("isWalking", true	); break;
+			case MOVE_STATE.IDLE:	case MOVE_STATE.FALL_UP:	case MOVE_STATE.FALL_DOWN:	case MOVE_STATE.ATTACK:
+				playerAnimator.SetBool("isWalking", false	); break;
+			default:
+				playerAnimator.SetBool("isWalking", true	); break;
 		}
 	}
 
@@ -467,20 +465,17 @@ public class PlayerController : MonoBehaviour {
 
 	Vector3 movementRespectsGround(Vector2 dir2) { return Vector3.ProjectOnPlane( SharedLib.vector2to3(dir2), asGround.normal.normalized );	}
 
-	void OnTriggerEnter(Collider other)
-	{
-		void OnTriggerEnter(Collider other) {
-			CameraSwitchTrigger cwt = other.GetComponent<CameraSwitchTrigger>();
-			if (cwt != null) {
-				cam_to_turnoff.gameObject.SetActive(false);
-				cwt.cam.gameObject.SetActive(true);
-				cam_to_turnoff = cwt.cam;
+	void OnTriggerEnter(Collider other) {
+		CameraSwitchTrigger cwt = other.GetComponent<CameraSwitchTrigger>();
+		if (cwt != null) {
+			cam_to_turnoff.gameObject.SetActive(false);
+			cwt.cam.gameObject.SetActive(true);
+			cam_to_turnoff = cwt.cam;
 
-				if (cwt.trackTarget)
-					cwt.cam.Target.TrackingTarget = cam_track_trans;
-				if (cwt.lookAtTarget)
-					cwt.cam.LookAt = cam_track_trans;
-			}
+			if (cwt.trackTarget)
+				cwt.cam.Target.TrackingTarget = cam_track_trans;
+			if (cwt.lookAtTarget)
+				cwt.cam.LookAt = cam_track_trans;
 		}
 	}
 
