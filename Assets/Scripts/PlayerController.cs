@@ -475,20 +475,17 @@ public class PlayerController : MonoBehaviour {
 
 	Vector3 movementRespectsGround(Vector2 dir2) { return Vector3.ProjectOnPlane( SharedLib.vector2to3(dir2), asGround.normal.normalized );	}
 
-	void OnTriggerEnter(Collider other)
-	{
-		void OnTriggerEnter(Collider other) {
-			CameraSwitchTrigger cwt = other.GetComponent<CameraSwitchTrigger>();
-			if (cwt != null) {
-				cam_to_turnoff.gameObject.SetActive(false);
-				cwt.cam.gameObject.SetActive(true);
-				cam_to_turnoff = cwt.cam;
+	void OnTriggerEnter(Collider other) {
+		CameraSwitchTrigger cwt = other.GetComponent<CameraSwitchTrigger>();
+		if (cwt != null) {
+			cam_to_turnoff.gameObject.SetActive(false);
+			cwt.cam.gameObject.SetActive(true);
+			cam_to_turnoff = cwt.cam;
 
-				if (cwt.trackTarget)
-					cwt.cam.Target.TrackingTarget = cam_track_trans;
-				if (cwt.lookAtTarget)
-					cwt.cam.LookAt = cam_track_trans;
-			}
+			if (cwt.trackTarget)
+				cwt.cam.Target.TrackingTarget = cam_track_trans;
+			if (cwt.lookAtTarget)
+				cwt.cam.LookAt = cam_track_trans;
 		}
 	}
 
