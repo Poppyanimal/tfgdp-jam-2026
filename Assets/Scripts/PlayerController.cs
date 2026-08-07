@@ -8,104 +8,99 @@ using ge = GlobalEvents;
 
 public class PlayerController : MonoBehaviour {
 
-	//VARS
+	[Header ("Public Facing Variables")]
+	public GameObject Player;
+	public GameObject PlayerRotation;
+	public Animator   playerAnimator;
+		Transform player_trans;
+		Rigidbody body;	
+		CapsuleCollider hitbox;
 
-	[Header ("Miscelanious Components")] //---------------------------------------
-	public	Animator playerAnimator;
-			Rigidbody body;
-			
-
-	[Header ("Camera Controls")] //---------------------------------------
-			CinemachineBrain cam_brain;
-			CinemachineCamera active_cam, cam_to_turnoff;
-	public	GameObject camera_tracking_point;
+	//Camera and Cam controls
+	CinemachineBrain cam_brain;
+	CinemachineCamera active_cam, cam_to_turnoff;
+	Transform cam_track_trans;
 	const float angle_difference_for_cam_snap=5f;
-	float   cached_input_angle;
+		  float cached_input_angle;
 
-	[Header ("Input Management")] //---------------------------------------
+	//Input directions and InputPhysics. These and move_speeds dictate how the player's position moves through the world.
 	Vector2 rawInput	, moveDir2;
 	Vector3	camInput	, moveDir3;
-	const float move_deadzone	=	 0.2f	,
-				forceMultiple	=	 8		, 
-				groundDrag		=	 4.5f	,
-				max_yaw_rotate	=    5.0f	;
-
-
-	[Header ("Ground Check")] //---------------------------------------
+	const float input_deadzone		=	 0.2f	,
+				force_multiplier	=	 8		, 
+				motion_drag			=	 4.5f	,
+				motion_drag_harsh	=	15.0f	;
+				
+	//GROUND_STATE and related consts and fields
 	GROUND_STATE Ground_State = GROUND_STATE.FLAT;
-	enum GROUND_STATE { FLAT, GENTLE, STEEP, AIR, STEP, HOP } //STEP AND HOP ARE NOT IMPLEMENTED. STEEP IS IMPLIMENTED INCORRECTLY.
+	enum GROUND_STATE { FLAT, GENTLE, STEEP,  AIR, STEP, HOP} //STEP AND HOP ARE NOT IMPLEMENTED. STEEP IS IMPLIMENTED INCORRECTLY.
+	const float ground_check_dist		= 2.0f	 ,
+				ground_snap_dist		= 0.2f	 ,
+				slope_compensate_dist   = 0.4f	 ,
+		        as_ground_dist			= 0.35f	 ;
+	const int	steep_threshhold			= 55 ,
+				vertical_threshhold			= 85 ,
+				ground_snap_cooldown_length = 90 ;
+		  int	cooldownGroundSnap			= 0	 ;
 	RaycastHit  ground, asGround;
-	const float ground_check_dist		= 2.0f	,
-				ground_snap_dist		= 0.2f	,
-				slope_compensate_dist   = 0.4f	,
-		        as_ground_dist			= 0.35f	;
-	const int	steep_threshhold		= 55	,
-				vertical_threshhold		= 85	,
-				ground_snap_cooldown_length = 90;
-	int cooldownGroundSnap=0;
-
-	[Header ("Rotation")] //---------------------------------------
-	public  GameObject rotationBody;
-	bool  rotate_when_moving=true;
+	
+	//Rotation related fields
 	public float lookAtAngle;
-	float currentAngle;
-
-
-	[Header ("Wall Scans")] //---------------------------------------
+	const  float max_yaw_rotate	= 5.0f;
+		   float currentAngle;
+	bool rotate_when_moving=true;
+	
+	//WALL_STATE and related fields
 	WALL_STATE Wall_State = WALL_STATE.FREE;
-	enum WALL_STATE { FREE, CLIPPED_WINDERSHINS, HEAD_ON, OBSTRUCTED_WINDERSHINS, CLIPPED_CLOCKWISE, PINCHED, OBSTRUCTED_CLOCKWISE, OBSTRUCTED, SKIP, HOP }
-	RaycastHit[]  scanSweep, scanSlice;
-	const float   scan_distance		= .78f, scan_sweep_degree=15, 
-				  wall_block_dist	= .62f;
-	readonly float[] scan_slice_values= {0,.31f,.61f};
-
-	[Header ("Movement")] //---------------------------------------
+	enum WALL_STATE { FREE, CLIPPED_WINDERSHINS, HEAD_ON, OBSTRUCTED_WINDERSHINS, CLIPPED_CLOCKWISE, PINCHED, OBSTRUCTED_CLOCKWISE, OBSTRUCTED}
+	const float scan_distance		=  0.78f , 
+				scan_sweep_degree	= 15	 , 
+				wall_block_dist		=  0.62f ;
+	readonly float[] scan_slice_values= {0,.31f,.61f}; //Distance from feet for Feet, step-up, and hop. Use unimplimented.
+	RaycastHit[]  scanSweep, 
+				  scanSlice;
+	
+	//MOVE_STATE and related fielsd
 	MOVE_STATE Move_State = MOVE_STATE.IDLE;
-	enum MOVE_STATE			{ IDLE,		WALK,	SPRINT,		CROUCH,		PORT_WALL_SLIDING,	STAR_WALL_SLIDING,	FALL_UP,	FALL_DOWN, 	ATTACKING		}
-	float[] move_speed =	{ 0f,		2.3f,	3.4f,		1.6f,		1.5f,				1.5f,				1.7f,		2.1f,		0f			};
-	bool    moving=false;
+	enum MOVE_STATE					{ IDLE,		WALK,	SPRINT,		CROUCH,		PORT_WALL_SLIDING,	STAR_WALL_SLIDING,	FALL_UP,	FALL_DOWN,	ATTACK		}
+	readonly float[] move_speed =	{ 0f,		2.3f,	3.4f,		1.6f,		1.5f,				1.5f,				1.7f,		2.1f,		0.0f		};
+	bool moving=false;
 
 
-	[Header ("Hitbox")] //---------------------------------------
-	CapsuleCollider hitbox;
-
-	//---------------------------------------- actionability bools
-	bool isPaused;
-	bool isAttacking;
 
 
-	//General Code -----------------------------------------------------------------===========================================================
 
-	public void Start()
-	{
+
+	// CODE 
+
+	public void Start() {
 		getComponentFields();
 		initializeNonComponentFields();
-		ge.get().paused.AddListener(paused);
-		ge.get().unpaused.AddListener(unpaused);
-		ge.get().playerAttackResolved.AddListener(attackingFinished);
-
+		initializeListeners();
 	}
-	void getComponentFields()
-	{		
-		body=GetComponent<Rigidbody>();
-		hitbox=GetComponent<CapsuleCollider>();
-		cam_brain = FindFirstObjectByType<CinemachineBrain>();
+	
+	void getComponentFields() {		
+		body		= Player.GetComponent<Rigidbody>();
+		hitbox		= Player.GetComponent<CapsuleCollider>();
+		cam_brain	= FindFirstObjectByType<CinemachineBrain>();
 		active_cam = (CinemachineCamera)cam_brain.ActiveVirtualCamera;
 		cam_to_turnoff = active_cam;
-	}	
-	void initializeNonComponentFields() { lookAtAngle = rotationBody.transform.rotation.eulerAngles.y;; }
 
-	public void Update()
-	{
-		if(!isActionable())
-		{
-			playerAnimator.SetBool("isWalking", false);
-			return;
-		}
+	}	
+	void initializeNonComponentFields() {
+		lookAtAngle = PlayerRotation.transform.rotation.eulerAngles.y;;
+	}
+	void initializeListeners() {
+		ge.get().playerAttackResolved.AddListener(attackingFinished);
+	}
+
+
+	public void Update() {
+		incrementCountersAndCooldowns();
+		updateFields();
 		handleInput();
 		handleCamera();
 		scanEnvironment();
-		incrementCountersAndCooldowns();
 
 		Wall_State = defineWallState();
 		Ground_State = defineGroundState();
@@ -113,88 +108,68 @@ public class PlayerController : MonoBehaviour {
 
 		animate();
 
-		checkIfAttacking();
-
 		//Debug.LogFormat("State: {0}, {1}, {2}. V:{3}",Wall_State,Ground_State,Move_State, body.linearVelocity.ToString());
-
 	}
 
-	bool isActionable() { return !isPaused && !isAttacking; }
-
-	//
-	//
-
-	//below are methods called when the associated global events events are called
-	public void paused() { isPaused = true; }
-	public void unpaused() { isPaused = false; }
-	public void attackingFinished() { isAttacking = false; }
-	
-	//
-	//
-
-	void checkIfAttacking()
-	{
-		if(Input.GetButtonDown("Melee"))
-		{
-			playerAnimator.SetBool("isWalking", false);
-			isAttacking = true;
-			playerAnimator.SetTrigger("doMelee");
-			Move_State = MOVE_STATE.ATTACKING;
-			body.linearVelocity = Vector3.zero;
-			moving = false;
-		}
+	void incrementCountersAndCooldowns() {
+		if (cooldownGroundSnap>0) cooldownGroundSnap-=1;
 	}
 
-	void handleInput() { camInput= calcCamInput();	}
-		
-	Vector3 calcCamInput()
-	{
+	void updateFields() {
+		player_trans=Player.transform;
+	}
+
+	void handleInput() {
+		camInput= calcCamInput();
+		checkIfAttacking();
+	}
+			
+	Vector3 calcCamInput() {
 		rawInput= Input.GetAxisRaw("Vertical")*Vector2.up +Input.GetAxisRaw("Horizontal")*Vector2.left;
-		if (rawInput.magnitude<move_deadzone) return Vector3.zero;		
-		Vector2		input		= rawInput.normalized;
+		if (rawInput.magnitude<input_deadzone) return Vector3.zero;	
 		
+		Vector2		input		= rawInput.normalized;	
 		float		inputAngle	= 90+SharedLib.vectorToAngle(input);
-
 		float		camYaw		= active_cam.transform.eulerAngles.y;
 		Vector3		camYawVec	= SharedLib.angleToVector3(camYaw);
-
 		float		adjAngle	= camYaw-inputAngle;
 		Vector3		adjVec	= SharedLib.angleToVector3(adjAngle);
 
 		//Debugging
+		#pragma warning disable CS0162
 		if (false) debugCalcCamInput(input, camYawVec, adjVec );
+		#pragma warning restore CS0162
+
 		return adjVec.normalized;
 	}
-	void debugCalcCamInput(Vector2 input, Vector3 camYawVec, Vector3 adjVec)
-	{
-	
-		Vector3 flatPos= SharedLib.vectorFlatten(body.position)+Vector3.up*.4f;
-		Vector3 flatCam= SharedLib.vectorFlatten(active_cam.transform.position)+Vector3.up*.4f;
-		Vector3 flatCam2= flatCam+Vector3.right*.2f;
+		void debugCalcCamInput(Vector2 input, Vector3 camYawVec, Vector3 adjVec) {
+				
+			Vector3 flatPos= SharedLib.vectorFlatten(body.position)+Vector3.up*.4f;
+			Vector3 flatCam= SharedLib.vectorFlatten(active_cam.transform.position)+Vector3.up*.4f;
+			Vector3 flatCam2= flatCam+Vector3.right*.2f;
 
-//					Debug.LogFormat("i:{0}, iA{1}, cY:{2}  cYv:{3}, aA:{4}, aAv", input, inputAngle, camYaw, camYawVec, adjAngle, adjVec);
+			// Debug.LogFormat("i:{0}, iA{1}, cY:{2}  cYv:{3}, aA:{4}, aAv", input, inputAngle, camYaw, camYawVec, adjAngle, adjVec);
 
-		Debug.DrawRay( flatPos, SharedLib.vector2to3(input)	, Color.red		, 3f	);
-		Debug.DrawRay( flatCam, camYawVec*150				, Color.blue	, 10f	);
-		Debug.DrawRay( flatPos, adjVec*4					, Color.green	, 5f	);
-	
-	}
-		
-	void handleCamera()
-	{
+			Debug.DrawRay( flatPos, SharedLib.vector2to3(input)	, Color.red		, 3f	);
+			Debug.DrawRay( flatCam, camYawVec*150				, Color.blue	, 10f	);
+			Debug.DrawRay( flatPos, adjVec*4					, Color.green	, 5f	);
+				
+		}
+
+	void handleCamera() {
+		cam_track_trans=player_trans;
 		if (GlobalSettings.get().useModernControls) panCameraModern(rawInput.normalized);
 		else                                        panCameraTank  (rawInput.normalized);
 	}
-	void panCameraModern(Vector2 panDir)
-	{ 
+
+	void panCameraModern(Vector2 panDir) { 
 		float input_angle = SharedLib.angleBetweenVectors(panDir,Vector2.right);
 		if (active_cam == (CinemachineCamera)cam_brain.ActiveVirtualCamera)						cached_input_angle = input_angle;
 		if ( Mathf.Abs(cached_input_angle - input_angle) >= angle_difference_for_cam_snap)		active_cam = (CinemachineCamera)cam_brain.ActiveVirtualCamera;	
 	}
-	void panCameraTank(Vector2 panDir) { return; } //TODO: impliment?
-
-	void scanEnvironment()
-	{ 
+	void panCameraTank  (Vector2 panDir) { return; } //TODO: impliment?
+	
+	void scanEnvironment() { 
 		Vector3[] sweepDirections= new Vector3[3] { SharedLib.angleToVector3(lookAtAngle - scan_sweep_degree), SharedLib.angleToVector3(lookAtAngle), SharedLib.angleToVector3(lookAtAngle+scan_sweep_degree)};
 		Vector3[] slicePositions = new Vector3[3] { body.position-Vector3.up*(hitbox.height/2-scan_slice_values[0]),
 													body.position-Vector3.up*(hitbox.height/2-scan_slice_values[1]),
@@ -202,11 +177,39 @@ public class PlayerController : MonoBehaviour {
 		scanSweep = SharedLib.scanSweep(body.position, sweepDirections, scan_distance);
 		scanSlice = SharedLib.scanSlice(slicePositions, Vector3.ProjectOnPlane(SharedLib.angleToVector3(lookAtAngle),asGround.normal), scan_distance );
 	}
+
+	/// <summary>
+	/// MAIN BELOW : MINE ABOVE
+	/// 
+	/// 
+	/// </summary>
+
+
+
+	//---------------------------------------- actionability bools
+	bool isPaused;
+	bool isAttacking;
+
 	
-	void incrementCountersAndCooldowns()
+	//General Code -----------------------------------------------------------------===========================================================
+
+	//below are methods called when the associated global events events are called
+	void checkIfAttacking()
 	{
-		if (cooldownGroundSnap>0) cooldownGroundSnap-=1;
-	}
+		if(Input.GetButtonDown("Melee") )
+		{
+			playerAnimator.SetBool("isWalking", false);
+			isAttacking = true;
+			playerAnimator.SetTrigger("doMelee");
+			Move_State = MOVE_STATE.ATTACK;
+			moving = false;
+		}
+	}	
+
+	public void attackingFinished() { Move_State=MOVE_STATE.IDLE; isAttacking=false; }
+
+
+
 
 	//STATE LOGIC ----------------------------------------------------------------------------------------------------------------------------
 
@@ -226,7 +229,6 @@ public class PlayerController : MonoBehaviour {
 	{
 		Physics.Raycast( new Ray(body.position, Vector3.down), out ground, ground_check_dist, LayerMask.GetMask("Default"), QueryTriggerInteraction.UseGlobal);
 		if (ground.collider==null) return GROUND_STATE.AIR;
-
 
 		asGround= useScanSliceZeroAsGround()? scanSlice[0]:ground; //TODO Determine As GROUND By LOOK_AT;
 	
@@ -251,6 +253,7 @@ public class PlayerController : MonoBehaviour {
 			
 		return naive_state;
 	}
+
 	bool useScanSliceZeroAsGround()
 	{
 		float f_grade = SharedLib.vectorToGrade(scanSlice[0].normal);
@@ -260,9 +263,10 @@ public class PlayerController : MonoBehaviour {
 
 	float calcSlopeStairAltitude(float SlopeGradient) { return Mathf.Abs(slope_compensate_dist*Mathf.Cos(Mathf.Deg2Rad*SlopeGradient)); }
 
-	MOVE_STATE defineMoveState()
-	{
-		moving= rawInput.magnitude > move_deadzone;
+	MOVE_STATE defineMoveState() {
+		if (Move_State==MOVE_STATE.ATTACK) return Move_State; //If ATTACKING, KEEP ATTACKING. THE 'finish attacking' function will set to idle.
+
+		moving= rawInput.magnitude > input_deadzone;
 		
 		if (Ground_State==GROUND_STATE.AIR) return body.linearVelocity.y>0?MOVE_STATE.FALL_UP:MOVE_STATE.FALL_DOWN ;
 
@@ -292,6 +296,8 @@ public class PlayerController : MonoBehaviour {
 		}
 	}
 
+
+
 	void FixedUpdate()
 	{
 		FacePlayer(); // Determine the layer the character's brain should be looking. Distinct from the direction the character is rotated.
@@ -300,13 +306,11 @@ public class PlayerController : MonoBehaviour {
 
 	}
 
-	void FacePlayer()
-	{	
+	void FacePlayer() { 
 		if(rotate_when_moving && moving) lookAtAngle= Quaternion.LookRotation( camInput ).eulerAngles.y; 
 	}
 
-	void MovePlayer() 
-	{
+	void MovePlayer() {
 		float speed = move_speed[(int)Move_State];
 		moveDir2= SharedLib.vector3to2(camInput);
 		Vector2 respectfulMoveDir2= movementRespectsWalls();
@@ -349,8 +353,21 @@ public class PlayerController : MonoBehaviour {
 				break;
 		}
 
-		body.linearDamping = groundDrag; //TODO MOVE THIS TO GROUND_STATE switch
-		body.AddForce(moveDir3 * forceMultiple * speed , ForceMode.Force);
+		float localMotionDrag=motion_drag;
+		switch (Move_State) {
+			case MOVE_STATE.ATTACK:	localMotionDrag*= motion_drag_harsh; break;
+			default: break;
+		}
+
+
+
+		body.linearDamping = localMotionDrag; //TODO MOVE THIS TO GROUND_STATE switch
+
+
+
+
+
+		body.AddForce(moveDir3 * force_multiplier * speed , ForceMode.Force);
 		Vector3 capV; float capY=5;
 
 		if (normalizeFlat)
@@ -387,10 +404,9 @@ public class PlayerController : MonoBehaviour {
 		//Debug.Log("Ground Snap: snap at {}");
 	}
 
-	//TODO Make Character Rotate in direction of travel when sliding
 	void RotatePlayer()
 	{
-		Quaternion qFrom = rotationBody.transform.rotation;
+		Quaternion qFrom = PlayerRotation.transform.rotation;
 
 		Vector3 vel=SharedLib.vectorFlatten(body.linearVelocity);
 		
@@ -401,11 +417,13 @@ public class PlayerController : MonoBehaviour {
 
 		Quaternion qToward = Quaternion.AngleAxis( lookTowardAngle, Vector3.up);
 
-		rotationBody.transform.rotation = Quaternion.RotateTowards(qFrom, qToward, max_yaw_rotate );
-		currentAngle= rotationBody.transform.rotation.eulerAngles.y;
+		PlayerRotation.transform.rotation = Quaternion.RotateTowards(qFrom, qToward, max_yaw_rotate );
+		currentAngle= PlayerRotation.transform.rotation.eulerAngles.y;
 
+		#pragma warning disable CS0162
 		if (false)
 			DebugRotatePlayer(qFrom, qVel, qToward);
+		#pragma warning restore CS0162
 	}
 	void DebugRotatePlayer(Quaternion qFrom,Quaternion qVel,Quaternion qToward)
 	{
@@ -452,19 +470,19 @@ public class PlayerController : MonoBehaviour {
 
 	void OnTriggerEnter(Collider other)
 	{
-		CameraSwitchTrigger cwt = other.GetComponent<CameraSwitchTrigger>();
-		if (cwt != null)
-		{
-			cam_to_turnoff.gameObject.SetActive(false);
-			cwt.cam.gameObject.SetActive(true);
-			cam_to_turnoff = cwt.cam;
+		void OnTriggerEnter(Collider other) {
+			CameraSwitchTrigger cwt = other.GetComponent<CameraSwitchTrigger>();
+			if (cwt != null) {
+				cam_to_turnoff.gameObject.SetActive(false);
+				cwt.cam.gameObject.SetActive(true);
+				cam_to_turnoff = cwt.cam;
 
-			if (cwt.trackTarget)
-				cwt.cam.Target.TrackingTarget = camera_tracking_point.transform;
-			if (cwt.lookAtTarget)
-				cwt.cam.LookAt = camera_tracking_point.transform;
+				if (cwt.trackTarget)
+					cwt.cam.Target.TrackingTarget = cam_track_trans;
+				if (cwt.lookAtTarget)
+					cwt.cam.LookAt = cam_track_trans;
+			}
 		}
 	}
-
 
 }
