@@ -1,13 +1,12 @@
 Player 
- -Model
-  --Add Animations for Walking
-  --Add Umbrella
-    ---Add Attack animations.
+ -Girl
+  -Additional Animations?
+ -Umbrella  
+  --Melee
     ---Implement HitChecks.
-    ---Ranged Attacks
-       ----Aim ?
-       ----Bullet Projectiles
-  --Add Other animations (?)
+  --Ranged
+    ---Aim ?
+    ---Bullet Projectiles
  -Health/Death/Respawn            
 
 Enemy
@@ -56,7 +55,7 @@ Music and Folio
  -Ambient Sound
  -Dialogue
   --Vocal Quips
-  --Girl laughter (O-hohohohohohoho)
+  --Girl laughter (Oh-hyohyohyo)
 
 UI and UX
  -Main Menu
@@ -64,7 +63,6 @@ UI and UX
   --They Do Dialogue.
   --Multiple Sequencial Pages
  -Pause
-  --Menu
     ---Save
     ---Options
        ----Sound

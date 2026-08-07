@@ -5,16 +5,21 @@ Camera
  -On Trigger, Switch
 
 Player
- -Model
-  --The Girl Exists
-    ---EmptyHanded Idle
- -Movement
-  --WASD with respect to camera
-    ---Slide Along Wall
+ -Movement Respects Camera
+  --Players rotate into direction they move
+  --Players slide Along a wall they are walking into.
+ -The Girl
+  --Idle
+  --Walk Animation
+  --Umbrella
+  --Melee
  -Enum states for (hopefully) easier animation keying.
  
 Interactable
  -Framework for making Interactables
+ -Glowy Thing
 
  Pause
-  -The Game can be paused and unpaused. (No menu.)
+  -The Game can be paused and unpaused.
+   --Menu Framework
+   --Basic UI
