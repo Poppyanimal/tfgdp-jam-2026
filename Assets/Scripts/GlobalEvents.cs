@@ -4,9 +4,6 @@ using Unity;
 public class GlobalEvents
 {
     static GlobalEvents single;
-
-    public UnityEvent paused;
-    public UnityEvent unpaused;
     public UnityEvent playerAttackResolved;
 
     public static GlobalEvents get()
@@ -18,16 +15,7 @@ public class GlobalEvents
 
     GlobalEvents()
     {
-        paused = new();
-        unpaused = new();
         playerAttackResolved = new();
     }
 
-    public static void setPauseState(bool state)
-    {
-        if(state)
-            get().paused.Invoke();
-        else
-            get().unpaused.Invoke();
-    }
 }
