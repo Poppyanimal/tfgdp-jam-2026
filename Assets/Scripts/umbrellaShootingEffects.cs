@@ -6,7 +6,14 @@ public class umbrellaShootingEffects : MonoBehaviour
     
     public void playHandEffects() { hand_swivels.Play(); }
     public void playEnergyReadyEffects() { energy_ready.Play(); }
-    public void playEnergyOutEffects() { energy_out.Play(); energy_out_2.Play(); }
+    public void shoot()
+    {
+        energy_out.Play(); energy_out_2.Play();
+        useAmmo();
+        //todo instantiate projectile
+    }
     public void playExhaustSteamEffects() { exhaust_steam.Play(); }
     public void playCartridgeEffects() { exhaust_cartridge.Play(); }
+
+    public void useAmmo() { GlobalEvents.get().useAmmo.Invoke(); }
 }

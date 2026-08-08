@@ -4,7 +4,7 @@ using Unity;
 public class GlobalEvents
 {
     static GlobalEvents single;
-    public UnityEvent playerAttackResolved;
+    public UnityEvent playerAttackResolved, ammoChanged, playerHurt, playerDied, useAmmo;
 
     public static GlobalEvents get()
     {
@@ -16,6 +16,10 @@ public class GlobalEvents
     GlobalEvents()
     {
         playerAttackResolved = new();
+        ammoChanged = new();
+        playerHurt = new();
+        playerDied = new();
+        useAmmo = new();
     }
 
 }

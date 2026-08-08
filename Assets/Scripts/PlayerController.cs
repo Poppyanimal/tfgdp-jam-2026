@@ -5,6 +5,7 @@ using Unity.VisualScripting.Antlr3.Runtime.Tree;
 using UnityEngine;
 using UnityEngine.Rendering;
 using ge = GlobalEvents;
+using pv = PlayerVars;
 
 public class PlayerController : MonoBehaviour {
 
@@ -14,9 +15,6 @@ public class PlayerController : MonoBehaviour {
 	public Animator   playerAnimator;
 	public Rigidbody body;	
 		CapsuleCollider hitbox;
-
-	//ammo + health
-	int ammo = 5;
 
 	//Camera and Cam controls
 	CinemachineBrain cam_brain;
@@ -91,6 +89,7 @@ public class PlayerController : MonoBehaviour {
 	}
 	void initializeListeners() {
 		ge.get().playerAttackResolved.AddListener(attackingFinished);
+		ge.get().playerDied.AddListener(doDeath);
 	}
 
 
@@ -201,9 +200,8 @@ public class PlayerController : MonoBehaviour {
 		else if(Input.GetButtonDown("Ranged")) //todo: only make doable while aiming && while have ammo
 		{
 			//&& if already aiming
-			if(ammo > 0)
+			if(pv.get().getAmmo() > 0)
 			{
-				ammo--;
 				//& fire off ammo changed event
 				playerAnimator.SetBool("isWalking", false);
 				isAttacking = true;
@@ -217,7 +215,17 @@ public class PlayerController : MonoBehaviour {
 
 	public void attackingFinished() { Move_State=MOVE_STATE.IDLE; isAttacking=false; }
 
-	public int getAmmo() { return ammo; }
+	void takeDamage(int dam = 1)
+	{
+		//todo play animation
+		pv.get().modhealth(-dam);
+		ge.get().playerHurt.Invoke();
+	}
+
+	public void doDeath()
+	{
+		//todo
+	}
 
 
 
