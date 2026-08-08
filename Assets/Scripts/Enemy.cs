@@ -4,16 +4,14 @@ public class Enemy : MonoBehaviour
 {
     public Rigidbody body;
     public GameObject rotationBody;
-    float force_multiplier    =  8f     ,
-          motion_drag 		  =	 4.8f	,
-          move_speed          =  0.62f  ,
-          rotation_speed      =  0.5f   ;
-    public float angleOfRotation {get;set;} =0;
-
+    public float force_multiplier    =  8f     ,
+                 motion_drag 		 =	4.8f   ,
+                 move_speed          =  0.62f  ;
+    public float TargetAngle {get;set;} =0;
 
     RaycastHit[] scanSweep;
-    const float half_fov=90, scan_distance=50;
-    const int scan_ray_density=10;
+    public float half_fov=90, scan_distance=50;
+    public int scan_ray_density=10;
 
     public bool playerIsInSight;
     GameObject PlayerSeen { get; set; }
@@ -21,8 +19,10 @@ public class Enemy : MonoBehaviour
     public const float find_player_distance = 30,
                        track_player_distance= 10;
 
+
+
     // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start() {
+    virtual public void Start() {
         getComponentFields();
     }
 
@@ -31,10 +31,9 @@ public class Enemy : MonoBehaviour
     }
 
     // Update is called once per frame
-    void Update() {
+    virtual public void Update() {
         scanEnvironment();
         lookForPlayer();
-        inheritorSpecificUpdate();
     }
 
     void scanEnvironment() {
@@ -75,8 +74,6 @@ public class Enemy : MonoBehaviour
         else { PlayerSeen=null;}
     }
 
-    virtual public void inheritorSpecificUpdate() { }
-
 	public void MoveInDirection (Vector3 direction) {
 		body.AddForce(  direction*force_multiplier *60f*Time.deltaTime, ForceMode.Force  );
         body.linearDamping=motion_drag;
@@ -85,11 +82,14 @@ public class Enemy : MonoBehaviour
 	}
 
     public void RotateInDirection(Vector3 direction) {
-        rotationBody.transform.rotation= Quaternion.LookRotation(direction, Vector3.up);
+        if (Time.timeScale>0) rotationBody.transform.rotation= Quaternion.LookRotation(direction, Vector3.up);
     }
-    public void RotateInAngleDirection(float angle) {
+    public void RotateInAngleDirection(float angle ) {
         RotateInDirection(  SharedLib.angleToVector3(SharedLib.angleToBoundedDegrees(angle))  );
     }
+
+    virtual public void doInheritorSpecificStart () { } 
+    virtual public void doInheritorSpecificUpdate() { }
 
 
 }
