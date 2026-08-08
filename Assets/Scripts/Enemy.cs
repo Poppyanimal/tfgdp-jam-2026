@@ -4,11 +4,10 @@ public class Enemy : MonoBehaviour
 {
     public Rigidbody body;
     public GameObject rotationBody;
-    float force_multiplier    =  8f     ,
-          motion_drag 		  =	 4.8f	,
-          move_speed          =  0.62f  ,
-          rotation_speed      =  0.5f   ;
-    public float angleOfRotation {get;set;} =0;
+    public float force_multiplier    =  8f     ,
+                 motion_drag 		 =	4.8f   ,
+                 move_speed          =  0.62f  ;
+    public float targetAngle {get;set;} =0;
 
 
     RaycastHit[] scanSweep;
@@ -22,7 +21,7 @@ public class Enemy : MonoBehaviour
                        track_player_distance= 10;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start() {
+    virtual public void Start() {
         getComponentFields();
     }
 
@@ -31,10 +30,9 @@ public class Enemy : MonoBehaviour
     }
 
     // Update is called once per frame
-    void Update() {
+    virtual public void Update() {
         scanEnvironment();
         lookForPlayer();
-        inheritorSpecificUpdate();
     }
 
     void scanEnvironment() {
@@ -75,8 +73,6 @@ public class Enemy : MonoBehaviour
         else { PlayerSeen=null;}
     }
 
-    virtual public void inheritorSpecificUpdate() { }
-
 	public void MoveInDirection (Vector3 direction) {
 		body.AddForce(  direction*force_multiplier *60f*Time.deltaTime, ForceMode.Force  );
         body.linearDamping=motion_drag;
@@ -85,11 +81,14 @@ public class Enemy : MonoBehaviour
 	}
 
     public void RotateInDirection(Vector3 direction) {
-        rotationBody.transform.rotation= Quaternion.LookRotation(direction, Vector3.up);
+        if (Time.timeScale>0) rotationBody.transform.rotation= Quaternion.LookRotation(direction, Vector3.up);
     }
-    public void RotateInAngleDirection(float angle) {
+    public void RotateInAngleDirection(float angle ) {
         RotateInDirection(  SharedLib.angleToVector3(SharedLib.angleToBoundedDegrees(angle))  );
     }
+
+    virtual public void doInheritorSpecificStart () { } 
+    virtual public void doInheritorSpecificUpdate() { }
 
 
 }
