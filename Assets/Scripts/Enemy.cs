@@ -4,12 +4,16 @@ public class Enemy : MonoBehaviour
 {
     Rigidbody body;
 
+    const float force_multiplier	=	 8		, 
+				motion_drag			=	 4.5f	,
+                move_speed          =    0.8f   ;
+
     RaycastHit[] scanSweep;
     const float half_fov=90, scan_distance=50;
-    const int scan_ray_density=5;
+    const int scan_ray_density=10;
 
     bool playerSeen;
-    PlayerController playerInSight;
+    GameObject playerInSight;
     Vector3 lastKnownPlayerLocation= new Vector3(1000,1000,1000);
     const float find_player_distance = 20,
                 track_player_distance= 10;
@@ -32,14 +36,16 @@ public class Enemy : MonoBehaviour
     }
 
     void scanEnvironment() {
-        float forward= body.rotation.eulerAngles.y;
+        float lookAtAngle= body.rotation.eulerAngles.y;
         float[] scanAngles   = new float[scan_ray_density*2+1];
 
-        for (int ii = 0; ii<scan_ray_density; ii+=1) { scanAngles[                       ii]= forward - ((scan_ray_density-ii)*half_fov/scan_ray_density); }
-        for (int ii = 0; ii<scan_ray_density; ii+=1) { scanAngles[ (scan_ray_density+1) +ii]= forward + (                   ii*half_fov/scan_ray_density); }
-        //scanAngles[scan_ray_density+1]= forward;
+        for (int ii = 0; ii<scan_ray_density; ii+=1) { scanAngles[                       ii]= lookAtAngle - ((scan_ray_density-ii)*half_fov/scan_ray_density); }
+        for (int ii = 0; ii<scan_ray_density; ii+=1) { scanAngles[ (scan_ray_density+1) +ii]= lookAtAngle + (                   ii*half_fov/scan_ray_density); }
+        scanAngles[scan_ray_density]= lookAtAngle;
 
-        scanSweep = SharedLib.scanAngleSweep(body.position, scanAngles, scan_distance );
+
+        LayerMask maskLayer= LayerMask.GetMask("Default")+ LayerMask.GetMask("Player") ;
+        scanSweep = SharedLib.scanAngleSweep(body.position, scanAngles, scan_distance, maskLayer );
 
         int itt = 0;
         foreach (float angle in scanAngles) {
@@ -50,18 +56,25 @@ public class Enemy : MonoBehaviour
     }
 
     void findPlayer() {
+        playerSeen=false;
+        //Debug.Log("Start Scan");
+
         foreach (RaycastHit hit in scanSweep){
-            if (hit.collider!=null && hit.distance<find_player_distance)
-                playerSeen= playerSeen || hit.transform.gameObject.layer== LayerMask.NameToLayer("Player");
+            if (hit.collider!=null && 1<<hit.transform.gameObject.layer==LayerMask.GetMask("Player") && hit.distance<find_player_distance) {
+                playerSeen=true; 
+                playerInSight=hit.transform.gameObject;    
+            }   
         }
         if (playerSeen) {
-            lastKnownPlayerLocation=playerInSight.body.position;
+            Rigidbody playerBody;
+            playerInSight.TryGetComponent<Rigidbody>(out playerBody);
+            lastKnownPlayerLocation= playerBody.position;
         }
         else { playerInSight=null;}
     }
 
 	void decideMovement() { 
-        if(playerInSight!=null || (body.position-lastKnownPlayerLocation).magnitude< track_player_distance) { 
+        if(playerSeen) { 
             MoveTowardPlayer();
         }
         else {
@@ -70,8 +83,12 @@ public class Enemy : MonoBehaviour
 	}
 
     void MoveTowardPlayer() {
-        body.linearVelocity= (body.position-lastKnownPlayerLocation).normalized;
+        body.AddForce(  (lastKnownPlayerLocation-body.position)*force_multiplier, ForceMode.Force  );
+        body.linearDamping=motion_drag;
+        
+        if (body.linearVelocity.magnitude > move_speed) body.linearVelocity= body.linearVelocity.normalized*move_speed;
     }
+
 
     void Wander() {
 
