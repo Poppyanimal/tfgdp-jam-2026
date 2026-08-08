@@ -15,6 +15,9 @@ public class PlayerController : MonoBehaviour {
 	public Rigidbody body;	
 		CapsuleCollider hitbox;
 
+	//ammo + health
+	int ammo = 5;
+
 	//Camera and Cam controls
 	CinemachineBrain cam_brain;
 	CinemachineCamera active_cam, cam_to_turnoff;
@@ -195,9 +198,26 @@ public class PlayerController : MonoBehaviour {
 			Move_State = MOVE_STATE.ATTACK;
 			moving = false;
 		}
+		else if(Input.GetButtonDown("Ranged")) //todo: only make doable while aiming && while have ammo
+		{
+			//&& if already aiming
+			if(ammo > 0)
+			{
+				ammo--;
+				//& fire off ammo changed event
+				playerAnimator.SetBool("isWalking", false);
+				isAttacking = true;
+				playerAnimator.SetTrigger("doRanged");
+				Move_State = MOVE_STATE.ATTACK;
+				moving = false;
+
+			}
+		}
 	}	
 
 	public void attackingFinished() { Move_State=MOVE_STATE.IDLE; isAttacking=false; }
+
+	public int getAmmo() { return ammo; }
 
 
 
