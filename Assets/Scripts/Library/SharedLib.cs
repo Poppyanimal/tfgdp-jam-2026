@@ -117,8 +117,8 @@ public class SharedLib
 
 	//Takes an origin and an array of Angles and returns a horizontal sweep of Raycast Hits for the rays at those angles.
 	public static RaycastHit[] scanAngleSweep(Vector3 origin, float[] angles, float dist,                              bool drawCast       ) { return scanAngleSweep(origin, angles, dist, "Default", drawCast);}
-    public static RaycastHit[] scanAngleSweep(Vector3 origin, float[] angles, float dist, string layerMask="Default",  bool drawCast=false) {
-        
+    public static RaycastHit[] scanAngleSweep(Vector3 origin, float[] angles, float dist, string layerMask="Default",  bool drawCast=false) {  return scanAngleSweep(origin, angles, dist, LayerMask.GetMask(layerMask), drawCast); }
+    public static RaycastHit[] scanAngleSweep(Vector3 origin, float[] angles, float dist, LayerMask layerMask       ,  bool drawCast=false) {
         Vector3[] directions= new Vector3[angles.Length];
         for(int ii=0; ii<angles.Length; ii+=1) directions[ii]= angleToVector3(angles[ii]);       
         return scanSweep(origin, directions, dist, layerMask, drawCast);
@@ -127,12 +127,13 @@ public class SharedLib
 
     //Takes an origin and an array of Directions and returns a horizontal sweep of Raycast Hits for the rays in those Directions*, *Y is floored at zero.
     public static RaycastHit[] scanSweep(Vector3 origin, Vector3[] directions, float dist,                              bool drawCast       ) { return scanSweep(origin, directions, dist, "Default", drawCast);}
-    public static RaycastHit[] scanSweep(Vector3 origin, Vector3[] directions, float dist, string layerMask="Default",  bool drawCast=false ) {
+    public static RaycastHit[] scanSweep(Vector3 origin, Vector3[] directions, float dist, string layerMask="Default",  bool drawCast=false ) { return scanSweep(origin, directions, dist, LayerMask.GetMask(layerMask), drawCast ); }
+    public static RaycastHit[] scanSweep(Vector3 origin, Vector3[] directions, float dist, LayerMask layerMask,         bool drawCast=false ) {
         RaycastHit[] toReturn = new RaycastHit[directions.Length]; 
 
         for(int ii=0; ii<directions.Length; ii+=1) {
             directions[ii].y= 0f;
-            Physics.Raycast( new Ray(origin, directions[ii]), out toReturn[ii], dist, LayerMask.GetMask(layerMask), QueryTriggerInteraction.UseGlobal);
+            Physics.Raycast( new Ray(origin, directions[ii]), out toReturn[ii], dist, layerMask, QueryTriggerInteraction.UseGlobal);
             if (drawCast) Debug.DrawRay(origin, directions[ii], Color.HSVToRGB(ii/4/directions.Length+.3f, .5f,.5f), .5f);
         }
 
