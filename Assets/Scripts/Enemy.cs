@@ -4,6 +4,12 @@ public class Enemy : MonoBehaviour
 {
     public Rigidbody body;
     public GameObject rotationBody;
+    float force_multiplier    =  8f     ,
+          motion_drag 		  =	 4.8f	,
+          move_speed          =  0.62f  ,
+          rotation_speed      =  0.5f   ;
+    public float angleOfRotation {get;set;} =0;
+
 
     RaycastHit[] scanSweep;
     const float half_fov=90, scan_distance=50;
@@ -70,5 +76,20 @@ public class Enemy : MonoBehaviour
     }
 
     virtual public void inheritorSpecificUpdate() { }
+
+	public void MoveInDirection (Vector3 direction) {
+		body.AddForce(  direction*force_multiplier *60f*Time.deltaTime, ForceMode.Force  );
+        body.linearDamping=motion_drag;
+
+        if (body.linearVelocity.magnitude > move_speed) body.linearVelocity= body.linearVelocity.normalized*move_speed;
+	}
+
+    public void RotateInDirection(Vector3 direction) {
+        rotationBody.transform.rotation= Quaternion.LookRotation(direction, Vector3.up);
+    }
+    public void RotateInAngleDirection(float angle) {
+        RotateInDirection(  SharedLib.angleToVector3(SharedLib.angleToBoundedDegrees(angle))  );
+    }
+
 
 }
