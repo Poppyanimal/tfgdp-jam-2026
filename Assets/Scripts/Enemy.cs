@@ -9,7 +9,7 @@ public class Enemy : MonoBehaviour
     const int scan_ray_density=10;
 
     bool playerSeen;
-    PlayerController playerInSight;
+    GameObject playerInSight;
     Vector3 lastKnownPlayerLocation= new Vector3(1000,1000,1000);
     const float find_player_distance = 20,
                 track_player_distance= 10;
@@ -53,18 +53,24 @@ public class Enemy : MonoBehaviour
 
     void findPlayer() {
         playerSeen=false;
+        //Debug.Log("Start Scan");
+
         foreach (RaycastHit hit in scanSweep){
-            if (hit.collider!=null && hit.transform.gameObject.layer==LayerMask.GetMask("Player") && hit.distance<find_player_distance)
-                playerSeen=true;
+            if (hit.collider!=null && 1<<hit.transform.gameObject.layer==LayerMask.GetMask("Player") && hit.distance<find_player_distance) {
+                playerSeen=true; 
+                playerInSight=hit.transform.gameObject;    
+            }   
         }
         if (playerSeen) {
-            lastKnownPlayerLocation=playerInSight.body.position;
+            Rigidbody playerBody;
+            playerInSight.TryGetComponent<Rigidbody>(out playerBody);
+            lastKnownPlayerLocation= playerBody.position;
         }
         else { playerInSight=null;}
     }
 
 	void decideMovement() { 
-        if(playerInSight!=null || (body.position-lastKnownPlayerLocation).magnitude< track_player_distance) { 
+        if(playerSeen) { 
             MoveTowardPlayer();
         }
         else {
@@ -73,8 +79,9 @@ public class Enemy : MonoBehaviour
 	}
 
     void MoveTowardPlayer() {
-        body.linearVelocity= (body.position-lastKnownPlayerLocation).normalized;
+        body.AddForce(lastKnownPlayerLocation-body.position);
     }
+
 
     void Wander() {
 
