@@ -2271,7 +2271,7 @@ GameObject:
   - component: {fileID: 443770578}
   - component: {fileID: 443770577}
   - component: {fileID: 443770576}
-  m_Layer: 7
+  m_Layer: 10
   m_Name: Cube
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -5172,7 +5172,7 @@ GameObject:
   - component: {fileID: 924550629}
   - component: {fileID: 924550628}
   - component: {fileID: 924550627}
-  m_Layer: 7
+  m_Layer: 10
   m_Name: enemy prototyp
   m_TagString: Untagged
   m_Icon: {fileID: 0}
