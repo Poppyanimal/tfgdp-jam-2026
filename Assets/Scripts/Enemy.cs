@@ -4,6 +4,10 @@ public class Enemy : MonoBehaviour
 {
     Rigidbody body;
 
+    const float force_multiplier	=	 8		, 
+				motion_drag			=	 4.5f	,
+                move_speed          =    0.8f   ;
+
     RaycastHit[] scanSweep;
     const float half_fov=90, scan_distance=50;
     const int scan_ray_density=10;
@@ -79,7 +83,10 @@ public class Enemy : MonoBehaviour
 	}
 
     void MoveTowardPlayer() {
-        body.AddForce(lastKnownPlayerLocation-body.position);
+        body.AddForce(  (lastKnownPlayerLocation-body.position)*force_multiplier, ForceMode.Force  );
+        body.linearDamping=motion_drag;
+        
+        if (body.linearVelocity.magnitude > move_speed) body.linearVelocity= body.linearVelocity.normalized*move_speed;
     }
 
 
