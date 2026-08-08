@@ -3,7 +3,6 @@ using UnityEngine;
 public class Enemy : MonoBehaviour
 {
     Rigidbody body;
-
     const float force_multiplier	=	 8		, 
 				motion_drag			=	 4.5f	,
                 move_speed          =    0.8f   ;
@@ -47,11 +46,11 @@ public class Enemy : MonoBehaviour
         LayerMask maskLayer= LayerMask.GetMask("Default")+ LayerMask.GetMask("Player") ;
         scanSweep = SharedLib.scanAngleSweep(body.position, scanAngles, scan_distance, maskLayer );
 
-        int itt = 0;
-        foreach (float angle in scanAngles) {
-            Debug.DrawRay(body.position, SharedLib.angleToVector3(angle) * Mathf.Max(1,scanSweep[itt].distance), Color.HSVToRGB(itt * 5 / 360f, 1, 1));
-            itt += 1;
-        }
+        //int itt = 0;
+        //foreach (float angle in scanAngles) {
+        //    Debug.DrawRay(body.position, SharedLib.angleToVector3(angle) * Mathf.Max(1,scanSweep[itt].distance), Color.HSVToRGB(itt * 5 / 360f, 1, 1));
+        //    itt += 1;
+        //}
 
     }
 
@@ -88,7 +87,6 @@ public class Enemy : MonoBehaviour
         
         if (body.linearVelocity.magnitude > move_speed) body.linearVelocity= body.linearVelocity.normalized*move_speed;
     }
-
 
     void Wander() {
 

@@ -5,9 +5,10 @@ Camera
  -On Trigger, Switch
 
 Player
- -Movement Respects Camera
-  --Players rotate into direction they move
-  --Players slide Along a wall they are walking into.
+ -Movement 
+  -- WASD wit respect ta Camera
+  -- Players rotate into motion
+  --Player slides along walls in their way.
  -The Girl
   --Idle
   --Walk Animation
@@ -15,6 +16,9 @@ Player
   --Melee
  -Enum states for (hopefully) easier animation keying.
  
+Enemy
+ -We have a sphere with a nose that moves toward the player if they can see it.
+
 Interactable
  -Framework for making Interactables
  -Glowy Thing
