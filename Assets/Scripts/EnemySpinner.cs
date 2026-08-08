@@ -37,8 +37,8 @@ public class EnemySpinner : Enemy
     }
 
     void Wander() {
-        targetAngle+= base_rotation_speed   *Time.deltaTime;//+Mathf.Sin(Time.frameCount); 
-        RotateInAngleDirection(targetAngle);
+        TargetAngle+= base_rotation_speed   *Time.deltaTime;//+Mathf.Sin(Time.frameCount); 
+        RotateInAngleDirection(TargetAngle);
 
 //        //The little ball isn't rotating the way I want it to, ~~but it is rotating~~.
 ////        rotationBody.transform.rotation= Quaternion.LookRotation( Vector3.ProjectOnPlane(SharedLib.angleToVector3(AngleOfRotation), new Vector3(1,.5f,1).normalized).normalized*3 );

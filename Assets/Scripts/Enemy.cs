@@ -7,18 +7,19 @@ public class Enemy : MonoBehaviour
     public float force_multiplier    =  8f     ,
                  motion_drag 		 =	4.8f   ,
                  move_speed          =  0.62f  ;
-    public float targetAngle {get;set;} =0;
-
+    public float TargetAngle {get;set;} =0;
 
     RaycastHit[] scanSweep;
-    const float half_fov=90, scan_distance=50;
-    const int scan_ray_density=10;
+    public float half_fov=90, scan_distance=50;
+    public int scan_ray_density=10;
 
     public bool playerIsInSight;
     GameObject PlayerSeen { get; set; }
     public Vector3 lastKnownPlayerLocation= new Vector3(1000,1000,1000); // The default vector is this as a hacky way of making sure the enemy doesn't start pathfinding to the default LKPL immediately
     public const float find_player_distance = 30,
                        track_player_distance= 10;
+
+
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     virtual public void Start() {
