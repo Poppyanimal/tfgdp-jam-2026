@@ -1,13 +1,14 @@
 using UnityEngine;
+using static Unity.Cinemachine.CinemachineSplineDolly;
 
 public class EnemySpinner : Enemy
 {
 
-    const float force_multiplier	=	 8		, 
-		        motion_drag 		=	 2.5f	,
-                move_speed          =    0.8f   ;
-    Vector3 AxisOfRotation= new Vector3 (-36.0f, 0, -20.7f);
-    float AngleofRotation=0;
+    const float force_multiplier	=	 14     , 
+		        motion_drag 		=	 4.8f	,
+                move_speed          =    0.62f  ,
+                rotation_speed      =    0.5f   ;
+    float AngleOfRotation=0;
 	
 
 
@@ -32,14 +33,12 @@ public class EnemySpinner : Enemy
     }
 
     void Wander() {
-        Vector3 randVec= new Vector3 (Random.Range(-.1f, 0.3f),Random.Range(-.1f, .3f),Random.Range(-.1f,.3f) );
-        Vector3 rbr= rotationBody.transform.rotation.eulerAngles;
-        Vector3 sum= rbr+randVec;
+        AngleOfRotation    = SharedLib.angleToBoundedDegrees(AngleOfRotation+rotation_speed );
 
-        Quaternion randDelta = Quaternion.Euler(sum.x,sum.y, sum.z);
 
         //The little ball isn't rotating the way I want it to, ~~but it is rotating~~.
-        rotationBody.transform.rotation= randDelta;
+//        rotationBody.transform.rotation= Quaternion.LookRotation( Vector3.ProjectOnPlane(SharedLib.angleToVector3(AngleOfRotation), new Vector3(1,.5f,1).normalized).normalized*3 );
+        rotationBody.transform.rotation= Quaternion.AngleAxis(AngleOfRotation, Vector3.up);
     }
 
 

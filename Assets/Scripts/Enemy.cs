@@ -12,7 +12,7 @@ public class Enemy : MonoBehaviour
     public bool playerIsInSight;
     GameObject PlayerSeen { get; set; }
     public Vector3 lastKnownPlayerLocation= new Vector3(1000,1000,1000); // The default vector is this as a hacky way of making sure the enemy doesn't start pathfinding to the default LKPL immediately
-    public const float find_player_distance = 20,
+    public const float find_player_distance = 30,
                        track_player_distance= 10;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
