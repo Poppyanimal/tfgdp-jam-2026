@@ -12,7 +12,7 @@ public class PlayerController : MonoBehaviour {
 	public GameObject Player;
 	public GameObject PlayerRotation;
 	public Animator   playerAnimator;
-		Rigidbody body;	
+	public Rigidbody body;	
 		CapsuleCollider hitbox;
 
 	//Camera and Cam controls
@@ -92,7 +92,6 @@ public class PlayerController : MonoBehaviour {
 
 
 	public void Update() {
-
 		incrementCountersAndCooldowns();
 		handleInput();
 		handleCamera();
