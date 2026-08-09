@@ -24715,7 +24715,7 @@ MonoBehaviour:
   timeBeforeDecay: 10
   emergencyExplodeTimer: 3
   impulse: {fileID: 1321977079896185502}
-  impulseForce: 0.4
+  impulseForce: 0.3
 --- !u!95 &8640715474809329127
 Animator:
   serializedVersion: 7
@@ -24807,7 +24807,7 @@ MonoBehaviour:
       m_PreInfinity: 2
       m_PostInfinity: 2
       m_RotationOrder: 4
-    ImpulseDuration: 0.3
+    ImpulseDuration: 0.4
     ImpulseType: 0
     DissipationRate: 0.25
     RawSignal: {fileID: 0}
