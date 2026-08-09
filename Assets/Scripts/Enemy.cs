@@ -19,7 +19,7 @@ public class Enemy : MonoBehaviour
     public const float find_player_distance = 30,
                        track_player_distance= 10;
 
-
+    int health = 1;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     virtual public void Start() {
@@ -32,9 +32,12 @@ public class Enemy : MonoBehaviour
 
     // Update is called once per frame
     virtual public void Update() {
+        incrementCounters();
         scanEnvironment();
         lookForPlayer();
     }
+
+    virtual public void incrementCounters(){ }
 
     void scanEnvironment() {
         float lookAtAngle= body.rotation.eulerAngles.y;
@@ -88,8 +91,30 @@ public class Enemy : MonoBehaviour
         RotateInDirection(  SharedLib.angleToVector3(SharedLib.angleToBoundedDegrees(angle))  );
     }
 
-    virtual public void doInheritorSpecificStart () { } 
-    virtual public void doInheritorSpecificUpdate() { }
+    virtual public void hurtPlayer(GameObject player   ) {  }
+    virtual public void getHurt   (GameObject attacker ) {  }
+        virtual public void die() { }
 
+    public void takeDamage(int amount) { health -= amount ; if (health<=0) die(); }
+
+	void OnCollisionEnter(Collision other) {
+        int layer= other.gameObject.layer;
+        //Debug.LogFormat( "{0}({1}) {2}", LayerMask.LayerToName(layer), layer, "Enemy");
+
+        switch ( layer ) {
+            case 7 : hurtPlayer(other.gameObject); Debug.Log("Hurt Player") ; break;
+            default   : break;  
+        }
+	}
+
+    void OnTriggerEnter(Collider other) {
+        int layer= other.gameObject.layer;
+        //Debug.LogFormat( "{0}({1}) {2}", LayerMask.LayerToName(layer), layer, "Enemy");
+
+        switch ( layer ) {
+            case 7 : getHurt(other.gameObject); Debug.Log("Hit by Player") ; break;
+            default   : break;  
+        }
+	}
 
 }

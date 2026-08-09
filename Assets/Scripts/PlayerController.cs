@@ -178,10 +178,7 @@ public class PlayerController : MonoBehaviour {
 	/// 
 	/// </summary>
 
-
-
 	//---------------------------------------- actionability bools
-	bool isPaused;
 	bool isAttacking;
 	bool isDead;
 
@@ -260,9 +257,6 @@ public class PlayerController : MonoBehaviour {
 		return hit.distance < wall_block_dist;
 	}
 
-
-
-
 	GROUND_STATE defineGroundState()
 	{
 		Physics.Raycast( new Ray(body.position, Vector3.down), out ground, ground_check_dist, LayerMask.GetMask("Default"), QueryTriggerInteraction.UseGlobal);
@@ -302,7 +296,7 @@ public class PlayerController : MonoBehaviour {
 	float calcSlopeStairAltitude(float SlopeGradient) { return Mathf.Abs(slope_compensate_dist*Mathf.Cos(Mathf.Deg2Rad*SlopeGradient)); }
 
 	MOVE_STATE defineMoveState() {
-		if (Move_State==MOVE_STATE.ATTACK) return Move_State; //If ATTACKING, KEEP ATTACKING. THE 'finish attacking' function will set to idle.
+		if (Move_State==MOVE_STATE.ATTACK && isAttacking) return Move_State; //If ATTACKING, KEEP ATTACKING. THE 'finish attacking' function will set to idle.
 
 		moving= rawInput.magnitude > input_deadzone;
 		
@@ -340,7 +334,7 @@ public class PlayerController : MonoBehaviour {
 
 	void FixedUpdate()
 	{
-		FacePlayer(); // Determine the layer the character's brain should be looking. Distinct from the direction the character is rotated.
+		FacePlayer(); // Determine the angle the character's brain should be looking. Distinct from the direction the character is rotated.
 		MovePlayer();
 		RotatePlayer();
 
