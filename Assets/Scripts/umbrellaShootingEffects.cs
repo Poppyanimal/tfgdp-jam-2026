@@ -10,7 +10,7 @@ public class umbrellaShootingEffects : MonoBehaviour
     {
         energy_out.Play(); energy_out_2.Play();
         useAmmo();
-        //todo instantiate projectile
+        GlobalEvents.get().playerSpawnProjectile.Invoke();
     }
     public void playExhaustSteamEffects() { exhaust_steam.Play(); }
     public void playCartridgeEffects() { exhaust_cartridge.Play(); }

@@ -67,6 +67,11 @@ public class PlayerController : MonoBehaviour {
 	readonly float[] move_speed =	{ 0f,		2.3f,	3.4f,		1.6f,		1.5f,				1.5f,				1.7f,		2.1f,		0.0f,	0f		};
 	bool moving=false;
 
+	//projectile stuff
+	public GameObject bulletPrefab;
+	public GameObject bulletPosition;
+	public float bulletSpeed;
+
 
 	// CODE 
 
@@ -91,6 +96,7 @@ public class PlayerController : MonoBehaviour {
 	void initializeListeners() {
 		ge.get().playerAttackResolved.AddListener(attackingFinished);
 		ge.get().playerDied.AddListener(doDeath);
+		ge.get().playerSpawnProjectile.AddListener(shoot);
 	}
 
 
@@ -213,6 +219,12 @@ public class PlayerController : MonoBehaviour {
 	}	
 
 	public void attackingFinished() { Move_State=MOVE_STATE.IDLE; isAttacking=false; }
+
+	public void shoot()
+	{
+		GameObject bullet = Instantiate(bulletPrefab, bulletPosition.transform.position, bulletPosition.transform.rotation);
+		bullet.GetComponent<Rigidbody>().AddRelativeForce(Vector3.up * bulletSpeed);
+	}
 
 	public void takeDamage(int dam = 1)
 	{

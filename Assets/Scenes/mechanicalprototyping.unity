@@ -10572,6 +10572,37 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 1, y: 1, z: 1}
   m_Center: {x: 0, y: 0, z: 0}
+--- !u!1 &1457314052
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1457314053}
+  m_Layer: 7
+  m_Name: projectile exit point
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1457314053
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1457314052}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 1.412, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1875058012}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1466433401
 GameObject:
   m_ObjectHideFlags: 0
@@ -13366,6 +13397,11 @@ Transform:
   m_Children: []
   m_Father: {fileID: 398076051}
   m_LocalEulerAnglesHint: {x: 0, y: 90, z: 0}
+--- !u!4 &1875058012 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 3972117269045796421, guid: 277402ffafc5f62449f7b0be33b27224, type: 3}
+  m_PrefabInstance: {fileID: 1468085312434210724}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1875910756
 GameObject:
   m_ObjectHideFlags: 0
@@ -16707,6 +16743,18 @@ PrefabInstance:
       propertyPath: m_Layer
       value: 7
       objectReference: {fileID: 0}
+    - target: {fileID: 4807239732957518967, guid: 277402ffafc5f62449f7b0be33b27224, type: 3}
+      propertyPath: bulletSpeed
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 4807239732957518967, guid: 277402ffafc5f62449f7b0be33b27224, type: 3}
+      propertyPath: bulletPrefab
+      value: 
+      objectReference: {fileID: 8802241773580469148, guid: efef09cfdbd14a644be3432563dc2523, type: 3}
+    - target: {fileID: 4807239732957518967, guid: 277402ffafc5f62449f7b0be33b27224, type: 3}
+      propertyPath: bulletPosition
+      value: 
+      objectReference: {fileID: 1457314052}
     - target: {fileID: 4910107687687164380, guid: 277402ffafc5f62449f7b0be33b27224, type: 3}
       propertyPath: m_Layer
       value: 7
@@ -17113,7 +17161,10 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
-    m_AddedGameObjects: []
+    m_AddedGameObjects:
+    - targetCorrespondingSourceObject: {fileID: 3972117269045796421, guid: 277402ffafc5f62449f7b0be33b27224, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1457314053}
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 277402ffafc5f62449f7b0be33b27224, type: 3}
 --- !u!1001 &3307200668691717766
