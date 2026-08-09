@@ -1,4 +1,5 @@
 using System.Collections;
+using Unity.Cinemachine;
 using UnityEngine;
 
 public class umbrellaProjectile : MonoBehaviour
@@ -6,6 +7,8 @@ public class umbrellaProjectile : MonoBehaviour
     public Animator anim;
     public GameObject sphere_particles, explosion_particles;
     public float timeBeforeDecay = 10f, emergencyExplodeTimer = 3f;
+    public CinemachineImpulseSource impulse;
+    public float impulseForce = 3f;
 
     Coroutine emergencyTimer;
 
@@ -29,6 +32,8 @@ public class umbrellaProjectile : MonoBehaviour
         StartCoroutine(decayAndDestroy());
         anim.SetTrigger("explode");
         gameObject.GetComponent<Rigidbody>().linearVelocity = Vector3.zero;
+        impulse.GenerateImpulseWithForce(impulseForce);
+        GlobalEvents.get().explosionHitStop.Invoke();
     }
 
     void stopSphereParticles()

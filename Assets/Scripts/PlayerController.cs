@@ -72,6 +72,10 @@ public class PlayerController : MonoBehaviour {
 	public GameObject bulletPosition;
 	public float bulletSpeed;
 
+	//camera shake
+	public CinemachineImpulseSource shakeSource;
+	public float shakeImpulse = .1f;
+
 
 	// CODE 
 
@@ -231,6 +235,8 @@ public class PlayerController : MonoBehaviour {
 		playerAnimator.SetTrigger("getHit");
 		pv.get().modhealth(-dam);
 		ge.get().playerHurt.Invoke();
+		shakeSource.GenerateImpulseWithForce(shakeImpulse);
+		ge.get().hitStop.Invoke();
 	}
 
 	public void doDeath()
