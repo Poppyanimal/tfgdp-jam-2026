@@ -5575,7 +5575,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &924550626
 Transform:
   m_ObjectHideFlags: 0
@@ -5600,7 +5600,7 @@ Rigidbody:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 924550625}
   serializedVersion: 4
-  m_Mass: 1
+  m_Mass: 0.01
   m_Drag: 0
   m_AngularDrag: 0.05
   m_CenterOfMass: {x: 0, y: 0, z: 0}
@@ -5707,6 +5707,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   body: {fileID: 924550628}
   rotationBody: {fileID: 924550625}
+  force_multiplier: 8
+  motion_drag: 4.8
+  move_speed: 0.62
+  half_fov: 90
+  scan_distance: 50
+  scan_ray_density: 10
   playerIsInSight: 0
   lastKnownPlayerLocation: {x: 1000, y: 1000, z: 1000}
 --- !u!1 &945668996
