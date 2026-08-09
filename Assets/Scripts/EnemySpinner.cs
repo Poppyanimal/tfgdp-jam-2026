@@ -33,11 +33,7 @@ public class EnemySpinner : Enemy
 
     void Wander() {
         TargetAngle+= base_rotation_speed   *Time.deltaTime;//+Mathf.Sin(Time.frameCount); 
-        RotateInAngleDirection(TargetAngle);
-
-//        //The little ball isn't rotating the way I want it to, ~~but it is rotating~~.
-////        rotationBody.transform.rotation= Quaternion.LookRotation( Vector3.ProjectOnPlane(SharedLib.angleToVector3(AngleOfRotation), new Vector3(1,.5f,1).normalized).normalized*3 );
-//        
+        RotateInAngleDirection(TargetAngle);   
     }
 
 	public override void getHurt(GameObject attacker) {
@@ -62,9 +58,6 @@ public class EnemySpinner : Enemy
         yield return new WaitForSeconds(duration);
         inStunFrames= false;
     }
-
-
-
 
     void knockback(Vector3 away, float scale=0.75f) {
         Vector3 dir = (body.position-away).normalized;
