@@ -4,9 +4,9 @@ using static Unity.Cinemachine.CinemachineSplineDolly;
 
 public class EnemySpinner : Enemy
 {
-    const float base_rotation_speed     =500    ,
-                stun_duration           =  7    ;
-    bool inStunFrames;
+    public const float  stun_duration   =  7    ;
+    const float base_rotation_speed     =500    ;
+    public bool inStunFrames;
 
 	public override void Start() {
         base.Start();
@@ -27,11 +27,11 @@ public class EnemySpinner : Enemy
         Wander();
 	}
 
-    void MoveTowardPlayer() {
+    virtual public void MoveTowardPlayer() {
         MoveInDirection(lastKnownPlayerLocation-body.position);   
     }
 
-    void Wander() {
+    virtual public void Wander() {
         TargetAngle+= base_rotation_speed   *Time.deltaTime;//+Mathf.Sin(Time.frameCount); 
         RotateInAngleDirection(TargetAngle);   
     }

@@ -5518,6 +5518,7 @@ GameObject:
   - component: {fileID: 924550633}
   - component: {fileID: 924550628}
   - component: {fileID: 924550632}
+  - component: {fileID: 924550634}
   m_Layer: 10
   m_Name: enemy prototyp
   m_TagString: Untagged
@@ -5549,7 +5550,7 @@ Rigidbody:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 924550625}
   serializedVersion: 4
-  m_Mass: 0.01
+  m_Mass: 1
   m_Drag: 0
   m_AngularDrag: 0.05
   m_CenterOfMass: {x: 0, y: 0, z: 0}
@@ -5628,7 +5629,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 924550625}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 7a243869614017f4c84666d474ffeb58, type: 3}
   m_Name: 
@@ -5643,6 +5644,7 @@ MonoBehaviour:
   scan_ray_density: 10
   playerIsInSight: 0
   lastKnownPlayerLocation: {x: 1000, y: 1000, z: 1000}
+  inStunFrames: 0
 --- !u!136 &924550633
 CapsuleCollider:
   m_ObjectHideFlags: 0
@@ -5666,6 +5668,29 @@ CapsuleCollider:
   m_Height: 1.5078254
   m_Direction: 1
   m_Center: {x: 0, y: -0.2539127, z: 0}
+--- !u!114 &924550634
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 924550625}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 054ff29b3dfabd549bce54ff7876bbe3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  body: {fileID: 924550628}
+  rotationBody: {fileID: 924550625}
+  force_multiplier: 8
+  motion_drag: 4.8
+  move_speed: 0.62
+  half_fov: 90
+  scan_distance: 50
+  scan_ray_density: 10
+  playerIsInSight: 0
+  lastKnownPlayerLocation: {x: 1000, y: 1000, z: 1000}
+  inStunFrames: 0
 --- !u!1 &945668996
 GameObject:
   m_ObjectHideFlags: 0

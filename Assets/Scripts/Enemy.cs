@@ -1,3 +1,4 @@
+using System.Collections;
 using UnityEngine;
 
 public class Enemy : MonoBehaviour
@@ -13,11 +14,12 @@ public class Enemy : MonoBehaviour
     public float half_fov=90, scan_distance=50;
     public int scan_ray_density=10;
 
-    public bool playerIsInSight;
+    public bool playerIsInSight, playerIsRemembered;
     GameObject PlayerSeen { get; set; }
     public Vector3 lastKnownPlayerLocation= new Vector3(1000,1000,1000); // The default vector is this as a hacky way of making sure the enemy doesn't start pathfinding to the default LKPL immediately
     public const float find_player_distance = 30,
-                       track_player_distance= 10;
+                       track_player_distance= 10,
+                       track_player_duration=  5;
 
     int health = 1;
 
@@ -32,15 +34,12 @@ public class Enemy : MonoBehaviour
 
     // Update is called once per frame
     virtual public void Update() {
-        incrementCounters();
         scanEnvironment();
         lookForPlayer();
     }
 
-    virtual public void incrementCounters(){ }
-
     void scanEnvironment() {
-        float lookAtAngle= body.rotation.eulerAngles.y;
+        float lookAtAngle    = body.rotation.eulerAngles.y;
         float[] scanAngles   = new float[scan_ray_density*2+1];
 
         for (int ii = 0; ii<scan_ray_density; ii+=1) { scanAngles[                       ii]= lookAtAngle - ((scan_ray_density-ii)*half_fov/scan_ray_density); }
@@ -73,9 +72,22 @@ public class Enemy : MonoBehaviour
             Rigidbody playerBody;
             PlayerSeen.TryGetComponent<Rigidbody>(out playerBody);
             lastKnownPlayerLocation= playerBody.position;
+            playerIsRemembered=true;
         }
-        else { PlayerSeen=null;}
+        else {
+            StartCoroutine( forgetPlayerLocation(track_player_duration));
+        }
     }
+
+    IEnumerator forgetPlayerLocation(float duration) {
+        yield return new WaitForSeconds(duration);
+        if (!playerIsInSight) { 
+            playerIsRemembered= false;
+            PlayerSeen=null;
+            lastKnownPlayerLocation= new Vector3 (1000,1000,1000);
+        }
+    }
+
 
 	public void MoveInDirection (Vector3 direction) {
 		body.AddForce(  direction*force_multiplier *60f*Time.deltaTime, ForceMode.Force  );
