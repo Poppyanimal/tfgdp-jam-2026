@@ -1,3 +1,4 @@
+using System.Collections;
 using UnityEngine;
 using static Unity.Cinemachine.CinemachineSplineDolly;
 
@@ -5,7 +6,7 @@ public class EnemySpinner : Enemy
 {
     const float base_rotation_speed     =500    ,
                 stun_duration           =  7    ;
-    float stunTimer;
+    bool inStunFrames;
 
 	public override void Start() {
         base.Start();
@@ -16,13 +17,8 @@ public class EnemySpinner : Enemy
 
     override public void Update() {
         base.Update();
-        if (stunTimer<=0) decideMovement();
+        if (!inStunFrames) decideMovement();
     }
-
-	public override void incrementCounters() {
-		base.incrementCounters();
-        if(stunTimer>0) stunTimer-= 1*Time.deltaTime;
-	}
 
      void decideMovement() { 
         if(playerIsInSight) { 
@@ -54,8 +50,13 @@ public class EnemySpinner : Enemy
 	}
 
     void stun(float duration) {
-        if (stunTimer<0) stunTimer=0;
-        stunTimer+=duration;
+        inStunFrames=true;
+        StartCoroutine(inStunFrameTimer(duration));
+    }
+
+    IEnumerator inStunFrameTimer(float duration) {
+        yield return new WaitForSeconds(duration);
+        inStunFrames= false;
     }
 
     void knockback(Vector3 away) {
@@ -68,6 +69,7 @@ public class EnemySpinner : Enemy
 
 
 
+    
 
 
 }
