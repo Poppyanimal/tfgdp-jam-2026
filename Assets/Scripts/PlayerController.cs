@@ -1,3 +1,4 @@
+using System.Collections;
 using Unity.Burst.CompilerServices;
 using Unity.Cinemachine;
 using Unity.VisualScripting;
@@ -62,8 +63,8 @@ public class PlayerController : MonoBehaviour {
 	
 	//MOVE_STATE and related fielsd
 	MOVE_STATE Move_State = MOVE_STATE.IDLE;
-	enum MOVE_STATE					{ IDLE,		WALK,	SPRINT,		CROUCH,		PORT_WALL_SLIDING,	STAR_WALL_SLIDING,	FALL_UP,	FALL_DOWN,	ATTACK		}
-	readonly float[] move_speed =	{ 0f,		2.3f,	3.4f,		1.6f,		1.5f,				1.5f,				1.7f,		2.1f,		0.0f		};
+	enum MOVE_STATE					{ IDLE,		WALK,	SPRINT,		CROUCH,		PORT_WALL_SLIDING,	STAR_WALL_SLIDING,	FALL_UP,	FALL_DOWN,	ATTACK, DEAD		}
+	readonly float[] move_speed =	{ 0f,		2.3f,	3.4f,		1.6f,		1.5f,				1.5f,				1.7f,		2.1f,		0.0f,	0f		};
 	bool moving=false;
 
 
@@ -182,6 +183,7 @@ public class PlayerController : MonoBehaviour {
 	//---------------------------------------- actionability bools
 	bool isPaused;
 	bool isAttacking;
+	bool isDead;
 
 	
 	//General Code -----------------------------------------------------------------===========================================================
@@ -215,16 +217,19 @@ public class PlayerController : MonoBehaviour {
 
 	public void attackingFinished() { Move_State=MOVE_STATE.IDLE; isAttacking=false; }
 
-	void takeDamage(int dam = 1)
+	public void takeDamage(int dam = 1)
 	{
-		//todo play animation
+		playerAnimator.SetTrigger("getHit");
 		pv.get().modhealth(-dam);
 		ge.get().playerHurt.Invoke();
 	}
 
 	public void doDeath()
 	{
-		//todo
+		playerAnimator.SetBool("isDead", true);
+		Move_State = MOVE_STATE.DEAD;
+		isDead = true;
+		//todo: run restart code
 	}
 
 
@@ -506,18 +511,40 @@ public class PlayerController : MonoBehaviour {
 
 	Vector3 movementRespectsGround(Vector2 dir2) { return Vector3.ProjectOnPlane( SharedLib.vector2to3(dir2), asGround.normal.normalized );	}
 
-	void OnTriggerEnter(Collider other) {
-		CameraSwitchTrigger cwt = other.GetComponent<CameraSwitchTrigger>();
-		if (cwt != null) {
-			cam_to_turnoff.gameObject.SetActive(false);
-			cwt.cam.gameObject.SetActive(true);
-			cam_to_turnoff = cwt.cam;
+	bool inHurtIFrames;
+	float hurtIframes = .5f;
 
-			if (cwt.trackTarget)
-				cwt.cam.Target.TrackingTarget = cam_track_trans;
-			if (cwt.lookAtTarget)
-				cwt.cam.LookAt = cam_track_trans;
+	void OnTriggerEnter(Collider other) {
+		if(other.gameObject.layer != LayerMask.NameToLayer("EnemyAttack"))
+		{
+			//assumes non-enemy triggers are camera switches
+			CameraSwitchTrigger cwt = other.GetComponent<CameraSwitchTrigger>();
+			if (cwt != null) {
+				cam_to_turnoff.gameObject.SetActive(false);
+				cwt.cam.gameObject.SetActive(true);
+				cam_to_turnoff = cwt.cam;
+
+				if (cwt.trackTarget)
+					cwt.cam.Target.TrackingTarget = cam_track_trans;
+				if (cwt.lookAtTarget)
+					cwt.cam.LookAt = cam_track_trans;
+			}
+		}
+		else
+		{
+			if(!inHurtIFrames)
+			{
+				inHurtIFrames = true;
+				takeDamage();
+				StartCoroutine(iFrameTimer());
+			}
 		}
 	}
+
+	IEnumerator iFrameTimer()
+	{
+		yield return new WaitForSeconds(hurtIframes);
+		inHurtIFrames = false;
+	} 
 
 }
