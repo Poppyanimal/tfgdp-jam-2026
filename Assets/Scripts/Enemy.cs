@@ -7,7 +7,8 @@ public class Enemy : MonoBehaviour
     public GameObject rotationBody;
     public float force_multiplier    =  8f     ,
                  motion_drag 		 =	4.8f   ,
-                 move_speed          =  0.62f  ;
+                 move_speed          =  0.62f  ,
+                 angles_per_second = 5f;
     public float lookAtAngle {get;set;} =0;
     public float currentAngle=0;
 
@@ -22,10 +23,14 @@ public class Enemy : MonoBehaviour
                        track_player_distance= 10,
                        track_player_duration=  5;
 
+    PlayerController player;
+    public float activationDistance = 5f;
+
     int health = 1;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     virtual public void Start() {
+        player = FindAnyObjectByType<PlayerController>();
         getComponentFields();
     }
 
@@ -35,6 +40,13 @@ public class Enemy : MonoBehaviour
 
     // Update is called once per frame
     virtual public void Update() {
+        if(Vector3.Distance(body.position, player.body.position) > activationDistance)
+        {
+            //play idle no one found animation
+            return;
+        }
+
+        //play moving animation
         scanEnvironment();
         lookForPlayer();
     }
@@ -106,7 +118,7 @@ public class Enemy : MonoBehaviour
 
 		Quaternion qToward = Quaternion.AngleAxis( lookTowardAngle, Vector3.up);
 
-		rotationBody.transform.rotation = Quaternion.RotateTowards(qFrom, qToward, .05f );
+		rotationBody.transform.rotation = Quaternion.RotateTowards(qFrom, qToward, angles_per_second * Time.deltaTime * 60f );
 		currentAngle= rotationBody.transform.rotation.eulerAngles.y;
 
     }
@@ -121,13 +133,15 @@ public class Enemy : MonoBehaviour
     public void takeDamage(int amount) { health -= amount ; if (health<=0) die(); }
 
 	void OnCollisionEnter(Collision other) {
-        int layer= other.gameObject.layer;
+        //hurting the player should be done through trigger collisions marked as enemy attacks, the player will check for this
+
+        /*int layer= other.gameObject.layer;
         //Debug.LogFormat( "{0}({1}) {2}", LayerMask.LayerToName(layer), layer, "Enemy");
 
         switch ( layer ) {
             case 7 : hurtPlayer(other.gameObject); Debug.Log("Hurt Player") ; break;
             default   : break;  
-        }
+        }*/
 	}
 
     void OnTriggerEnter(Collider other) {

@@ -7,6 +7,8 @@ public class EnemySpinner : Enemy
     public const float  stun_duration   =  7    ;
     const float base_rotation_speed     =500    ;
     public bool inStunFrames;
+    public float player_distance_deadzone = .5f;
+    bool inAttack, inAttackCooldown;
 
 	public override void Start() {
         base.Start();
@@ -28,10 +30,25 @@ public class EnemySpinner : Enemy
 	}
 
     virtual public void MoveTowardPlayer() {
+        if(Vector3.Distance(lastKnownPlayerLocation, body.position) < player_distance_deadzone)
+        {
+            if(!inAttack && !inAttackCooldown)
+                startAttack();
+            return;   
+        }
         MoveInDirection(lastKnownPlayerLocation-body.position);   
     }
 
+    void startAttack()
+    {
+        inAttack = true;
+        Debug.Log("starting Attack!");
+        //TODO: start attack logic
+    }
+
     virtual public void Wander() {
+        if(inAttack || inAttackCooldown)
+            return;
         lookAtAngle+= base_rotation_speed   *Time.deltaTime;//+Mathf.Sin(Time.frameCount); 
         RotateInAngleDirection(lookAtAngle);   
     }
@@ -44,8 +61,9 @@ public class EnemySpinner : Enemy
 	}
 
 	public override void hurtPlayer(GameObject player) {
-		Debug.Log("Hurt Player");
-        stun(stun_duration*0.32f);
+		//Debug.Log("Hurt Player");
+        //stun(stun_duration*0.32f);
+        //player should determine if they were hurt
         knockback(player.gameObject.transform.position, 0.42f);
 	}
 
