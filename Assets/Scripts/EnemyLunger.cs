@@ -37,10 +37,15 @@ public class EnemyLunger : EnemySpinner
 	}
 
     override public void MoveTowardPlayer(){
+        Debug.Log("MoveTowardPlayer" + Time.realtimeSinceStartup);
         anims.SetBool("walking", true);
-        MoveInDirection  (  lastKnownPlayerLocation-body.position            );   
 
-        RotateInDirection(( lastKnownPlayerLocation-body.position).normalized);
+        Vector3 movementVector = lastKnownPlayerLocation-body.position;
+        Debug.Log("movementVector:"+movementVector);
+
+        MoveInDirection(movementVector);   
+
+        RotateInDirection(movementVector.normalized);
     }
     
     bool waitingOnWanderPause = false;

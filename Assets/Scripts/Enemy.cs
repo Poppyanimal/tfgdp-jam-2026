@@ -20,12 +20,13 @@ public class Enemy : MonoBehaviour
     GameObject PlayerSeen { get; set; }
     public Vector3 lastKnownPlayerLocation= new Vector3(1000,1000,1000); // The default vector is this as a hacky way of making sure the enemy doesn't start pathfinding to the default LKPL immediately
     public const float find_player_distance = 30,
-                       track_player_distance= 10,
+                       track_player_distance= 15,
                        track_player_duration=  5;
 
     PlayerController player;
     public float activationDistance = 5f;
     protected Animator anims;
+    public GameObject scanPoint;
 
     protected int health = 1;
 
@@ -57,7 +58,7 @@ public class Enemy : MonoBehaviour
     }
 
     void scanEnvironment() {
-        lookAtAngle    = body.rotation.eulerAngles.y;
+        lookAtAngle    = scanPoint.transform.rotation.eulerAngles.y;
         float[] scanAngles   = new float[scan_ray_density*2+1];
 
         for (int ii = 0; ii<scan_ray_density; ii+=1) { scanAngles[                       ii]= lookAtAngle - ((scan_ray_density-ii)*half_fov/scan_ray_density); }
@@ -66,7 +67,7 @@ public class Enemy : MonoBehaviour
 
 
         LayerMask maskLayer= LayerMask.GetMask("Default")+ LayerMask.GetMask("Player") ;
-        scanSweep = SharedLib.scanAngleSweep(body.position, scanAngles, scan_distance, maskLayer );
+        scanSweep = SharedLib.scanAngleSweep(scanPoint.transform.position, scanAngles, scan_distance, maskLayer, true);
 
         //int itt = 0;
         //foreach (float angle in scanAngles) {
@@ -81,9 +82,11 @@ public class Enemy : MonoBehaviour
         //Debug.Log("Start Scan");
 
         foreach (RaycastHit hit in scanSweep){
-            if (hit.collider!=null && 1<<hit.transform.gameObject.layer==LayerMask.GetMask("Player") && hit.distance<find_player_distance) {
+            if (hit.collider!=null && hit.transform.gameObject.layer==LayerMask.NameToLayer("Player") && hit.distance<find_player_distance) {
                 playerIsInSight=true; 
-                PlayerSeen=hit.transform.gameObject;    
+                PlayerSeen=hit.transform.gameObject;   
+                Debug.Log("Sees Player");
+                break; 
             }   
         }
         if (playerIsInSight) {
@@ -92,13 +95,18 @@ public class Enemy : MonoBehaviour
             lastKnownPlayerLocation= playerBody.position;
             playerIsRemembered=true;
         }
-        else {
-            StartCoroutine( forgetPlayerLocation(track_player_duration));
+        else
+        {
+            if(forgetCoro != null)
+                StopCoroutine(forgetCoro);
+            forgetCoro = StartCoroutine( forgetPlayerLocation(track_player_duration));
         }
     }
 
+    Coroutine forgetCoro;
     IEnumerator forgetPlayerLocation(float duration) {
         yield return new WaitForSeconds(duration);
+        Debug.Log("forgot player location");
         if (!playerIsInSight) { 
             playerIsRemembered= false;
             PlayerSeen=null;
