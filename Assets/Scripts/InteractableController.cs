@@ -24,11 +24,7 @@ public class InteractableController : MonoBehaviour
     a_Interactable targetInteractable;
     a_Interactable prevInteractable;
 
-
-
-
-
-    public int memory_progress { set; get; } = -1;
+    public int overallMemoryProgress { set; get; } = -1;
     readonly public string[][] memory_texts = { 
         new string[]{ "1&I hardly have any memories from chidhood", "2&What do you mean?", "3&I can barely remember anything before my fifthteenth birthday.", "4&Nothing?", "5&Sometimes, I get flashes,","6&Bestie, that's not normal.", "7&What do you mean?"},
         new string[]{ "Well, here we are.", "Home sweet childhood home."},
@@ -51,6 +47,9 @@ public class InteractableController : MonoBehaviour
         new string[]{ ""},        
         new string[]{ ""}
     };
+
+    int currentMemoryProgress=-1;
+    string[][] currentMemory;
 
     readonly public string[][] special_memories = {
         new string[]{ "Don't forget your umbrella. It's supposed to rain tomorrow", "My umbrella?", "... umbrella...", "MY UMBRELLA!"},
@@ -145,15 +144,28 @@ public class InteractableController : MonoBehaviour
 
     public void playMemory(string[][]memoryToPlay) {
         psuedoPause();
-
+        currentMemory=memoryToPlay;
+        showAndPopulateDialogue();
+        //int itt=0;
+        //foreach (string[] strA in memoryToPlay) {
+        //    Debug.LogFormat("{0} {1}: {2}  .", itt, strA[0], strA[1]);
+        //    itt+=1;
+        //}
     }
 
     void psuedoPause() {
-        Time.timeScale=0;
+        Time.timeScale=0.1f;
         PlayerController pc;
         Player.TryGetComponent<PlayerController>(out pc);
         pc.enabled=false;
     }
 
+    void showAndPopulateDialogue() {
+        currentMemoryProgress=0;
+
+        dialogueContainer.enabled=true;
+        SpeakerTextContainer.text= currentMemory[currentMemoryProgress][0];
+        DialogueTextContainer.text= currentMemory[currentMemoryProgress][1];
+    }
 
 }

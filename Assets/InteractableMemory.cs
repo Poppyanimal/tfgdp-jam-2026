@@ -12,13 +12,15 @@ public class InteractableMemory: EmptyInteractionInteractable
 
 
 	public override void activate() {
-		Control.memory_progress+=1;
+		Control.overallMemoryProgress+=1;
 
-		Debug.Log(Control.memory_progress);
-		parseCurrentMemory(Control.memory_progress);
+		Debug.Log(Control.overallMemoryProgress);
+		parseCurrentMemory(Control.overallMemoryProgress);
 		playCurrentMemory();
 
 	}
+
+	//To Generalize this for special memory classes
 	void parseCurrentMemory(int curr) {
 		if ( ! validateCurr(curr) ) return;
 
@@ -27,7 +29,11 @@ public class InteractableMemory: EmptyInteractionInteractable
 		int itt=0;
 		SpeakerDialogue= new string[currMemory.Length][];
 		foreach ( string quip in currMemory) {
-			SpeakerDialogue[itt]= quip.Split("&");
+			if (quip.Contains("&") )
+				SpeakerDialogue[itt]= quip.Split("&");
+			else
+				SpeakerDialogue[itt]= new string[2] { "??? ? ???", quip };
+			itt+=1;
 		}
 	//Replace Spearker IDs with Names by switch	
 	}
