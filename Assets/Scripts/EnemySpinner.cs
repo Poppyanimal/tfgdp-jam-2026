@@ -8,18 +8,20 @@ public class EnemySpinner : Enemy
     const float base_rotation_speed     =500    ;
     public bool inStunFrames;
     public float player_distance_deadzone = .5f;
-    bool inAttackCooldown; 
+    bool inAttackCooldown, isDead; 
+    public Rigidbody bodyDisableOnDeath; public Collider colliderDisableOnDeath;
 
 	public override void Start() {
         base.Start();
 	    force_multiplier    =  20f    ;
         motion_drag 		=   3.8f  ; 
         move_speed          =   0.62f ;
+        health = 3;
 	}
 
     override public void Update() {
         base.Update();
-        if (!inStunFrames) decideMovement();
+        if (!inStunFrames && !isDead) decideMovement();
     }
 
     void decideMovement() { 
@@ -70,6 +72,15 @@ public class EnemySpinner : Enemy
         //player should determine if they were hurt
         knockback(player.gameObject.transform.position, 0.42f);
 	}
+
+    public override void die()
+    {
+        base.die();
+        isDead = true;
+        anims.SetBool("Dead", true);
+        colliderDisableOnDeath.enabled = false;
+        bodyDisableOnDeath.constraints = RigidbodyConstraints.FreezeAll;
+    }
 
 
 

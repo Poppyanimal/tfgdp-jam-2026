@@ -718,6 +718,8 @@ MonoBehaviour:
   activationDistance: 5
   inStunFrames: 0
   player_distance_deadzone: 1.2
+  bodyDisableOnDeath: {fileID: 4151345770386612063}
+  colliderDisableOnDeath: {fileID: 7193639806222351429}
 --- !u!1 &5957144018503365100
 GameObject:
   m_ObjectHideFlags: 0

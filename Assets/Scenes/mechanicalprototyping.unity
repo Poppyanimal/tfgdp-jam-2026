@@ -5650,6 +5650,8 @@ MonoBehaviour:
   activationDistance: 5
   inStunFrames: 0
   player_distance_deadzone: 0.5
+  bodyDisableOnDeath: {fileID: 0}
+  colliderDisableOnDeath: {fileID: 0}
 --- !u!136 &924550633
 CapsuleCollider:
   m_ObjectHideFlags: 0
@@ -5701,6 +5703,8 @@ MonoBehaviour:
   activationDistance: 5
   inStunFrames: 0
   player_distance_deadzone: 0.5
+  bodyDisableOnDeath: {fileID: 0}
+  colliderDisableOnDeath: {fileID: 0}
   inWanderFrames: 0
 --- !u!1 &945668996
 GameObject:
@@ -16309,10 +16313,6 @@ PrefabInstance:
     - target: {fileID: 4412337108247171296, guid: 9fb5c52a8be4bf74fa86e16c6510c3fd, type: 3}
       propertyPath: m_Name
       value: Doll Spinner
-      objectReference: {fileID: 0}
-    - target: {fileID: 4412337108247171296, guid: 9fb5c52a8be4bf74fa86e16c6510c3fd, type: 3}
-      propertyPath: m_IsActive
-      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 7693887275668170709, guid: 9fb5c52a8be4bf74fa86e16c6510c3fd, type: 3}
       propertyPath: m_LocalPosition.x

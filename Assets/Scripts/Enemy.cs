@@ -27,7 +27,7 @@ public class Enemy : MonoBehaviour
     public float activationDistance = 5f;
     protected Animator anims;
 
-    int health = 1;
+    protected int health = 1;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     virtual public void Start() {
