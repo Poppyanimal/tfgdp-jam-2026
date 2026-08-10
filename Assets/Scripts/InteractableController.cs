@@ -23,7 +23,42 @@ public class InteractableController : MonoBehaviour
     bool lockTarget;
     a_Interactable targetInteractable;
     a_Interactable prevInteractable;
-   
+
+    readonly public string[][] memories_texts = { 
+        new string[]{ "I hardly have any memories of my chidhood", "What do you mean?", "I can barely remember anything before my fifthteenth birthday.", "Nothing?", "Sometimes, I get flashes,","Bestie, that's not normal.", "What do you mean?"},
+        new string[]{ "Well, here we are.", "Home sweet childhood home."},
+        new string[]{ "You could at least pretend to be excited about Aunt Rosemary's christmas gift. She thought really hard about what clothes you'll like, and even if she got it wrong this year there's no reason to sound so ungrateful.", "She gets it wrong every year." },
+        new string[]{ "Come now boy, stop your baby-crying. It's just a scratch. Boys don't cry about little things like this.", "*sniff*"},
+        new string[]{ "I want the pink one.", "Now #@&^!&, you know Jessica wants the pink one. Why not let her have it.", "She always gets to have the pink one.", "Of course she does; she's a girl,[diminutive]."},
+        new string[]{ "No son of mine is going to play with Dolls.", "Dad stop it, please stop.", "Quit crying boy, before I give you something to actually cry about."},
+        new string[]{ "Don't forget your umbrella. It's supposed to rain tomorrow", "My umbrella?", "... umbrella...", "MY UMBRELLA!"},
+    
+        new string[]{ "Who would want to be a girl anyway?"},
+        new string[]{ "Hey guys.","Woah dude! You scared the shit out of me. How did you learn to move so silently.", "My mom like her quiet time and the floorboards creak."},
+        new string[]{ "Hey #@&^!&, what's up.","You ever feel like it'd be nice to just, nap forever.", "What?", "You know, fall asleep and not wake up?", "Bro, you doing alright?", "*sigh* Just forget about it, alright."},
+        new string[]{ ""},
+        
+        new string[]{ "You can call me Lily, if you want to.", "What? But that's a girl's name? It'd be weird.", "...Only if you want to."},
+        new string[]{ "Why don't you talk to me anymore?", "..."},
+        new string[]{ "I'm not gonna kiss you. What are you gay?"},
+        new string[]{ "That's IT! This is ridiculous. I'm taking you to the barber, and you're getting a haircut.", "But, I like my hair long.", "And if you give me anymore lip, I'll have George shave you." },
+        new string[]{ ""},
+
+        new string[]{ "I lost my son, and you're saying I'm not even allowed to grieve.", "You didn't lose anything. I'm still here, same as I've always been. I'm just not who you thought I was."},
+        new string[]{ "We talked with Aunt Rosemary about your situation, and she recommended we enroll you in a summer camp of sorts.", "I thought I told old you not to tell her."},
+        new string[]{ "Young man, you are the child and we're the adults. Us listening to you is a courtesy we offer, not something you can demand. Pack your fucking bags."},
+        new string[]{ ""},        
+        new string[]{ ""}
+    };
+
+    readonly public string[][] special_memories = {
+        new string[]{ "You never get used to the sensation of falling.", "It feels so freeing, like you've escaped gravity's cruel prison.", "But the Ground is a harsh Warden, who'll always catch you with a closed fist."}
+    };
+
+
+
+
+
 	private void Start() {
         getComponentFields();
         emptyAndHidePrompt();
@@ -59,7 +94,6 @@ public class InteractableController : MonoBehaviour
         }
     }
     #endregion
-
 
     void OnTriggerEnter(Collider other)	{
         a_Interactable freshInteractable;

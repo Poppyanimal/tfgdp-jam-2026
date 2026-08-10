@@ -2,8 +2,6 @@ Player
  -Girl
   -Additional Animations?
  -Umbrella  
-  --Melee
-    ---Implement HitChecks.
   --Ranged
     ---Aim ?
     ---Bullet Projectiles
