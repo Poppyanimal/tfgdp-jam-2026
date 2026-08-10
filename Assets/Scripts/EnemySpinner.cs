@@ -32,8 +32,8 @@ public class EnemySpinner : Enemy
     }
 
     virtual public void Wander() {
-        TargetAngle+= base_rotation_speed   *Time.deltaTime;//+Mathf.Sin(Time.frameCount); 
-        RotateInAngleDirection(TargetAngle);   
+        lookAtAngle+= base_rotation_speed   *Time.deltaTime;//+Mathf.Sin(Time.frameCount); 
+        RotateInAngleDirection(lookAtAngle);   
     }
 
 	public override void getHurt(GameObject attacker) {

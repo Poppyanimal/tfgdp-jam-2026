@@ -6,7 +6,7 @@ public class EnemyPersistent : EnemySpinner
 {
     const float wanderDuration=10;
     public bool inWanderFrames=false;
-    public Vector3 wanderDir;
+    Vector3 wanderDir;
 
 
 
@@ -31,13 +31,15 @@ public class EnemyPersistent : EnemySpinner
 
     override public void MoveTowardPlayer(){
         MoveInDirection  (  lastKnownPlayerLocation-body.position            );   
+
         RotateInDirection(( lastKnownPlayerLocation-body.position).normalized);
     }
 
     void AssignWander() {
         Debug.Log("Wandering");
-        wanderDir= new Vector3 ( Random.Range(-1,1), 0.0f, Random.Range(-1,1) ).normalized;
-        
+        wanderDir= new Vector3 ( Random.Range(-10,10), 0.0f, Random.Range(-10,10) ).normalized;
+        if (wanderDir.Equals(Vector3.zero)) wanderDir= Vector3.forward;
+
         Wander();
 
         inWanderFrames=true;

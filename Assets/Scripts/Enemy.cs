@@ -8,7 +8,8 @@ public class Enemy : MonoBehaviour
     public float force_multiplier    =  8f     ,
                  motion_drag 		 =	4.8f   ,
                  move_speed          =  0.62f  ;
-    public float TargetAngle {get;set;} =0;
+    public float lookAtAngle {get;set;} =0;
+    public float currentAngle=0;
 
     RaycastHit[] scanSweep;
     public float half_fov=90, scan_distance=50;
@@ -39,7 +40,7 @@ public class Enemy : MonoBehaviour
     }
 
     void scanEnvironment() {
-        float lookAtAngle    = body.rotation.eulerAngles.y;
+        lookAtAngle    = body.rotation.eulerAngles.y;
         float[] scanAngles   = new float[scan_ray_density*2+1];
 
         for (int ii = 0; ii<scan_ray_density; ii+=1) { scanAngles[                       ii]= lookAtAngle - ((scan_ray_density-ii)*half_fov/scan_ray_density); }
@@ -97,7 +98,17 @@ public class Enemy : MonoBehaviour
 	}
 
     public void RotateInDirection(Vector3 direction) {
-        if (Time.timeScale>0) rotationBody.transform.rotation= Quaternion.LookRotation(direction, Vector3.up);
+       Quaternion qFrom = rotationBody.transform.rotation;
+
+		Quaternion qVel = Quaternion.LookRotation( direction.magnitude==0? Vector3.forward: direction);
+		float velAngle= qVel.eulerAngles.y;
+		float lookTowardAngle= direction.magnitude>0? velAngle:lookAtAngle;
+
+		Quaternion qToward = Quaternion.AngleAxis( lookTowardAngle, Vector3.up);
+
+		rotationBody.transform.rotation = Quaternion.RotateTowards(qFrom, qToward, .05f );
+		currentAngle= rotationBody.transform.rotation.eulerAngles.y;
+
     }
     public void RotateInAngleDirection(float angle ) {
         RotateInDirection(  SharedLib.angleToVector3(SharedLib.angleToBoundedDegrees(angle))  );

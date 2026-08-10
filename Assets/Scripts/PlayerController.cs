@@ -467,7 +467,6 @@ public class PlayerController : MonoBehaviour {
 		
 		Quaternion qVel = Quaternion.LookRotation( vel.magnitude==0? Vector3.forward: vel);
 		float velAngle= qVel.eulerAngles.y;
-		
 		float lookTowardAngle= moving? velAngle:lookAtAngle;
 
 		Quaternion qToward = Quaternion.AngleAxis( lookTowardAngle, Vector3.up);
