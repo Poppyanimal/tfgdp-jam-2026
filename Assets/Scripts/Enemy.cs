@@ -154,7 +154,7 @@ public class Enemy : MonoBehaviour
         //Debug.LogFormat( "{0}({1}) {2}", LayerMask.LayerToName(layer), layer, "Enemy");
 
         switch ( layer ) {
-            case 7 : getHurt(other.gameObject); Debug.Log("Hit by Player") ; break;
+            case 9 : getHurt(other.gameObject); Debug.Log("Hit by Player") ; break;
             default   : break;  
         }
 	}

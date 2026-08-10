@@ -48,7 +48,9 @@ public class EnemySpinner : Enemy
     }
 
     virtual public void Wander() {
-        if(inAttackCooldown)
+        if(!inStunFrames)
+            body.angularVelocity = Vector3.zero;
+        if(inAttackCooldown || inStunFrames)
             return;
         lookAtAngle+= base_rotation_speed   *Time.deltaTime;//+Mathf.Sin(Time.frameCount); 
         RotateInAngleDirection(lookAtAngle);   
@@ -70,9 +72,21 @@ public class EnemySpinner : Enemy
         knockback(player.gameObject.transform.position, 0.42f);
 	}
 
+
+    public void freeFromStun()
+    {
+        if(stunCoro != null)
+            StopCoroutine(stunCoro);
+
+        inStunFrames = false;
+    }
+
+    Coroutine stunCoro;
     void stun(float duration) {
+        if(stunCoro != null)
+            StopCoroutine(stunCoro);
         inStunFrames=true;
-        StartCoroutine(inStunFrameTimer(duration));
+        stunCoro =  StartCoroutine(inStunFrameTimer(duration));
     }
 
     IEnumerator inStunFrameTimer(float duration) {

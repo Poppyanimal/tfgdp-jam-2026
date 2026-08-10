@@ -26179,7 +26179,7 @@ GameObject:
   - component: {fileID: 4239027953795396605}
   - component: {fileID: 4729448533587089934}
   - component: {fileID: 6745210277681269745}
-  m_Layer: 7
+  m_Layer: 9
   m_Name: hurtbox
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -31322,7 +31322,7 @@ GameObject:
   - component: {fileID: 5844450612162428684}
   - component: {fileID: 5355301616227888787}
   - component: {fileID: 5226352068580607111}
-  m_Layer: 7
+  m_Layer: 9
   m_Name: hitsparks
   m_TagString: Untagged
   m_Icon: {fileID: 0}
