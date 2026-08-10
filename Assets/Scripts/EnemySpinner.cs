@@ -8,7 +8,7 @@ public class EnemySpinner : Enemy
     const float base_rotation_speed     =500    ;
     public bool inStunFrames;
     public float player_distance_deadzone = .5f;
-    bool inAttackCooldown;
+    bool inAttackCooldown; 
 
 	public override void Start() {
         base.Start();
@@ -44,12 +44,11 @@ public class EnemySpinner : Enemy
         inAttackCooldown = true;
         Debug.Log("starting Attack!");
         anims.SetTrigger("Attack");
-        //TODO: start attack logic
     }
 
     virtual public void Wander() {
         if(!inStunFrames)
-            body.angularVelocity = Vector3.zero;
+            body.angularVelocity *= 1f - Time.deltaTime;
         if(inAttackCooldown || inStunFrames)
             return;
         lookAtAngle+= base_rotation_speed   *Time.deltaTime;//+Mathf.Sin(Time.frameCount); 
@@ -73,13 +72,6 @@ public class EnemySpinner : Enemy
 	}
 
 
-    public void freeFromStun()
-    {
-        if(stunCoro != null)
-            StopCoroutine(stunCoro);
-
-        inStunFrames = false;
-    }
 
     Coroutine stunCoro;
     void stun(float duration) {
@@ -103,6 +95,14 @@ public class EnemySpinner : Enemy
     }
 
     public void resolveAttack() { inAttackCooldown = false; }
+    
+    public void resolveStun()
+    {
+        if(stunCoro != null)
+            StopCoroutine(stunCoro);
+
+        inStunFrames = false;
+    }
 
 
     

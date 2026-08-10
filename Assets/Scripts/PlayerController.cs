@@ -191,6 +191,8 @@ public class PlayerController : MonoBehaviour {
 	//---------------------------------------- actionability bools
 	bool isAttacking;
 	bool isDead;
+	bool inIFrames;
+	public float iFrameTime = 1.5f;
 
 	
 	//General Code -----------------------------------------------------------------===========================================================
@@ -224,6 +226,9 @@ public class PlayerController : MonoBehaviour {
 
 	public void attackingFinished() { Move_State=MOVE_STATE.IDLE; isAttacking=false; }
 
+	Coroutine iFrameCoro;
+	IEnumerator iFrames() { yield return new WaitForSeconds(iFrameTime); inIFrames = false; }
+
 	public void shoot()
 	{
 		GameObject bullet = Instantiate(bulletPrefab, bulletPosition.transform.position, bulletPosition.transform.rotation);
@@ -232,11 +237,17 @@ public class PlayerController : MonoBehaviour {
 
 	public void takeDamage(int dam = 1)
 	{
+		if(inIFrames)
+			return;
 		playerAnimator.SetTrigger("getHit");
 		pv.get().modhealth(-dam);
 		ge.get().playerHurt.Invoke();
 		shakeSource.GenerateImpulseWithForce(shakeImpulse);
 		ge.get().hitStop.Invoke();
+
+		if(iFrameCoro != null)
+			StopCoroutine(iFrameCoro);
+		iFrameCoro = StartCoroutine(iFrames());
 	}
 
 	public void doDeath()
@@ -314,6 +325,7 @@ public class PlayerController : MonoBehaviour {
 	float calcSlopeStairAltitude(float SlopeGradient) { return Mathf.Abs(slope_compensate_dist*Mathf.Cos(Mathf.Deg2Rad*SlopeGradient)); }
 
 	MOVE_STATE defineMoveState() {
+		if(isDead)	return MOVE_STATE.DEAD;
 		if (Move_State==MOVE_STATE.ATTACK && isAttacking) return Move_State; //If ATTACKING, KEEP ATTACKING. THE 'finish attacking' function will set to idle.
 
 		moving= rawInput.magnitude > input_deadzone;
@@ -522,8 +534,6 @@ public class PlayerController : MonoBehaviour {
 
 	Vector3 movementRespectsGround(Vector2 dir2) { return Vector3.ProjectOnPlane( SharedLib.vector2to3(dir2), asGround.normal.normalized );	}
 
-	bool inHurtIFrames;
-	float hurtIframes = .5f;
 
 	void OnTriggerEnter(Collider other) {
 		if(other.gameObject.layer != LayerMask.NameToLayer("EnemyAttack"))
@@ -543,19 +553,9 @@ public class PlayerController : MonoBehaviour {
 		}
 		else
 		{
-			if(!inHurtIFrames)
-			{
-				inHurtIFrames = true;
-				takeDamage();
-				StartCoroutine(iFrameTimer());
-			}
+			takeDamage();
 		}
 	}
 
-	IEnumerator iFrameTimer()
-	{
-		yield return new WaitForSeconds(hurtIframes);
-		inHurtIFrames = false;
-	} 
 
 }

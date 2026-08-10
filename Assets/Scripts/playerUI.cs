@@ -27,15 +27,15 @@ public class playerUI : MonoBehaviour
         else
             anims.SetBool("showHealth", true);
 
-        Vector3 pos = healthpercentobj.transform.position;
+        Vector3 pos = healthpercentobj.transform.localPosition;
         pos.y = healthminY + (healthmaxY - healthminY) * ratio;
-        healthpercentobj.transform.position = pos;
+        healthpercentobj.transform.localPosition = pos;
     }
 
     [ContextMenu("debug Health")]
     public void debugUpdateHealth()
     {
-        float ratio = debugHealth;
+        float ratio = debugHealth / 5f;
         if(ratio <= 0)
             anims.SetBool("showHealth", false);
         else

@@ -48,5 +48,6 @@ public class PlayerVars
             health = 0;
             ge.get().playerDied.Invoke();
         }
+        Debug.Log("player health changed to: "+health);
     }
 }
