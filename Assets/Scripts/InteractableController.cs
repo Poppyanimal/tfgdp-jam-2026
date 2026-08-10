@@ -77,13 +77,18 @@ public class InteractableController : MonoBehaviour
         bool interactEnd    = ! Input.GetKey    (targetInteractable.Interaction_Key);
         bool debugIEnd      =   Input.GetKeyUp  (targetInteractable.Interaction_Key);
 
-        switch (targetInteractable.Interaction_State) {
-            case a_Interactable.INTERACTION_STATE.TARGETED   :    if (interact   ) targetInteractable.interact()   ; else fillAndShowPrompt (); break; 
-            case a_Interactable.INTERACTION_STATE.ACTIVATING :
-            case a_Interactable.INTERACTION_STATE.ACTIVE     :    if (interactEnd) targetInteractable.endInteract(); else emptyAndHidePrompt(); break;
-            default:                                              Debug.Log("UNEXPECTED INTERACTION STATE")                                   ; break;
-        }
+        if (0<=currentMemoryProgress) {
+            if (interact) advanceMemory();
 
+        }
+        else { 
+            switch (targetInteractable.Interaction_State) {
+                case a_Interactable.INTERACTION_STATE.TARGETED   :    if (interact   ) targetInteractable.interact()   ; else fillAndShowPrompt (); break; 
+                case a_Interactable.INTERACTION_STATE.ACTIVATING :
+                case a_Interactable.INTERACTION_STATE.ACTIVE     :    if (interactEnd) targetInteractable.endInteract(); else emptyAndHidePrompt(); break;
+                default:                                              Debug.Log("UNEXPECTED INTERACTION STATE")                                   ; break;
+            }
+        }
         if (logDebugBehavior) {
             if (interact ) Debug.LogFormat("{0}, was interacted with."         , targetInteractable.ToString() );
             if (debugIEnd) Debug.LogFormat("{0}, stoped being interacted with.", targetInteractable.ToString() );
@@ -143,7 +148,7 @@ public class InteractableController : MonoBehaviour
     }
 
     public void playMemory(string[][]memoryToPlay) {
-        psuedoPause();
+        psuedoPause(true);
         currentMemory=memoryToPlay;
         showAndPopulateDialogue();
         //int itt=0;
@@ -153,19 +158,44 @@ public class InteractableController : MonoBehaviour
         //}
     }
 
-    void psuedoPause() {
-        Time.timeScale=0.1f;
+    void psuedoPause(bool startPsuedoPause) {
+        Time.timeScale= startPsuedoPause? 0.0f:1.0f;
         PlayerController pc;
         Player.TryGetComponent<PlayerController>(out pc);
-        pc.enabled=false;
+        pc.enabled=!startPsuedoPause;
     }
 
     void showAndPopulateDialogue() {
         currentMemoryProgress=0;
 
-        dialogueContainer.enabled=true;
-        SpeakerTextContainer.text= currentMemory[currentMemoryProgress][0];
+        Debug.LogFormat("{0} was {1} {2}",dialogueContainer, dialogueContainer.enabled, dialogueContainer.isActiveAndEnabled);
+       
+        dialogueContainer.gameObject.SetActive(true);
+
+        Debug.LogFormat("{0} is {1} {2}",dialogueContainer, dialogueContainer.enabled, dialogueContainer.isActiveAndEnabled);
+        
+
+        SpeakerTextContainer.text = currentMemory[currentMemoryProgress][0];
         DialogueTextContainer.text= currentMemory[currentMemoryProgress][1];
     }
+
+    void advanceMemory() {
+        currentMemoryProgress+=1;
+        if (currentMemoryProgress == currentMemory.Length) {
+            endMemory();
+            return;
+        }
+        
+        SpeakerTextContainer.text = currentMemory[currentMemoryProgress][0];
+        DialogueTextContainer.text= currentMemory[currentMemoryProgress][1];
+    }
+
+    void endMemory() {
+        currentMemoryProgress=-1;
+        currentMemory= new string[0][];
+        dialogueContainer.gameObject.SetActive(false);   
+        psuedoPause(false);
+    }
+
 
 }
