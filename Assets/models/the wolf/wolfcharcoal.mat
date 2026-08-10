@@ -129,8 +129,9 @@ Material:
     - _WorkflowMode: 1
     - _ZWrite: 1
     - _mult: 4.99
+    - _positionFactor: 0
     - _rotationFactor: 25
-    - _size: 15
+    - _size: 8
     - _timeEffect: 2
     - _timeMod: 0.2
     m_Colors:

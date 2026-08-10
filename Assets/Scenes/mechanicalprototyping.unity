@@ -4885,6 +4885,7 @@ GameObject:
   - component: {fileID: 745107874}
   - component: {fileID: 745107873}
   - component: {fileID: 745107872}
+  - component: {fileID: 745107877}
   - component: {fileID: 745107871}
   m_Layer: 10
   m_Name: dog lunger
@@ -5041,9 +5042,40 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 1578314306}
-  - {fileID: 1599587347}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &745107877
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 745107870}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1dbf687a9780027429bde87fbd9b9518, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  body: {fileID: 745107872}
+  rotationBody: {fileID: 1578314331}
+  force_multiplier: 8
+  motion_drag: 4.8
+  move_speed: 1
+  angles_per_second: 1
+  currentAngle: 0
+  half_fov: 90
+  scan_distance: 50
+  scan_ray_density: 10
+  playerIsInSight: 0
+  playerIsRemembered: 0
+  lastKnownPlayerLocation: {x: 1000, y: 1000, z: 1000}
+  activationDistance: 5
+  inStunFrames: 0
+  player_distance_deadzone: 0.5
+  bodyDisableOnDeath: {fileID: 0}
+  colliderDisableOnDeath: {fileID: 0}
+  inWanderFrames: 0
+  wanderPause: 2.5
 --- !u!1 &745456973
 GameObject:
   m_ObjectHideFlags: 0
@@ -12332,6 +12364,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: -8679921383154817045, guid: 27242778566ed2e48b22c90315b73ba6, type: 3}
       insertIndex: -1
       addedObject: {fileID: 442073381}
+    - targetCorrespondingSourceObject: {fileID: -8679921383154817045, guid: 27242778566ed2e48b22c90315b73ba6, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1599587347}
     - targetCorrespondingSourceObject: {fileID: 5746564759562468899, guid: 27242778566ed2e48b22c90315b73ba6, type: 3}
       insertIndex: -1
       addedObject: {fileID: 1504042370}
@@ -12835,14 +12870,14 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1599587346}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 6.405, z: -5.1800003}
+  m_LocalScale: {x: 5, y: 5, z: 5}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 2004842273}
   - {fileID: 583651579}
-  m_Father: {fileID: 745107876}
+  m_Father: {fileID: 1578314306}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1660233398
 GameObject:
