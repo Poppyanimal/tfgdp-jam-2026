@@ -4,8 +4,6 @@ public class EmptyInteractionInteractable :  a_Interactable
 {
 	[SerializeField] bool logDebugMessages= false;
 
-
-
 	public override void detarget()   {		
 		//Implement what happens when the interactable stops being targeted.
 	}

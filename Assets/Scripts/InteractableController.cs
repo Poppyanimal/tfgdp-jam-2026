@@ -7,28 +7,32 @@ public class InteractableController : MonoBehaviour
 {
     public bool logDebugBehavior= true;
 
+    [Header ("Interaction Prompt")]
     public Canvas promptContainer;
     public TextMeshProUGUI promptTextContainer1;
     public TextMeshProUGUI promptTextContainer2;
 
-    [SerializeField]
-    public GameObject PlayerRotation;
-    CapsuleCollider Hitbox;
+    [Header ("Dialogue")]
+    public Canvas dialogueContainer;
+    public TextMeshProUGUI SpeakerTextContainer;
+    public TextMeshProUGUI DialogueTextContainer;
 
-    const float look_fov  = 15.0f ,
-                look_dist =  1.5f ;
-          float lookAtAngle =  0.0f ;
-    RaycastHit[] scanSweepInteract;
+    [Header ("Player")]
+    public GameObject Player;
 
     bool lockTarget;
     a_Interactable targetInteractable;
     a_Interactable prevInteractable;
 
-    readonly public string[][] memories_texts = { 
-        new string[]{ "I hardly have any memories of my chidhood", "What do you mean?", "I can barely remember anything before my fifthteenth birthday.", "Nothing?", "Sometimes, I get flashes,","Bestie, that's not normal.", "What do you mean?"},
+
+
+
+
+    public int memory_progress { set; get; } = -1;
+    readonly public string[][] memory_texts = { 
+        new string[]{ "1&I hardly have any memories from chidhood", "2&What do you mean?", "3&I can barely remember anything before my fifthteenth birthday.", "4&Nothing?", "5&Sometimes, I get flashes,","6&Bestie, that's not normal.", "7&What do you mean?"},
         new string[]{ "Well, here we are.", "Home sweet childhood home."},
         new string[]{ "You could at least pretend to be excited about Aunt Rosemary's christmas gift. She thought really hard about what clothes you'll like, and even if she got it wrong this year there's no reason to sound so ungrateful.", "She gets it wrong every year." },
-        new string[]{ "Don't forget your umbrella. It's supposed to rain tomorrow", "My umbrella?", "... umbrella...", "MY UMBRELLA!"},
     
         new string[]{ "Come now boy, stop your baby-crying. It's just a scratch. Boys don't cry about little things like this.", "*sniff*"},
         new string[]{ "I want the pink one.", "Now #@&^!&, you know Jessica wants the pink one. Why not let her have it.", "She always gets to have the pink one.", "Of course she does; she's a girl, Son."},
@@ -49,11 +53,9 @@ public class InteractableController : MonoBehaviour
     };
 
     readonly public string[][] special_memories = {
-        new string[]{ "You never get used to the sensation of falling.", "It feels so freeing, like you've escaped gravity's cruel prison.", "But the Ground is a harsh Warden, who'll always catch you with a closed fist."}
+        new string[]{ "Don't forget your umbrella. It's supposed to rain tomorrow", "My umbrella?", "... umbrella...", "MY UMBRELLA!"},
+        new string[]{ "You never get used to the sensation of falling.", "It feels so freeing, like you've escaped gravity's cruel prison.", "But the Ground is a harsh Warden, and she always catches her runaways."}
     };
-
-
-
 
 
 	private void Start() {
@@ -61,9 +63,7 @@ public class InteractableController : MonoBehaviour
         emptyAndHidePrompt();
 	}
 
-    void getComponentFields() {
-        Hitbox=GetComponent<CapsuleCollider>();
-    }
+    void getComponentFields() {}
 
 	// Update is called once per frame
 	void Update()
@@ -142,4 +142,18 @@ public class InteractableController : MonoBehaviour
     void emptyAndHidePrompt() {
         promptContainer.enabled=false;
     }
+
+    public void playMemory(string[][]memoryToPlay) {
+        psuedoPause();
+
+    }
+
+    void psuedoPause() {
+        Time.timeScale=0;
+        PlayerController pc;
+        Player.TryGetComponent<PlayerController>(out pc);
+        pc.enabled=false;
+    }
+
+
 }

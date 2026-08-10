@@ -7,8 +7,8 @@ public abstract class a_Interactable : MonoBehaviour {
 	public string            Interaction_Prompt { get; }      = "Press E to Interact";
 
 	
-	public void Start () { detarget();	}
-	public void Update() { stepInteractionState();	}
+	virtual public void Start () { detarget();	}
+	virtual public void Update() { stepInteractionState();	}
 
 	public void target()              { Interaction_State= INTERACTION_STATE.TARGETING				;}
 	public void endTarget()           { Interaction_State= INTERACTION_STATE.UNTARGETING			;}
