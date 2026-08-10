@@ -8,7 +8,7 @@ public class EnemySpinner : Enemy
     const float base_rotation_speed     =500    ;
     public bool inStunFrames;
     public float player_distance_deadzone = .5f;
-    bool inAttack, inAttackCooldown;
+    bool inAttackCooldown;
 
 	public override void Start() {
         base.Start();
@@ -32,7 +32,7 @@ public class EnemySpinner : Enemy
     virtual public void MoveTowardPlayer() {
         if(Vector3.Distance(lastKnownPlayerLocation, body.position) < player_distance_deadzone)
         {
-            if(!inAttack && !inAttackCooldown)
+            if(!inAttackCooldown)
                 startAttack();
             return;   
         }
@@ -41,19 +41,22 @@ public class EnemySpinner : Enemy
 
     void startAttack()
     {
-        inAttack = true;
+        inAttackCooldown = true;
         Debug.Log("starting Attack!");
+        anims.SetTrigger("Attack");
         //TODO: start attack logic
     }
 
     virtual public void Wander() {
-        if(inAttack || inAttackCooldown)
+        if(inAttackCooldown)
             return;
         lookAtAngle+= base_rotation_speed   *Time.deltaTime;//+Mathf.Sin(Time.frameCount); 
         RotateInAngleDirection(lookAtAngle);   
     }
 
 	public override void getHurt(GameObject attacker) {
+        anims.SetTrigger("getHit");
+        GlobalEvents.get().hitStop.Invoke();
         Debug.Log("Get Hurt");
         takeDamage(1);
         stun(stun_duration);
@@ -85,6 +88,7 @@ public class EnemySpinner : Enemy
         body.AddForce( Vector3.ProjectOnPlane(dir,(ground.collider!=null?ground.normal:Vector3.up)).normalized*force_multiplier*scale, ForceMode.Impulse);
     }
 
+    public void resolveAttack() { inAttackCooldown = false; }
 
 
     

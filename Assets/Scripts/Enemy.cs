@@ -25,6 +25,7 @@ public class Enemy : MonoBehaviour
 
     PlayerController player;
     public float activationDistance = 5f;
+    protected Animator anims;
 
     int health = 1;
 
@@ -36,15 +37,19 @@ public class Enemy : MonoBehaviour
 
     void getComponentFields() {
         body=GetComponent<Rigidbody>();
+        anims=GetComponentInChildren<Animator>();
     }
 
     // Update is called once per frame
     virtual public void Update() {
         if(Vector3.Distance(body.position, player.body.position) > activationDistance)
         {
+            anims.SetBool("closeToPlayer", false);
             //play idle no one found animation
             return;
         }
+        
+        anims.SetBool("closeToPlayer", true);
 
         //play moving animation
         scanEnvironment();
