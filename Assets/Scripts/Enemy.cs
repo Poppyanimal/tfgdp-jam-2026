@@ -27,6 +27,8 @@ public class Enemy : MonoBehaviour
     public float activationDistance = 5f;
     protected Animator anims;
     public GameObject scanPoint;
+    protected bool faceAgainstWall = false;
+    public float wallCheckDistance = .3f;
 
     protected int health = 1;
 
@@ -54,6 +56,7 @@ public class Enemy : MonoBehaviour
 
         //play moving animation
         scanEnvironment();
+        checkForWall();
         lookForPlayer();
     }
 
@@ -67,7 +70,7 @@ public class Enemy : MonoBehaviour
 
 
         LayerMask maskLayer= LayerMask.GetMask("Default")+ LayerMask.GetMask("Player") ;
-        scanSweep = SharedLib.scanAngleSweep(scanPoint.transform.position, scanAngles, scan_distance, maskLayer, true);
+        scanSweep = SharedLib.scanAngleSweep(scanPoint.transform.position, scanAngles, scan_distance, maskLayer);
 
         //int itt = 0;
         //foreach (float angle in scanAngles) {
@@ -103,10 +106,43 @@ public class Enemy : MonoBehaviour
         }
     }
 
+    void checkForWall()
+    {
+        faceAgainstWall= false;
+        RaycastHit[] hits = SharedLib.scanAngleSweep(scanPoint.transform.position, new float[]{lookAtAngle}, scan_distance, true);
+        foreach(RaycastHit hit in hits)
+        {
+            if(hit.collider == null)
+                break;
+            
+            //Debug.Log((hit.collider != null ? hit.collider : "null") + ", "+hit.distance+", "+hit.transform.gameObject.layer);
+            if(hit.transform.gameObject.layer==0 && hit.distance <= wallCheckDistance)
+                faceAgainstWall = true;
+        }
+
+        if(faceAgainstWall)
+            Debug.Log("face against wall");
+    }
+
+
+    protected bool playerInFace(float dist)
+    {
+        bool inface = false;
+        RaycastHit[] hits = SharedLib.scanAngleSweep(scanPoint.transform.position, new float[]{lookAtAngle, lookAtAngle + 5, lookAtAngle - 5}, scan_distance, true);
+        foreach(RaycastHit hit in hits)
+        {
+            if(hit.collider == null)
+                break;
+            if(hit.transform.gameObject.layer==LayerMask.NameToLayer("Player") && hit.distance <= dist)
+                inface = true;
+        }
+        return inface;
+    }
+
     Coroutine forgetCoro;
     IEnumerator forgetPlayerLocation(float duration) {
         yield return new WaitForSeconds(duration);
-        Debug.Log("forgot player location");
+        //Debug.Log("forgot player location");
         if (!playerIsInSight) { 
             playerIsRemembered= false;
             PlayerSeen=null;

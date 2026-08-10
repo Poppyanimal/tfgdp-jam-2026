@@ -5070,14 +5070,17 @@ MonoBehaviour:
   playerIsInSight: 0
   playerIsRemembered: 0
   lastKnownPlayerLocation: {x: 1000, y: 1000, z: 1000}
-  activationDistance: 5
+  activationDistance: 15
   scanPoint: {fileID: 1673852037}
+  wallCheckDistance: 0.5
   inStunFrames: 0
   player_distance_deadzone: 0.5
   bodyDisableOnDeath: {fileID: 0}
   colliderDisableOnDeath: {fileID: 0}
   inWanderFrames: 0
   wanderPause: 2.5
+  wanderWallTurnTimer: 1
+  lungeAtPlayerDistance: 2
 --- !u!1 &745456973
 GameObject:
   m_ObjectHideFlags: 0
@@ -6209,6 +6212,7 @@ MonoBehaviour:
   lastKnownPlayerLocation: {x: 1000, y: 1000, z: 1000}
   activationDistance: 5
   scanPoint: {fileID: 0}
+  wallCheckDistance: 0.3
   inStunFrames: 0
   player_distance_deadzone: 0.5
   bodyDisableOnDeath: {fileID: 0}
@@ -6263,6 +6267,7 @@ MonoBehaviour:
   lastKnownPlayerLocation: {x: 1000, y: 1000, z: 1000}
   activationDistance: 5
   scanPoint: {fileID: 0}
+  wallCheckDistance: 0.3
   inStunFrames: 0
   player_distance_deadzone: 0.5
   bodyDisableOnDeath: {fileID: 0}
