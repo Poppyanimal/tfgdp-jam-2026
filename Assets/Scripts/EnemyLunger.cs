@@ -1,4 +1,5 @@
 using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 using static Unity.Cinemachine.CinemachineSplineDolly;
 
@@ -14,6 +15,7 @@ public class EnemyLunger : EnemySpinner
     public float lungeSpeed = 2.5f;
     public float force_multiplier_override = 10f;
     bool inLungeCooldown = false;
+    public List<ParticleSystem> particlesToStopOnDeath;
 
 	public override void Start() {
         base.Start();
@@ -160,6 +162,15 @@ public class EnemyLunger : EnemySpinner
     {
         Debug.Log("Lunger got hurt");
         base.getHurt(attacker);
+    }
+
+    public override void die()
+    {
+        base.die();
+        foreach(ParticleSystem p in particlesToStopOnDeath)
+        {
+            p.Stop();
+        }
     }
 
 }
