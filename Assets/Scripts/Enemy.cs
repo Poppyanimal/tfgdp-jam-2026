@@ -159,12 +159,13 @@ public class Enemy : MonoBehaviour
 
 
     const float move_force_old_to_new_const = 4f;
-	public void MoveInDirection (Vector3 direction) {
-        MoveInDirection(direction, move_speed);
+	public void MoveInDirection (Vector3 direction, bool oldBehavior = false) {
+        MoveInDirection(direction, move_speed, oldBehavior);
 	}
     
-	public void MoveInDirection (Vector3 direction, float speed) {
-		body.AddForce(direction.normalized*force_multiplier *60f*Time.deltaTime * move_force_old_to_new_const, ForceMode.Force  );
+	public void MoveInDirection (Vector3 direction, float speed, bool oldBehavior = false) {
+		body.AddForce((oldBehavior ? direction : direction.normalized * move_force_old_to_new_const)
+            *force_multiplier *60f*Time.deltaTime, ForceMode.Force  );
         body.linearDamping=motion_drag;
 
         if (body.linearVelocity.magnitude > move_speed) body.linearVelocity= body.linearVelocity.normalized*speed;
