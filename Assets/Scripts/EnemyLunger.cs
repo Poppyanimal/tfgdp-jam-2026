@@ -12,11 +12,12 @@ public class EnemyLunger : EnemySpinner
     public float wanderWallTurnTimer = 1f;
     public float lungeAtPlayerDistance = 1.5f;
     public float lungeSpeed = 2.5f;
+    public float force_multiplier_override = 10f;
     bool inLungeCooldown = false;
 
 	public override void Start() {
         base.Start();
-	    force_multiplier    =  10f    ;
+	    force_multiplier    =  force_multiplier_override    ;
         motion_drag 		=   6.8f  ; 
         move_speed          =   1f   ;
         health              =   2   ;
