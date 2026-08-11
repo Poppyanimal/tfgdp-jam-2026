@@ -33,7 +33,7 @@ public class InteractableController : MonoBehaviour
     bool isDialogueError; string interaction_error_code;
     public int overallMemoryProgress { set; get; } = -1;
     readonly public string[][] memory_texts = { 
-        new string[]{ "1&I hardly have any memories from chidhood", "2&What do you mean?", "3&I can barely remember anything before my fifthteenth birthday.", "4&Nothing?", "5&Sometimes, I get flashes,","6&Bestie, that's not normal.", "7&What do you mean?"},
+        new string[]{ "1&I hardly have any memories from childhood", "2&What do you mean?", "3&I can barely remember anything before my fifthteenth birthday.", "4&Nothing?", "5&Sometimes, I get flashes,","6&Bestie, that's not normal.", "7&What do you mean?"},
         new string[]{ "Well, here we are.", "Home sweet childhood home."},
         new string[]{ "You could at least pretend to be excited about Aunt Rosemary's christmas gift. She thought really hard about what clothes you'll like, and even if she got it wrong this year there's no reason to sound so ungrateful.", "She gets it wrong every year." },
     
@@ -165,7 +165,7 @@ public class InteractableController : MonoBehaviour
         detectDialogueError(memoryToPlay[0]);
         psuedoPause(true);
         currentMemory=memoryToPlay;
-        showAndPopulateDialogue();
+        showAndBeginDialogue();
         //int itt=0;
         //foreach (string[] strA in memoryToPlay) {
         //    Debug.LogFormat("{0} {1}: {2}  .", itt, strA[0], strA[1]);
@@ -188,13 +188,10 @@ public class InteractableController : MonoBehaviour
         pc.enabled=!startPsuedoPause;
     }
 
-    void showAndPopulateDialogue() {
-        currentMemoryProgress=0;
-        
+    void showAndBeginDialogue() {
+        currentMemoryProgress=-1;
         dialogueContainer.gameObject.SetActive(true);
-
-        SpeakerTextContainer.text = currentMemory[currentMemoryProgress][0];
-        DialogueTextContainer.text= currentMemory[currentMemoryProgress][1];
+        advanceMemory();
     }
 
     void advanceMemory() {
@@ -203,9 +200,12 @@ public class InteractableController : MonoBehaviour
             endMemory();
             return;
         }
-        
-        SpeakerTextContainer.text = currentMemory[currentMemoryProgress][0];
-        DialogueTextContainer.text= currentMemory[currentMemoryProgress][1];
+        setTextAndTypewriter();
+    }
+
+    void setTextAndTypewriter() {
+        SpeakerTextContainer .SetText(currentMemory[currentMemoryProgress][0]);
+        DialogueTextContainer.GetComponent<TypeWriterEffect>().SetText(currentMemory[currentMemoryProgress][1]);
     }
 
     void endMemory() {
