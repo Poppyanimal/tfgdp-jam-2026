@@ -16209,10 +16209,6 @@ PrefabInstance:
       propertyPath: promptTextContainer2
       value: 
       objectReference: {fileID: 1212475437}
-    - target: {fileID: 4807239732957518967, guid: 277402ffafc5f62449f7b0be33b27224, type: 3}
-      propertyPath: m_Enabled
-      value: 1
-      objectReference: {fileID: 0}
     - target: {fileID: 9016423704104939456, guid: 277402ffafc5f62449f7b0be33b27224, type: 3}
       propertyPath: m_Name
       value: player entity

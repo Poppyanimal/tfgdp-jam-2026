@@ -77,6 +77,9 @@ public class PlayerController : MonoBehaviour {
 	public float shakeImpulse = .1f;
 
 
+	public ParticleSystem bloodeffect;
+
+
 	// CODE 
 
 	public void Start() {
@@ -553,6 +556,9 @@ public class PlayerController : MonoBehaviour {
 		}
 		else
 		{
+			bloodeffect.transform.position = other.ClosestPointOnBounds(body.position);
+			bloodeffect.transform.rotation = Quaternion.FromToRotation(other.ClosestPoint(body.position), other.ClosestPointOnBounds(body.position));
+			bloodeffect.Play();
 			takeDamage();
 		}
 	}
