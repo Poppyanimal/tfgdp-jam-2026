@@ -5,6 +5,13 @@ using UnityEngine;
 
 public class InteractableController : MonoBehaviour
 {
+    public string[][] mr_418_exception_speech= new string[3][]{ new string[3]{ "Mr. 418", "I don't know how ya managed it kiddo, but cha tried to remember something that happened before yous were born.", "418"}, 
+		                                                        new string[2]{ "Mr. 418", "Sorry, only way I know to fix the timeline is to start cha over. Whelp, should be fixed now; give it another shot."   },
+														        new string[2]{ "Mr. 418", "Be warned though, I can't gaurantee there are enough whips about to unlock the Boss door. You might be better off with a full reset."} };
+	public string[][] ms_429_exception_speech= new string[2][]{ new string[3]{ "Ms. 429", "Oh bless your heart darlin'. Your love the game so much, you found an extra wisp of memory, but we ain't got no more story left for ya.", "429"}, 
+		                                                        new string[2]{ "Ms. 429", "Why don't you head on over to the final boss arena and see how this all ends?" } };
+	public string mx_404_exception_name= "Mx 404, Myst. Stranger";
+
     public bool logDebugBehavior= false;
 
     [Header ("Interaction Prompt")]
