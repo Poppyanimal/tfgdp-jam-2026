@@ -19,6 +19,7 @@ public class EnemyLunger : EnemySpinner
 	    force_multiplier    =  10f    ;
         motion_drag 		=   6.8f  ; 
         move_speed          =   1f   ;
+        health              =   2   ;
         player = FindFirstObjectByType<PlayerController>();
         playerBody = player.GetComponent<Rigidbody>();
         skipOriginalDecideMovement = true;
@@ -27,10 +28,10 @@ public class EnemyLunger : EnemySpinner
     override public void Update() {
         base.Update();
 
-        Debug.Log("lungeCooldown: "+inLungeCooldown+", playerinsight? "+playerIsInSight+", waitingonwanderpause? "+waitingOnWanderPause+", inwanderframes? "+inWanderFrames
-            +", remember player? "+playerIsRemembered+", near last player location? "+((lastKnownPlayerLocation-scanPoint.transform.position).magnitude< track_player_distance));
+        /*Debug.Log("lungeCooldown: "+inLungeCooldown+", playerinsight? "+playerIsInSight+", waitingonwanderpause? "+waitingOnWanderPause+", inwanderframes? "+inWanderFrames
+            +", remember player? "+playerIsRemembered+", near last player location? "+((lastKnownPlayerLocation-scanPoint.transform.position).magnitude< track_player_distance));*/
 
-        if (!inStunFrames) decideMovement();
+        if (!inStunFrames && !isDead) decideMovement();
     }
 
     Coroutine pauseWanderCoro;
@@ -152,6 +153,12 @@ public class EnemyLunger : EnemySpinner
     IEnumerator inWanderFrameTimer(float duration) {
         yield return new WaitForSeconds(duration);
         inWanderFrames= false;
+    }
+
+    public override void getHurt(GameObject attacker)
+    {
+        Debug.Log("Lunger got hurt");
+        base.getHurt(attacker);
     }
 
 }

@@ -125,8 +125,8 @@ public class Enemy : MonoBehaviour
                 faceAgainstWall = true;
         }
 
-        if(faceAgainstWall)
-            Debug.Log("face against wall");
+        /*if(faceAgainstWall)
+            Debug.Log("face against wall");*/
     }
 
 
@@ -201,7 +201,7 @@ public class Enemy : MonoBehaviour
         lookAtAngle = targetY;
 
         float newAngle = SharedLib.stepAngle(startY, targetY, angles_per_second * Time.deltaTime * 60f);
-        Debug.Log(startY +" to "+targetY+", with direction: "+direction+", new angle: "+newAngle+", step size: "+angles_per_second * Time.deltaTime * 60f);
+        //Debug.Log(startY +" to "+targetY+", with direction: "+direction+", new angle: "+newAngle+", step size: "+angles_per_second * Time.deltaTime * 60f);
 
         Vector3 rot = rotationBody.transform.rotation.eulerAngles;
         rot.y = newAngle;

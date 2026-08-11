@@ -8,7 +8,7 @@ public class EnemySpinner : Enemy
     const float base_rotation_speed     =500    ;
     public bool inStunFrames;
     public float player_distance_deadzone = .5f;
-    bool inAttackCooldown, isDead; 
+    bool inAttackCooldown; protected bool isDead; 
     public Rigidbody bodyDisableOnDeath; public Collider colliderDisableOnDeath;
     protected bool skipOriginalDecideMovement = false;
 
