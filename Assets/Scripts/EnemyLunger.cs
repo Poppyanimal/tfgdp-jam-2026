@@ -11,28 +11,36 @@ public class EnemyLunger : EnemySpinner
     public float wanderPause = 1f;
     public float wanderWallTurnTimer = 1f;
     public float lungeAtPlayerDistance = 1.5f;
+    public float lungeSpeed = 2.5f;
     bool inLungeCooldown = false;
-
 
 	public override void Start() {
         base.Start();
 	    force_multiplier    =  10f    ;
         motion_drag 		=   6.8f  ; 
         move_speed          =   1f   ;
+        health              =   2   ;
+        player = FindFirstObjectByType<PlayerController>();
+        playerBody = player.GetComponent<Rigidbody>();
+        skipOriginalDecideMovement = true;
 	}
 
     override public void Update() {
         base.Update();
 
-        if (!inStunFrames) decideMovement();
+        /*Debug.Log("lungeCooldown: "+inLungeCooldown+", playerinsight? "+playerIsInSight+", waitingonwanderpause? "+waitingOnWanderPause+", inwanderframes? "+inWanderFrames
+            +", remember player? "+playerIsRemembered+", near last player location? "+((lastKnownPlayerLocation-scanPoint.transform.position).magnitude< track_player_distance));*/
+
+        if (!inStunFrames && !isDead) decideMovement();
     }
 
-    void decideMovement() { 
-        if      (inLungeCooldown)                                                             continueLunge();
-        else if (playerIsInSight)                                                             MoveTowardPlayer();
-        else if ((lastKnownPlayerLocation-body.position).magnitude< track_player_distance )   MoveTowardPlayer();
-        else if (!inWanderFrames && !waitingOnWanderPause)                                    StartCoroutine(pauseThenWander(wanderPause));
-        else if (!waitingOnWanderPause)                                                       Wander();
+    Coroutine pauseWanderCoro;
+    protected override void decideMovement() { 
+        if      (inLungeCooldown)                                                                               continueLunge();
+        else if (playerIsInSight)                                                                               MoveTowardPlayer();
+        else if ((lastKnownPlayerLocation-scanPoint.transform.position).magnitude< track_player_distance )      MoveTowardPlayer();
+        else if (!inWanderFrames && !waitingOnWanderPause)                                                      pauseWanderCoro = StartCoroutine(pauseThenWander(wanderPause));
+        else if (!waitingOnWanderPause)                                                                         Wander();
         else
         {
             anims.SetBool("walking", false);
@@ -40,10 +48,12 @@ public class EnemyLunger : EnemySpinner
         }
 	}
 
+    Rigidbody playerBody;
     override public void MoveTowardPlayer(){
+        Debug.Log("moving toward player, lunge state: "+inLungeCooldown+", distance: "+Vector3.Distance(lastKnownPlayerLocation, scanPoint.transform.position));
         if(Vector3.Distance(lastKnownPlayerLocation, scanPoint.transform.position) <= lungeAtPlayerDistance && !inLungeCooldown)
         {
-            //Debug.Log("lungecode check");
+            Debug.Log("lungecode check");
             if(playerInFace(lungeAtPlayerDistance))
             {
                 startAttack();
@@ -53,30 +63,46 @@ public class EnemyLunger : EnemySpinner
         //Debug.Log("MoveTowardPlayer" + Time.realtimeSinceStartup);
         anims.SetBool("walking", true);
 
-        Vector3 movementVector = lastKnownPlayerLocation-body.position;
-        //Debug.Log("movementVector:"+movementVector+", "+movementVector.magnitude);
+        Vector3 movementVector = playerBody.position-body.position;
+        movementVector.y = 0;
+        Debug.Log("moving toward player and failed lunge check, movementVector:"+movementVector+", "+movementVector.magnitude);
 
         MoveInDirection(movementVector);   
 
-        RotateInDirection(movementVector.normalized);
+        RotateInDirectionY(movementVector.normalized);
     }
 
+    Vector3 lungeDirection;
     void startAttack()
     {
         inLungeCooldown = true;
         Debug.Log("Lunge Triggered");
         anims.SetBool("walking", false);
-        anims.SetTrigger("Attack");
+        anims.SetTrigger("Lunge");
+        lungeDirection = SharedLib.angleToVector3(lookAtAngle);
 
         //TODO: prevent angle from being updated + move toward point + play animation
     }
 
+    bool doingLungeMovement = false;
     void continueLunge()
     {
-        Debug.Log("Lunge continues");
-        //todo
-        //lunge movement
+        if(doingLungeMovement)
+        {
+            MoveInDirection(lungeDirection, lungeSpeed);
+        }
+        else
+        {
+            //todo
+            //is doing nothing enough?
+        }
     }
+
+    //call these three from animator?
+    public void doLungeMovement() { doingLungeMovement = true; }
+    public void stopLungeMovement() { doingLungeMovement = false; }
+    public void resolveLunge() { inLungeCooldown = false; doingLungeMovement = false; }
+    //
     
     bool waitingOnWanderPause = false;
     IEnumerator pauseThenWander(float duration)
@@ -114,7 +140,7 @@ public class EnemyLunger : EnemySpinner
         }
 
 		MoveInDirection(wanderDir);
-        RotateInDirection(wanderDir);
+        RotateInDirectionY(wanderDir);
 	}
 
     IEnumerator faceWallCooldown(float duration)
@@ -129,5 +155,10 @@ public class EnemyLunger : EnemySpinner
         inWanderFrames= false;
     }
 
+    public override void getHurt(GameObject attacker)
+    {
+        Debug.Log("Lunger got hurt");
+        base.getHurt(attacker);
+    }
 
 }
