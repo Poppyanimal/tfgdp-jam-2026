@@ -3443,7 +3443,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7950994663530687993, guid: e161fe5153c71a147b7ce520dc5db523, type: 3}
       propertyPath: m_IsActive
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -5038,12 +5038,13 @@ MonoBehaviour:
   m_GameObject: {fileID: 1277425184}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 6f5f2789a9e6fec4294e9927ab241325, type: 3}
+  m_Script: {fileID: 11500000, guid: 3a872ebaa21da4142a376452e1ee58d7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   testString: 
   charPerSecond: 20
-  addPunctDelay: 0.5
+  addPunctDelay: 0.25
+  skipSpeedFactor: 5
 --- !u!1 &1305221803
 GameObject:
   m_ObjectHideFlags: 0

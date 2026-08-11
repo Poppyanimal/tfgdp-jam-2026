@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 using static UnityEngine.ProBuilder.AutoUnwrapSettings;
 
@@ -15,12 +16,14 @@ public class InteractableMemory: EmptyInteractionInteractable
 		Control.overallMemoryProgress+=1;
 		
 		SpeakerDialogue= parseCurrentMemory(Control.overallMemoryProgress);
-		playCurrentMemory();
+		try { playCurrentMemory(); }
+		catch (NullReferenceException) { }
 
 	}
 
 	//To Generalize this for special memory classes
-	string[][] parseCurrentMemory(int curr) {
+	string[][] parseCurrentMemory(int curr) { 
+
 		if ( ! validateCurr(curr) ) { return curr<0? Control.mr_418_exception_speech:Control.ms_429_exception_speech; }
 
 		string[] currMemory = Control.memory_texts[curr];

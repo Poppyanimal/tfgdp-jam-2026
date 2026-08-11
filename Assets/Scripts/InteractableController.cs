@@ -85,8 +85,16 @@ public class InteractableController : MonoBehaviour
         bool debugIEnd      =   Input.GetKeyUp  (targetInteractable.Interaction_Key);
 
         if (0<=currentMemoryProgress) {
-            if (interact) advanceMemory();
+            if (interact) {
+                TypewriterEffect typer;
+                bool typerExists= DialogueTextContainer.TryGetComponent<TypewriterEffect>(out typer);
+                if (typerExists) { 
+                    if (typer.isTyping())   {   typer.SkipTyping();     }
+                    else                    {   advanceMemory();        }
+                }
+                else { advanceMemory();}
 
+            }
         }
         else { 
             switch (targetInteractable.Interaction_State) {
@@ -205,7 +213,7 @@ public class InteractableController : MonoBehaviour
 
     void setTextAndTypewriter() {
         SpeakerTextContainer .SetText(currentMemory[currentMemoryProgress][0]);
-        DialogueTextContainer.GetComponent<TypeWriterEffect>().SetText(currentMemory[currentMemoryProgress][1]);
+        DialogueTextContainer.GetComponent<TypewriterEffect>().TypeText(currentMemory[currentMemoryProgress][1]);
     }
 
     void endMemory() {
