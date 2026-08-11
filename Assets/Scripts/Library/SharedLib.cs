@@ -22,6 +22,16 @@ public class SharedLib
 
     //Bounds a angle to the degrees of 0 <= x < 360
     public static float angleToBoundedDegrees(float ee)  { return ((ee<0 ? 360f:0f) + ee) % 360f; }
+    public static float stepAngle(float from, float to, float stepSize)
+    {
+        float targetChange = to - from;
+        if(Mathf.Abs(targetChange) <= stepSize)
+            return to;
+        else if(targetChange > 0)
+            return from + stepSize;
+        else
+            return from - stepSize;
+    }
 
 	#endregion
 
@@ -39,6 +49,8 @@ public class SharedLib
 
     
     public static float vectorToAngle(Vector2 aa) { return angleBetweenVectors( aa, Vector2.right) ;}
+    public static float vectorToAngle(Vector2 aa, Vector2 origin) { return angleBetweenVectors( aa, origin) ;}
+    public static float vectorToAngle3(Vector3 bb, Vector2 origin) { return angleBetweenVectors(new Vector2(bb.x, bb.z), origin) ;}
 
     public static float angleBetweenVectors(Vector2 aa            ) { return Mathf.Rad2Deg * Mathf.Atan2(crossProduct(aa,Vector2.right), dotProduct(aa,Vector2.right)) ; }
     public static float angleBetweenVectors(Vector2 aa, Vector2 bb) { return Mathf.Rad2Deg * Mathf.Atan2(crossProduct(aa,bb           ), dotProduct(aa,bb           )) ; }

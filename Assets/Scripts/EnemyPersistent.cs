@@ -22,7 +22,7 @@ public class EnemyPersistent : EnemySpinner
         if (!inStunFrames) decideMovement();
     }
 
-    void decideMovement() { 
+    protected override void decideMovement() { 
         if      (playerIsInSight)                                                             MoveTowardPlayer();
         else if ((lastKnownPlayerLocation-body.position).magnitude< track_player_distance )   MoveTowardPlayer();
         else if (!inWanderFrames)                                                             AssignWander();

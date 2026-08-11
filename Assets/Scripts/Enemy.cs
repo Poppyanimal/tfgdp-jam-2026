@@ -23,7 +23,7 @@ public class Enemy : MonoBehaviour
                        track_player_distance= 15,
                        track_player_duration=  5;
 
-    PlayerController player;
+    protected PlayerController player;
     public float activationDistance = 5f;
     protected Animator anims;
     public GameObject scanPoint;
@@ -39,7 +39,7 @@ public class Enemy : MonoBehaviour
     }
 
     void getComponentFields() {
-        body=GetComponent<Rigidbody>();
+        body=GetComponentInChildren<Rigidbody>();
         anims=GetComponentInChildren<Animator>();
     }
 
@@ -84,7 +84,8 @@ public class Enemy : MonoBehaviour
         playerIsInSight=false;
         //Debug.Log("Start Scan");
 
-        foreach (RaycastHit hit in scanSweep){
+        foreach (RaycastHit hit in scanSweep)
+        {
             if (hit.collider!=null && hit.transform.gameObject.layer==LayerMask.NameToLayer("Player") && hit.distance<find_player_distance) {
                 playerIsInSight=true; 
                 PlayerSeen=hit.transform.gameObject;   
@@ -92,7 +93,11 @@ public class Enemy : MonoBehaviour
                 break; 
             }   
         }
+
         if (playerIsInSight) {
+            if(forgetCoro != null)
+                StopCoroutine(forgetCoro);
+            
             Rigidbody playerBody;
             PlayerSeen.TryGetComponent<Rigidbody>(out playerBody);
             lastKnownPlayerLocation= playerBody.position;
@@ -129,6 +134,7 @@ public class Enemy : MonoBehaviour
     {
         bool inface = false;
         RaycastHit[] hits = SharedLib.scanAngleSweep(scanPoint.transform.position, new float[]{lookAtAngle, lookAtAngle + 5, lookAtAngle - 5}, scan_distance, "Player", true);
+        Debug.Log("hits for playerinface: "+hits.Length);
         foreach(RaycastHit hit in hits)
         {
             if(hit.collider == null)
@@ -143,7 +149,7 @@ public class Enemy : MonoBehaviour
     Coroutine forgetCoro;
     IEnumerator forgetPlayerLocation(float duration) {
         yield return new WaitForSeconds(duration);
-        //Debug.Log("forgot player location");
+        Debug.Log("forgot player location");
         if (!playerIsInSight) { 
             playerIsRemembered= false;
             PlayerSeen=null;
@@ -152,17 +158,23 @@ public class Enemy : MonoBehaviour
     }
 
 
+    const float move_force_old_to_new_const = 4f;
 	public void MoveInDirection (Vector3 direction) {
-		body.AddForce(  direction*force_multiplier *60f*Time.deltaTime, ForceMode.Force  );
+        MoveInDirection(direction, move_speed);
+	}
+    
+	public void MoveInDirection (Vector3 direction, float speed) {
+		body.AddForce(direction.normalized*force_multiplier *60f*Time.deltaTime * move_force_old_to_new_const, ForceMode.Force  );
         body.linearDamping=motion_drag;
 
-        if (body.linearVelocity.magnitude > move_speed) body.linearVelocity= body.linearVelocity.normalized*move_speed;
+        if (body.linearVelocity.magnitude > move_speed) body.linearVelocity= body.linearVelocity.normalized*speed;
 	}
 
     public void RotateInDirection(Vector3 direction) {
        Quaternion qFrom = rotationBody.transform.rotation;
+       Debug.Log("RotateInDirection w: "+direction+", magnitude: "+direction.magnitude);
 
-		Quaternion qVel = Quaternion.LookRotation( direction.magnitude==0? Vector3.forward: direction);
+		Quaternion qVel = Quaternion.LookRotation( direction.magnitude==0? Vector3.forward: direction, Vector3.up);
 		float velAngle= qVel.eulerAngles.y;
 		float lookTowardAngle= direction.magnitude>0? velAngle:lookAtAngle;
 
@@ -172,6 +184,30 @@ public class Enemy : MonoBehaviour
 		currentAngle= rotationBody.transform.rotation.eulerAngles.y;
 
     }
+
+    public void RotateInDirectionY(Vector3 direction)
+    {
+        float startY = rotationBody.transform.rotation.eulerAngles.y;
+
+        float targetY = SharedLib.vectorToAngle3(direction, Vector2.up);
+        if(Mathf.Abs(targetY - startY) > 185f)
+        {
+            if(targetY > startY)
+                targetY -= 360f;
+            else
+                targetY += 360f;
+        }
+        lookAtAngle = targetY;
+
+        float newAngle = SharedLib.stepAngle(startY, targetY, angles_per_second * Time.deltaTime * 60f);
+        Debug.Log(startY +" to "+targetY+", with direction: "+direction+", new angle: "+newAngle+", step size: "+angles_per_second * Time.deltaTime * 60f);
+
+        Vector3 rot = rotationBody.transform.rotation.eulerAngles;
+        rot.y = newAngle;
+        rotationBody.transform.rotation = Quaternion.Euler(rot);
+		currentAngle= rotationBody.transform.rotation.eulerAngles.y;
+    }
+
     public void RotateInAngleDirection(float angle ) {
         RotateInDirection(  SharedLib.angleToVector3(SharedLib.angleToBoundedDegrees(angle))  );
     }

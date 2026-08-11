@@ -717,6 +717,7 @@ MonoBehaviour:
   lastKnownPlayerLocation: {x: 1000, y: 1000, z: 1000}
   activationDistance: 5
   scanPoint: {fileID: 4412337108247171296}
+  wallCheckDistance: 0.3
   inStunFrames: 0
   player_distance_deadzone: 1.2
   bodyDisableOnDeath: {fileID: 4151345770386612063}

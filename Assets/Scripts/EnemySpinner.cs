@@ -10,6 +10,7 @@ public class EnemySpinner : Enemy
     public float player_distance_deadzone = .5f;
     bool inAttackCooldown, isDead; 
     public Rigidbody bodyDisableOnDeath; public Collider colliderDisableOnDeath;
+    protected bool skipOriginalDecideMovement = false;
 
 	public override void Start() {
         base.Start();
@@ -21,10 +22,10 @@ public class EnemySpinner : Enemy
 
     override public void Update() {
         base.Update();
-        if (!inStunFrames && !isDead) decideMovement();
+        if (!inStunFrames && !isDead && !skipOriginalDecideMovement) decideMovement();
     }
 
-    void decideMovement() { 
+    virtual protected void decideMovement() { 
         if(playerIsInSight) { 
             MoveTowardPlayer();
         }
@@ -51,7 +52,7 @@ public class EnemySpinner : Enemy
     virtual public void Wander() {
         if(!inStunFrames)
             body.angularVelocity *= 1f - Time.deltaTime;
-        if(inAttackCooldown || inStunFrames)
+        if(inAttackCooldown || inStunFrames || Vector3.Distance(body.position, player.body.position) > activationDistance)
             return;
         lookAtAngle+= base_rotation_speed   *Time.deltaTime;//+Mathf.Sin(Time.frameCount); 
         RotateInAngleDirection(lookAtAngle);   
