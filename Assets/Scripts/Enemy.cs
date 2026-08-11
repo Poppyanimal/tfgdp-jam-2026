@@ -128,12 +128,13 @@ public class Enemy : MonoBehaviour
     protected bool playerInFace(float dist)
     {
         bool inface = false;
-        RaycastHit[] hits = SharedLib.scanAngleSweep(scanPoint.transform.position, new float[]{lookAtAngle, lookAtAngle + 5, lookAtAngle - 5}, scan_distance, true);
+        RaycastHit[] hits = SharedLib.scanAngleSweep(scanPoint.transform.position, new float[]{lookAtAngle, lookAtAngle + 5, lookAtAngle - 5}, scan_distance, "Player", true);
         foreach(RaycastHit hit in hits)
         {
             if(hit.collider == null)
-                break;
-            if(hit.transform.gameObject.layer==LayerMask.NameToLayer("Player") && hit.distance <= dist)
+                continue;
+            Debug.Log(hit.collider + ", "+hit.distance+", "+hit.collider.gameObject.layer);
+            if(hit.collider.gameObject.layer==LayerMask.NameToLayer("Player") && hit.distance <= dist)
                 inface = true;
         }
         return inface;

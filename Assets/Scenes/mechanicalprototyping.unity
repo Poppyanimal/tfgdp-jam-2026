@@ -5080,7 +5080,7 @@ MonoBehaviour:
   inWanderFrames: 0
   wanderPause: 2.5
   wanderWallTurnTimer: 1
-  lungeAtPlayerDistance: 2
+  lungeAtPlayerDistance: 2.5
 --- !u!1 &745456973
 GameObject:
   m_ObjectHideFlags: 0

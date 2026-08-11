@@ -43,17 +43,18 @@ public class EnemyLunger : EnemySpinner
     override public void MoveTowardPlayer(){
         if(Vector3.Distance(lastKnownPlayerLocation, scanPoint.transform.position) <= lungeAtPlayerDistance && !inLungeCooldown)
         {
+            //Debug.Log("lungecode check");
             if(playerInFace(lungeAtPlayerDistance))
             {
                 startAttack();
                 return;  
             } 
         }
-        Debug.Log("MoveTowardPlayer" + Time.realtimeSinceStartup);
+        //Debug.Log("MoveTowardPlayer" + Time.realtimeSinceStartup);
         anims.SetBool("walking", true);
 
         Vector3 movementVector = lastKnownPlayerLocation-body.position;
-        Debug.Log("movementVector:"+movementVector+", "+movementVector.magnitude);
+        //Debug.Log("movementVector:"+movementVector+", "+movementVector.magnitude);
 
         MoveInDirection(movementVector);   
 
