@@ -16130,6 +16130,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: approaching figure
       objectReference: {fileID: 0}
+    - target: {fileID: 1219200752783702120, guid: 3851ed071a531c547a3a9029387f6f92, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 5509440434202708156, guid: 3851ed071a531c547a3a9029387f6f92, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
