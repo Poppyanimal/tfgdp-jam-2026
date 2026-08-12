@@ -33,26 +33,98 @@ public class InteractableController : MonoBehaviour
     bool isDialogueError; string interaction_error_code;
     public int overallMemoryProgress { set; get; } = -1;
     readonly public string[][] memory_texts = { 
-        new string[]{ "1&I hardly have any memories from childhood", "2&What do you mean?", "3&I can barely remember anything before my fifthteenth birthday.", "4&Nothing?", "5&Sometimes, I get flashes,","6&Bestie, that's not normal.", "7&What do you mean?"},
-        new string[]{ "Well, here we are.", "Home sweet childhood home."},
-        new string[]{ "You could at least pretend to be excited about Aunt Rosemary's christmas gift. She thought really hard about what clothes you'll like, and even if she got it wrong this year there's no reason to sound so ungrateful.", "She gets it wrong every year." },
-    
-        //new string[]{ "Come now boy, stop your baby-crying. It's just a scratch. Boys don't cry about little things like this.", "*sniff*"},
-        //new string[]{ "I want the pink one.", "Now #@&^!&, you know Jessica wants the pink one. Why not let her have it.", "She always gets to have the pink one.", "Of course she does; she's a girl, Son."},
-        //new string[]{ "No son of mine is going to play with Dolls.", "Dad stop it, please stop.", "Quit crying boy, before I give you something to actually cry about."},
-        //new string[]{ "Hey guys.","Woah dude! You scared the shit out of me. How did you learn to move so silently.", "My mom like her quiet time and the floorboards creak."},
-        //new string[]{ "Hey #@&^!&, what's up.","You ever feel like it'd be nice to just, nap forever.", "What?", "You know, fall asleep and not wake up?", "Bro, you doing alright?", "*sigh* Just forget about it, alright."},
-        
-        //new string[]{ "You can call me Lily, if you want to.", "What? But that's a girl's name? It'd be weird.", "... I said only if you wanted to."},
-        //new string[]{ "I guess Lily was a stupid nickname anyway."},
-        //new string[]{ "That's IT! This is ridiculous. I'm taking you to the barber, and you're getting a haircut.", "But, I like my hair long.", "And if you give me anymore lip, I'll have George shave you." },
-        //new string[]{ "Why don't you talk to me anymore?", "..."},
-        
-        //new string[]{ "I lost my son, and you're saying I'm not even allowed to grieve.", "You didn't lose anything. I'm still here, same as I've always been. I'm just not who you thought I was."},
-        //new string[]{ "We talked with Aunt Rosemary about your situation, and she recommended we enroll you in a summer camp of sorts.", "I thought I told old you not to tell her."},
-        //new string[]{ "Young man, you are the child and we're the adults. Us listening to you is a courtesy we offer, not something you can demand. Pack your fucking bags."},
-        //new string[]{ ""},        
-        new string[]{""}
+        new string[]{ 
+            "1&I don't have any childhood memories.", 
+            "2&What do you mean?", 
+            "1&My first memory is from two weeks after my fifthteenth birthday.", 
+            "2&Nothing before that?", 
+            "1&Nope. Why?",
+            "2&Bestie,.. that's not normal.", 
+            "1&What do you mean?"
+            }, //Memoryless
+        new string[]{ 
+            "1&Well, here I am.", 
+            "1&Home sweet childhood home."
+            }, //Childhood Home
+        new string[]{
+            "R&Oh what a handsome young man. You've gotten so big. Here, I brought presents.", 
+            "1&Oh, uh... Thanks Aunt Rosemary." 
+            }, //Aunt Rosemary's Gift
+        new string[]{ 
+            "M&You could of at least pretended to be excited for Aunt Rosemary's gift. She think really hard about what clothes you'd like.",
+            "M&Even if she got it wrong this year there's no reason to sound so ungrateful.", 
+            "1&She gets it wrong every year." 
+            }, //Christmas reprisal
+        new string[]{ 
+            "D&Stop your baby-crying boy. It's just a scratch. Real men don't cry about small shit like this.", 
+            "1&*sniff*"
+            }, //Stop crying
+        new string[]{ 
+            "1&I want the pink one.", 
+            "M&Now Son, you know Jessica wants the pink one. Why not let her have it.", 
+            "1&She always gets to have the pink one.", 
+            "M&Of course she does; she's a girl, Son."
+            }, //The Pink One
+        new string[]{ 
+            "D&No Son of mine is going to play with Dolls.", 
+            "1&Dad stop it, please stop.", 
+            "D&Quit crying boy, before I give you something real to cry about."
+            }, //Dolls
+        new string[]{ 
+            "1&Hey guys.",
+            "3&Woah dude! You scared the shit out of me. How did you learn to move so silently.", 
+            "1&My mom likes her quiet time and our floorboards creak."
+            }, //Sneaky
+        new string[]{ 
+            "J&Bro, wake up! Naptime's over.",
+            "1&Wish I could just nap forever.",
+            "J&What?",
+            "1&You know, lay down and never wake up.", 
+            "J&Bro, you alright?", 
+            "1&Yeah? ... Forget about it, alright."
+            }, //Naptime
+        new string[]{ 
+            "1&Hey Jess, I was thinking; if you wanted to, you could call me Lily.", 
+            "J&What? But isn't that a girl's name: wouldn't it be weird.", 
+            "1&... I said if you wanted to.",
+            "1b&I guess Lily was a stupid nickname anyway."
+            }, //Lily
+        new string[]{ 
+            "D&<b>That's it!</b> This is ridiculous. I'm taking you to the barber and you're getting a haircut.", 
+            "1&But Dad, I like my hair long.", 
+            "D&And if you give me anymore lip, I'll have George shave you." 
+            }, //Haircuts
+        new string[]{ 
+            "D&Why don't you talk to me anymore?", 
+            "1&..."
+            }, //Talk to me
+        new string[]{ 
+            "D&I lost my son, and you're saying I'm not even allowed to grieve.", 
+            "1&You didn't lose anything. I'm still here, same as I ever was.", 
+            "1&I'm just not pretending to be the man you think I was supposed to be."
+            }, //Grieving
+        new string[]{ 
+            "D&We talked with Aunt Rosemary about your situation.",
+            "M&She recommended we enroll you in a summer camp of sorts.", 
+            "1&I thought I told old you not to tell her."
+            }, // 'Summer Camp'
+        new string[]{ 
+            "D&Young man, you are the child and we're the adults. When we listen to you, it is as a courtesy.", 
+            "D&It's not something you can demand, especially against your best interest.", 
+            "D&Now got pack your fucking bags."
+            }, //Courtesy
+        new string[]{ 
+            "Doll&Oh deary you, what a wretched life.", 
+            "1&Yeah it kinda sucked.", 
+            "Doll&Would you like to forget about it?", 
+            "Doll&I can help with that."
+            }, //Wretch Lift
+        new string[]{ 
+            "1&Why?", 
+            "Doll&Because I'm hungry, and your look frayed enough to agree to it.", 
+            "1&...Yeah okay then. Do it.", 
+            "Doll&Don't worry sweetie, I'll be thorough."
+            }, //Forget about all that 
     };
 
     int currentMemoryProgress=-1;
@@ -102,7 +174,7 @@ public class InteractableController : MonoBehaviour
                 case a_Interactable.INTERACTION_STATE.ACTIVATING :
                 case a_Interactable.INTERACTION_STATE.ACTIVE     :    if (interactEnd) targetInteractable.endInteract(); else emptyAndHidePrompt(); break;
                 case a_Interactable.INTERACTION_STATE.EXHAUSTED  :    break;
-                default:                                              Debug.Log("UNEXPECTED INTERACTION STATE")                                   ; break;
+                default:                                              Debug.LogFormat("UNEXPECTED INTERACTION STATE {0}", targetInteractable.Interaction_State); break;
             }
         }
         //if (logDebugBehavior) {
@@ -235,5 +307,24 @@ public class InteractableController : MonoBehaviour
         dialogueContainer.gameObject.SetActive(false);   
         psuedoPause(false);
     }
+
+
+    public string[][] replaceSpeakerNames(string[][] rawSplitDialogue) {
+		foreach (string[] dialoguePage in rawSplitDialogue) {
+			switch (dialoguePage[0]){
+				case "1": dialoguePage[0]="Protag"; break;
+				case "2": dialoguePage[0]="Friend"; break;
+				case "M": dialoguePage[0]="Mom"   ; break;
+				case "D": dialoguePage[0]="Dad"   ; break;
+				case "J": dialoguePage[0]="Jessica"; break;
+				case "R": dialoguePage[0]="Aunt Rosemary"; break;
+				case "3": dialoguePage[0]="Childhood Friend"; break;
+				case "1b":dialoguePage[0]="Protag(later)"; break;
+			}
+		}
+
+		return rawSplitDialogue;
+
+	}
 
 }

@@ -39,6 +39,9 @@ public class InteractableMemory: EmptyInteractionInteractable
 			}
 			itt+=1;
 		}
+		toReturn= Control.replaceSpeakerNames(toReturn);
+
+
 		return toReturn;
 	//Replace Spearker IDs with Names by switch	
 	}
@@ -51,17 +54,18 @@ public class InteractableMemory: EmptyInteractionInteractable
 	}
 
 
+
 	void playCurrentMemory() {
 		Control.playMemory(SpeakerDialogue);
 	}
 
 	public override void deactivate() {
-		if (Interaction_State!=INTERACTION_STATE.PREVENT_EXHAUSTION) {
-			Interaction_State= INTERACTION_STATE.EXHAUSTED;
-		}
-		else {
+		//if (Interaction_State!=INTERACTION_STATE.PREVENT_EXHAUSTION) {
+		////	Interaction_State= INTERACTION_STATE.EXHAUSTED;
+		//}
+		//else {
 			Interaction_State= INTERACTION_STATE.TARGETING;
-		}
+		//}
 	}
 
 
