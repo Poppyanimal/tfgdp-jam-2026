@@ -51,19 +51,16 @@ public class InteractableTP :  EmptyInteractionInteractable
 	IEnumerator TeleportPlayer() {
 		if (fading!=null) StopCoroutine(fading);
 		fading= StartCoroutine( FadeOutBeforeTP() );
-
-
 		yield return new WaitUntil(() => fadeTimeElapsed >= fadeTime);
-		Debug.Log("Faded");
+
 		yield return new WaitForEndOfFrame();
-		Debug.Log(SisterTP.position.ToString());
+
 		Control.Player.GetComponent<PlayerController>().TeleportPlayer(SisterTP.position);
 		yield return new WaitForSeconds(fadeTime);
 		fading=StartCoroutine( FadeInAfterTP() );
 	}
 	IEnumerator FadeOutBeforeTP() {
 		while (fadeTimeElapsed<fadeTime) {		
-			Debug.LogFormat("Fading:{0}/{1}",fadeTimeElapsed,fadeTime);
 			fadeTimeElapsed+= Time.deltaTime;
 			Image tempImg = FadePanel.GetComponent<Image>();
 			Color tempColor = tempImg.color;
@@ -75,7 +72,6 @@ public class InteractableTP :  EmptyInteractionInteractable
 	}
 	IEnumerator FadeInAfterTP() {
 		while (fadeTimeElapsed>0) {		
-			Debug.LogFormat("Defading:{0}/{1}",fadeTimeElapsed,fadeTime);
 			fadeTimeElapsed-= Time.deltaTime;
 			Image tempImg = FadePanel.GetComponent<Image>();
 			Color tempColor = tempImg.color;
