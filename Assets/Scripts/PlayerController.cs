@@ -545,6 +545,13 @@ public class PlayerController : MonoBehaviour {
 	Vector3 movementRespectsGround(Vector2 dir2) { return Vector3.ProjectOnPlane( SharedLib.vector2to3(dir2), asGround.normal.normalized );	
 		}
 
+	public void TeleportPlayer(Vector3 newPos) {
+		transform.position=newPos;
+	}
+
+
+
+
 	void OnTriggerEnter(Collider other) {
 		if(other.gameObject.layer != LayerMask.NameToLayer("EnemyAttack"))
 		{
