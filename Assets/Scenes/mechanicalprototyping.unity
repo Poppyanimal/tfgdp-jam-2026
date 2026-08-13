@@ -7314,10 +7314,22 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 386983419721359544, guid: ab2461a53d648964eb99dfd0ff161a05, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 386983419721359544, guid: ab2461a53d648964eb99dfd0ff161a05, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 465377401647882821, guid: ab2461a53d648964eb99dfd0ff161a05, type: 3}
       propertyPath: Player
       value: 
       objectReference: {fileID: 353553872}
+    - target: {fileID: 465377401647882821, guid: ab2461a53d648964eb99dfd0ff161a05, type: 3}
+      propertyPath: 'PauseMenus.Array.data[3]'
+      value: 
+      objectReference: {fileID: 2087049119}
     - target: {fileID: 581622692719043028, guid: ab2461a53d648964eb99dfd0ff161a05, type: 3}
       propertyPath: m_Color.b
       value: 0.16
@@ -7329,6 +7341,10 @@ PrefabInstance:
     - target: {fileID: 581622692719043028, guid: ab2461a53d648964eb99dfd0ff161a05, type: 3}
       propertyPath: m_Color.r
       value: 0.2
+      objectReference: {fileID: 0}
+    - target: {fileID: 1084031583988213972, guid: ab2461a53d648964eb99dfd0ff161a05, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 1138148765353050726, guid: ab2461a53d648964eb99dfd0ff161a05, type: 3}
       propertyPath: m_AnchorMax.x
@@ -7362,6 +7378,10 @@ PrefabInstance:
       propertyPath: m_AnchoredPosition.y
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 1834000830534700896, guid: ab2461a53d648964eb99dfd0ff161a05, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 2353018010553328751, guid: ab2461a53d648964eb99dfd0ff161a05, type: 3}
       propertyPath: m_IsActive
       value: 0
@@ -7371,6 +7391,10 @@ PrefabInstance:
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 4198662283466651799, guid: ab2461a53d648964eb99dfd0ff161a05, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4263560840022281779, guid: ab2461a53d648964eb99dfd0ff161a05, type: 3}
       propertyPath: m_IsActive
       value: 0
       objectReference: {fileID: 0}
@@ -7418,13 +7442,37 @@ PrefabInstance:
       propertyPath: m_IsActive
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 6889649131834095393, guid: ab2461a53d648964eb99dfd0ff161a05, type: 3}
+      propertyPath: m_OnValueChanged.m_PersistentCalls.m_Calls.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6889649131834095393, guid: ab2461a53d648964eb99dfd0ff161a05, type: 3}
+      propertyPath: m_OnValueChanged.m_PersistentCalls.m_Calls.Array.data[0].m_Mode
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6889649131834095393, guid: ab2461a53d648964eb99dfd0ff161a05, type: 3}
+      propertyPath: m_OnValueChanged.m_PersistentCalls.m_Calls.Array.data[0].m_CallState
+      value: 2
+      objectReference: {fileID: 0}
     - target: {fileID: 7003999432387006079, guid: ab2461a53d648964eb99dfd0ff161a05, type: 3}
       propertyPath: m_Name
       value: GameStateMangementObject
       objectReference: {fileID: 0}
     - target: {fileID: 7050136056106092607, guid: ab2461a53d648964eb99dfd0ff161a05, type: 3}
       propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7512537702212707151, guid: ab2461a53d648964eb99dfd0ff161a05, type: 3}
+      propertyPath: m_IsActive
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8771862962842070433, guid: ab2461a53d648964eb99dfd0ff161a05, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8999829908130279191, guid: ab2461a53d648964eb99dfd0ff161a05, type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -10117,6 +10165,11 @@ MonoBehaviour:
   m_SelectedFaces: 
   m_SelectedEdges: []
   m_SelectedVertices: 
+--- !u!1 &2087049119 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 7512537702212707151, guid: ab2461a53d648964eb99dfd0ff161a05, type: 3}
+  m_PrefabInstance: {fileID: 1651375464}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &2106560074
 GameObject:
   m_ObjectHideFlags: 0

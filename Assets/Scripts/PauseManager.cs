@@ -12,7 +12,7 @@ public class PauseManager : MonoBehaviour {
     public GameObject PauseCanvas; //.setActive(true)
     public GameObject[] PauseMenus;
 
-    public enum PAUSE_MENU_STATE { MISSING_MENU, LANDING, OPTIONS }
+    public enum PAUSE_MENU_STATE { MISSING_MENU, LANDING, OPTIONS, CREDITS }
     PAUSE_MENU_STATE Menu_State = PAUSE_MENU_STATE.LANDING;
 
     //These components when PAUSE need to be DISABLED. 
@@ -45,6 +45,7 @@ public class PauseManager : MonoBehaviour {
             case PAUSE_MENU_STATE.MISSING_MENU  : HeadToMenuIndex(PAUSE_MENU_STATE.LANDING)  ; break;
             case PAUSE_MENU_STATE.LANDING       : ResumeGame()                               ; break;
             case PAUSE_MENU_STATE.OPTIONS       : HeadToMenuIndex(PAUSE_MENU_STATE.LANDING)  ; break;
+            case PAUSE_MENU_STATE.CREDITS       : HeadToMenuIndex(PAUSE_MENU_STATE.LANDING)  ; break;
 
             default: Debug.LogFormat("Unimplemented Pause_Menu_State: {0}. HEADING TO LANDING", Menu_State); ;break;
         }
@@ -75,6 +76,10 @@ public class PauseManager : MonoBehaviour {
 
     public void HeadToOptions() { HeadToMenuIndex(PAUSE_MENU_STATE.OPTIONS);}
     
+    public void HeadToCredits() { HeadToMenuIndex(PAUSE_MENU_STATE.CREDITS);}
+
+
+
     void HeadTo404( PAUSE_MENU_STATE target, Exception ex) {
         Debug.LogWarning( string.Format("Could Not find the {0}({1}) menu because of a {2}", target, (int)target, ex.GetType().ToString() ) );
         PauseMenus[0].SetActive(true);

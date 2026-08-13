@@ -12,9 +12,6 @@ public class TypewriterEffect : MonoBehaviour
 {
 	TMP_Text textContainer;
 
-	[Header("Test String")]
-	[SerializeField] string testString;
-
 	int currVisibleCharacterIndex;
 
 	Coroutine _typewriterCoroutine;
@@ -22,8 +19,9 @@ public class TypewriterEffect : MonoBehaviour
 	WaitForSecondsRealtime punctDelay;
 	
 	[Header ("Basic Settings")]
-	[SerializeField] float charPerSecond = 20   ;
-	[SerializeField] float addPunctDelay =  0.25f;
+	public float charPerSecond = 20   ;
+	
+	[SerializeField] float addPunctDelay =  0.05f;
 
 	[Header ("Skipping")]
 	public bool isSkipping{ get; private set; }
@@ -35,7 +33,7 @@ public class TypewriterEffect : MonoBehaviour
 		textContainer = GetComponent<TMP_Text>();
 		simpleDelay   = new WaitForSecondsRealtime(1/charPerSecond);
 		punctDelay    = new WaitForSecondsRealtime(addPunctDelay);
-		skipDelay     = new WaitForSecondsRealtime(1/ (charPerSecond* Mathf.Max(skipSpeedFactor,1.0f)) );
+		skipDelay     = new WaitForSecondsRealtime(1/ (charPerSecond*Mathf.Max(skipSpeedFactor,1.0f)) );
 	}
 
 	void Start() {
@@ -105,7 +103,11 @@ public class TypewriterEffect : MonoBehaviour
 		quickSkipping= false;
 	}
 
-
+	public void setCharPerSec(int setTo) {
+		charPerSecond= setTo;
+		simpleDelay   = new WaitForSecondsRealtime(1/charPerSecond);
+		skipDelay     = new WaitForSecondsRealtime(1/ (charPerSecond*Mathf.Max(skipSpeedFactor,1.0f)) );
+	}
 
 
 
