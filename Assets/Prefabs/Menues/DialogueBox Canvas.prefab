@@ -10,7 +10,6 @@ GameObject:
   m_Component:
   - component: {fileID: 5966464053951540084}
   - component: {fileID: 7256144890474895045}
-  - component: {fileID: 6394429756875353394}
   - component: {fileID: 4840901970742234505}
   m_Layer: 5
   m_Name: DialogueBox Canvas
@@ -63,29 +62,6 @@ Canvas:
   m_SortingLayerID: 0
   m_SortingOrder: 0
   m_TargetDisplay: 0
---- !u!114 &6394429756875353394
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5219696922526445776}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 0cd44c1031e13a943bb63640046fad76, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_UiScaleMode: 0
-  m_ReferencePixelsPerUnit: 100
-  m_ScaleFactor: 1
-  m_ReferenceResolution: {x: 800, y: 600}
-  m_ScreenMatchMode: 0
-  m_MatchWidthOrHeight: 0
-  m_PhysicalUnit: 3
-  m_FallbackScreenDPI: 96
-  m_DefaultSpriteDPI: 96
-  m_DynamicPixelsPerUnit: 1
-  m_PresetInfoIsWorld: 0
 --- !u!114 &4840901970742234505
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -770,7 +746,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3a872ebaa21da4142a376452e1ee58d7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  testString: 
   charPerSecond: 20
   addPunctDelay: 0.25
   skipSpeedFactor: 5

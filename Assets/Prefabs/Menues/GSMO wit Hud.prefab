@@ -2799,7 +2799,7 @@ MonoBehaviour:
   m_OnValueChanged:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 7101428678010199239}
+      - m_Target: {fileID: 5980193655425807788}
         m_TargetAssemblyTypeName: TypewriterEffect, Assembly-CSharp
         m_MethodName: 
         m_Mode: 1
@@ -6446,7 +6446,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6457423645607803722, guid: 2f176d25d7d69c644a38b7edfb2e46ab, type: 3}
       propertyPath: charPerSecond
-      value: 0
+      value: 20
       objectReference: {fileID: 0}
     - target: {fileID: 6541243395134222258, guid: 2f176d25d7d69c644a38b7edfb2e46ab, type: 3}
       propertyPath: m_IsActive
@@ -6462,17 +6462,11 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 2f176d25d7d69c644a38b7edfb2e46ab, type: 3}
---- !u!114 &7101428678010199239 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 6457423645607803722, guid: 2f176d25d7d69c644a38b7edfb2e46ab, type: 3}
+--- !u!1 &5980193655425807788 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 7633000106283487777, guid: 2f176d25d7d69c644a38b7edfb2e46ab, type: 3}
   m_PrefabInstance: {fileID: 4255962491281532813}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 3a872ebaa21da4142a376452e1ee58d7, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!224 &8542349495889876959 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 5592541432032800850, guid: 2f176d25d7d69c644a38b7edfb2e46ab, type: 3}

@@ -49,12 +49,13 @@ public class InteractableController : MonoBehaviour
             }, //Childhood Home
         new string[]{
             "R&Oh what a handsome young man. You've gotten so big. Here, I brought presents.", 
-            "1&Oh, uh... Thanks Aunt Rosemary." 
-            }, //Aunt Rosemary's Gift
-        new string[]{ 
+            "1&Oh, uh... Thanks Aunt Rosemary.",
+            "0& ",
             "M&You could of at least pretended to be excited for Aunt Rosemary's gift. She think really hard about what clothes you'd like.",
             "M&Even if she got it wrong this year there's no reason to sound so ungrateful.", 
             "1&She gets it wrong every year." 
+            }, //Aunt Rosemary's Gift
+        new string[]{ 
             }, //Christmas reprisal
         new string[]{ 
             "D&Stop your baby-crying boy. It's just a scratch. Real men don't cry about small shit like this.", 
@@ -170,8 +171,8 @@ public class InteractableController : MonoBehaviour
 	#region Interact with Target
 
     void handleInteraction() {
-        bool interact       =   Input.GetKeyDown(targetInteractable.Interaction_Key);
-        bool interactEnd    = ! Input.GetKey    (targetInteractable.Interaction_Key);
+        bool interact       = Input.GetKeyDown(targetInteractable.Interaction_Key);
+        bool interactEnd    = Input.GetKeyUp  (targetInteractable.Interaction_Key);
        
         if (0<=currentMemoryProgress) {
             if (interact) {
@@ -185,7 +186,7 @@ public class InteractableController : MonoBehaviour
 
             }
         }
-        else { 
+        else if (interact || interactEnd){ 
             switch (targetInteractable.Interaction_State) {
                 case a_Interactable.INTERACTION_STATE.TARGETED   :    if (interact   ) targetInteractable.interact()   ; else fillAndShowPrompt (); break; 
                 case a_Interactable.INTERACTION_STATE.ACTIVATING :
