@@ -2,25 +2,22 @@ using System;
 using UnityEngine;
 using static UnityEngine.ProBuilder.AutoUnwrapSettings;
 
-public class InteractableMemory: EmptyInteractionInteractable
+public class InteractableSpecialMemory: InteractableMemory
 {
-	public string[][] SpeakerDialogue;
+	[SerializeField] public InteractableController.SPECIAL_MEMORY mem;
 
 	public override void activate() {
-		Control.overallMemoryProgress+=1;
-		
-		SpeakerDialogue= parseCurrentMemory(Control.overallMemoryProgress);
+		SpeakerDialogue= parseMemory();
 		try { playCurrentMemory(); }
 		catch (NullReferenceException) { }
 
 	}
 
 	//To Generalize this for special memory classes
-	string[][] parseCurrentMemory(int curr) { 
+	string[][] parseMemory() { 
 
-		if ( ! validateCurr(curr) ) { return curr<0? Control.mr_418_exception_speech:Control.ms_429_exception_speech; }
-
-		string[] currMemory = Control.memory_texts[curr];
+		
+		string[] currMemory = Control.special_memory_texts[ (int) mem];
 	
 		int itt=0;
 		string[][] toReturn = new string[currMemory.Length][];

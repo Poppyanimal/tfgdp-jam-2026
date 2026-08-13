@@ -2795,7 +2795,7 @@ MonoBehaviour:
   m_MinValue: 15
   m_MaxValue: 30
   m_WholeNumbers: 1
-  m_Value: 30
+  m_Value: 23
   m_OnValueChanged:
     m_PersistentCalls:
       m_Calls:
@@ -6360,6 +6360,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 614860412928195498}
     m_Modifications:
+    - target: {fileID: 5335269654837670480, guid: 2f176d25d7d69c644a38b7edfb2e46ab, type: 3}
+      propertyPath: m_UiScaleMode
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 5592541432032800850, guid: 2f176d25d7d69c644a38b7edfb2e46ab, type: 3}
       propertyPath: m_Pivot.x
       value: 0.5

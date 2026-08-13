@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 
 public abstract class a_Interactable : MonoBehaviour { 
+	
 	public InteractableController Control;
 
 	public enum   INTERACTION_STATE { UNTARGETED, TARGETING, UNTARGETING, TARGETED, ACTIVATING, DEACTIVATING, ACTIVE, FORCE_CANCEL_ACTIVE, EXHAUSTED, PREVENT_EXHAUSTION}
@@ -9,7 +10,10 @@ public abstract class a_Interactable : MonoBehaviour {
 	public string            Interaction_Prompt { get; }      = "Press E to Interact";
 
 	
-	virtual public void Start () {  Control= FindFirstObjectByType<InteractableController>();	detarget();}
+	virtual public void Start () { 
+		Control= FindFirstObjectByType<InteractableController>(); 
+		detarget();
+	}
 	virtual public void Update() { stepInteractionState();	}
 
 	public void target()              { Interaction_State= isExhausted()? INTERACTION_STATE.EXHAUSTED:INTERACTION_STATE.TARGETING			;}

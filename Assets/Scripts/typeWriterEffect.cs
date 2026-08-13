@@ -103,15 +103,6 @@ public class TypewriterEffect : MonoBehaviour
 		quickSkipping= false;
 	}
 
-	public void setCharPerSec(int setTo) {
-		charPerSecond= setTo;
-		simpleDelay   = new WaitForSecondsRealtime(1/charPerSecond);
-		skipDelay     = new WaitForSecondsRealtime(1/ (charPerSecond*Mathf.Max(skipSpeedFactor,1.0f)) );
-	}
-
-
-
-
 
 }
 

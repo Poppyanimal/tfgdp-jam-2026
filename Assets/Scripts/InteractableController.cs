@@ -131,18 +131,35 @@ public class InteractableController : MonoBehaviour
     int currentMemoryProgress=-1;
     string[][] currentMemory;
 
-    readonly public string[][] special_memories = {
-        new string[]{ "Don't forget your umbrella. It's supposed to rain tomorrow", "My umbrella?", "... umbrella...", "MY UMBRELLA!"},
-        new string[]{ "You never get used to the sensation of falling.", "It feels so freeing, like you've escaped gravity's cruel prison.", "But the Ground is a harsh Warden, and she always catches her runaways."}
-    };
+    public enum SPECIAL_MEMORY { UMBRELLA, STAIRS, LILIES }
+    readonly public string[][] special_memory_texts = {
+        new string[]{ 
+            "Don't forget your umbrella. It's supposed to rain tomorrow", 
+            "My umbrella?", 
+            "... umbrella...", 
+            "MY UMBRELLA!"
+        },
+        new string[]{ 
+            "You never get used to the sensation of falling.", 
+            "It feels so freeing, like you've escaped gravity's cruel prison.", 
+            "But then, the Ground is a harsh Warden, and she always catches her runaways."
+        },
+        new string[]{ "Lily lily lily, like the flower."}
+        };
+    public bool[] special_memories_seen;
 
 
 	private void Start() {
         getComponentFields();
+        initializeFields();
         emptyAndHidePrompt();
 	}
 
     void getComponentFields() {}
+
+    void initializeFields() {
+        special_memories_seen= new bool[special_memory_texts.Length];
+    }
 
 	// Update is called once per frame
 	void Update()
@@ -157,7 +174,6 @@ public class InteractableController : MonoBehaviour
         bool interactEnd    = ! Input.GetKey    (targetInteractable.Interaction_Key);
        
         if (0<=currentMemoryProgress) {
-            Debug.Log("memory");
             if (interact) {
                 TypewriterEffect typer;
                 bool typerExists= DialogueTextContainer.TryGetComponent<TypewriterEffect>(out typer);
@@ -170,7 +186,6 @@ public class InteractableController : MonoBehaviour
             }
         }
         else { 
-            Debug.Log("Switch");
             switch (targetInteractable.Interaction_State) {
                 case a_Interactable.INTERACTION_STATE.TARGETED   :    if (interact   ) targetInteractable.interact()   ; else fillAndShowPrompt (); break; 
                 case a_Interactable.INTERACTION_STATE.ACTIVATING :
