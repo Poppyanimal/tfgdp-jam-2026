@@ -63,8 +63,8 @@ public class PlayerController : MonoBehaviour {
 	
 	//MOVE_STATE and related fielsd
 	MOVE_STATE Move_State = MOVE_STATE.IDLE;
-	enum MOVE_STATE					{ IDLE,		WALK,	SPRINT,		CROUCH,		PORT_WALL_SLIDING,	STAR_WALL_SLIDING,	FALL_UP,	FALL_DOWN,	ATTACK, DEAD		}
-	readonly float[] move_speed =	{ 0f,		2.3f,	3.4f,		1.6f,		1.5f,				1.5f,				1.7f,		2.1f,		0.0f,	0f		};
+	enum MOVE_STATE					{ IDLE,		WALK,	SPRINT,		CROUCH,		PORT_WALL_SLIDING,	STAR_WALL_SLIDING,	FALL_UP,	FALL_DOWN,	ATTACK, DEAD	}
+	readonly float[] move_speed =	{ 0f,		2.3f,	3.4f,		1.6f,		1.5f,				1.5f,				1.7f,		2.1f,		0.0f,	0.0f	};
 	bool moving=false;
 
 	//projectile stuff
@@ -75,7 +75,6 @@ public class PlayerController : MonoBehaviour {
 	//camera shake
 	public CinemachineImpulseSource shakeSource;
 	public float shakeImpulse = .1f;
-
 
 	public ParticleSystem bloodeffect;
 
@@ -197,7 +196,6 @@ public class PlayerController : MonoBehaviour {
 	bool inIFrames;
 	public float iFrameTime = 1.5f;
 
-	
 	//General Code -----------------------------------------------------------------===========================================================
 
 	//below are methods called when the associated global events events are called
@@ -240,8 +238,8 @@ public class PlayerController : MonoBehaviour {
 
 	public void takeDamage(int dam = 1)
 	{
-		if(inIFrames)
-			return;
+		if(inIFrames)	return;
+
 		playerAnimator.SetTrigger("getHit");
 		pv.get().modhealth(-dam);
 		ge.get().playerHurt.Invoke();
@@ -259,6 +257,17 @@ public class PlayerController : MonoBehaviour {
 		Move_State = MOVE_STATE.DEAD;
 		isDead = true;
 		//todo: run restart code
+	}
+
+	public void heal(int amount = -1) {
+		//TODO: Add Heal Animation ?
+		pv.get().modhealth( amount<0? pv.get().maxHealth:amount);
+		ge.get().playerHeal.Invoke();
+	}
+
+	public void ammoUp(int amount = 1) {
+		//TODO: Add Ammo Pickup Animation. Low Priority.
+		pv.get().modAmmo(amount);
 	}
 
 
@@ -362,8 +371,6 @@ public class PlayerController : MonoBehaviour {
 				playerAnimator.SetBool("isWalking", true	); break;
 		}
 	}
-
-
 
 	void FixedUpdate()
 	{
@@ -535,8 +542,8 @@ public class PlayerController : MonoBehaviour {
 		return new Vector2(projectdir3.x, projectdir3.z).normalized;
 	}
 
-	Vector3 movementRespectsGround(Vector2 dir2) { return Vector3.ProjectOnPlane( SharedLib.vector2to3(dir2), asGround.normal.normalized );	}
-
+	Vector3 movementRespectsGround(Vector2 dir2) { return Vector3.ProjectOnPlane( SharedLib.vector2to3(dir2), asGround.normal.normalized );	
+		}
 
 	void OnTriggerEnter(Collider other) {
 		if(other.gameObject.layer != LayerMask.NameToLayer("EnemyAttack"))
@@ -562,6 +569,5 @@ public class PlayerController : MonoBehaviour {
 			takeDamage();
 		}
 	}
-
 
 }

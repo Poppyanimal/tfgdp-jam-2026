@@ -16,6 +16,7 @@ public class playerUI : MonoBehaviour
     void Start()
     {
         ge.get().playerHurt.AddListener(updateHealth);
+        ge.get().playerHeal.AddListener(updateHealth);
         ge.get().ammoChanged.AddListener(updateAmmo);
     }
 
