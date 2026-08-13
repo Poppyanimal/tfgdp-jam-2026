@@ -5217,7 +5217,7 @@ MonoBehaviour:
   position: {x: 0, y: 0, z: 0}
   camAfterTP: {fileID: 0}
   FadePanel: {fileID: 1949116513}
-  fadeTime: 0
+  canTeleport: 1
 --- !u!1 &1390500785
 GameObject:
   m_ObjectHideFlags: 0
@@ -9210,7 +9210,7 @@ MonoBehaviour:
   position: {x: 0, y: 0, z: 0}
   camAfterTP: {fileID: 0}
   FadePanel: {fileID: 1949116513}
-  fadeTime: 0
+  canTeleport: 1
 --- !u!136 &1887916965
 CapsuleCollider:
   m_ObjectHideFlags: 0
