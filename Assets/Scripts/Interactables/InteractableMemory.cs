@@ -4,12 +4,11 @@ using static UnityEngine.ProBuilder.AutoUnwrapSettings;
 
 public class InteractableMemory: EmptyInteractionInteractable
 {
-
-	InteractableController Control;
+	
 	string[][] SpeakerDialogue;
 
 	override public void Start(){
-		Control= FindFirstObjectByType<InteractableController>();
+		
 	}
 
 	public override void activate() {
@@ -53,19 +52,17 @@ public class InteractableMemory: EmptyInteractionInteractable
 		return currIsValid;
 	}
 
-
-
 	void playCurrentMemory() {
 		Control.playMemory(SpeakerDialogue);
 	}
 
 	public override void deactivate() {
-		//if (Interaction_State!=INTERACTION_STATE.PREVENT_EXHAUSTION) {
-		////	Interaction_State= INTERACTION_STATE.EXHAUSTED;
-		//}
-		//else {
-			Interaction_State= INTERACTION_STATE.TARGETING;
-		//}
+		if (Interaction_State != INTERACTION_STATE.PREVENT_EXHAUSTION) {
+			Interaction_State = INTERACTION_STATE.EXHAUSTED;
+		}
+		else {
+		Interaction_State = INTERACTION_STATE.TARGETING;
+		}
 	}
 
 

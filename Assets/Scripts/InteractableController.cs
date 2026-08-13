@@ -34,7 +34,8 @@ public class InteractableController : MonoBehaviour
     public int overallMemoryProgress { set; get; } = -1;
     readonly public string[][] memory_texts = { 
         new string[]{ 
-            "1&I don't have any childhood memories.", 
+            "2&What's your earliest childhood memory?", 
+            "1&Don't have any.",
             "2&What do you mean?", 
             "1&My first memory is from two weeks after my fifthteenth birthday.", 
             "2&Nothing before that?", 
@@ -154,9 +155,9 @@ public class InteractableController : MonoBehaviour
     void handleInteraction() {
         bool interact       =   Input.GetKeyDown(targetInteractable.Interaction_Key);
         bool interactEnd    = ! Input.GetKey    (targetInteractable.Interaction_Key);
-        bool debugIEnd      =   Input.GetKeyUp  (targetInteractable.Interaction_Key);
-
+       
         if (0<=currentMemoryProgress) {
+            Debug.Log("memory");
             if (interact) {
                 TypewriterEffect typer;
                 bool typerExists= DialogueTextContainer.TryGetComponent<TypewriterEffect>(out typer);
@@ -169,6 +170,7 @@ public class InteractableController : MonoBehaviour
             }
         }
         else { 
+            Debug.Log("Switch");
             switch (targetInteractable.Interaction_State) {
                 case a_Interactable.INTERACTION_STATE.TARGETED   :    if (interact   ) targetInteractable.interact()   ; else fillAndShowPrompt (); break; 
                 case a_Interactable.INTERACTION_STATE.ACTIVATING :
@@ -177,10 +179,7 @@ public class InteractableController : MonoBehaviour
                 default:                                              Debug.LogFormat("UNEXPECTED INTERACTION STATE {0}", targetInteractable.Interaction_State); break;
             }
         }
-        //if (logDebugBehavior) {
-        //    if (interact ) Debug.LogFormat("{0}, was interacted with."         , targetInteractable.ToString() );
-        //    if (debugIEnd) Debug.LogFormat("{0}, stoped being interacted with.", targetInteractable.ToString() );
-        //}
+
     }
     #endregion
 
@@ -232,13 +231,13 @@ public class InteractableController : MonoBehaviour
     }
     
     void fillAndShowPrompt() { 
-        promptContainer.enabled=true;
+        promptContainer.gameObject.SetActive(true);
         promptTextContainer1.text = targetInteractable.Interaction_Prompt;
         promptTextContainer2.text = targetInteractable.Interaction_Prompt;
     }
 
     void emptyAndHidePrompt() {
-        promptContainer.enabled=false;
+        promptContainer.gameObject.SetActive(false);
     }
 
     public void playMemory(string[][]memoryToPlay) {
@@ -301,13 +300,11 @@ public class InteractableController : MonoBehaviour
                     break;
             }
         }
-
         currentMemoryProgress=-1;
         currentMemory= new string[0][];
         dialogueContainer.gameObject.SetActive(false);   
         psuedoPause(false);
     }
-
 
     public string[][] replaceSpeakerNames(string[][] rawSplitDialogue) {
 		foreach (string[] dialoguePage in rawSplitDialogue) {

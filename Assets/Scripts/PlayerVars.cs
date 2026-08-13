@@ -4,7 +4,8 @@ using ge = GlobalEvents;
 public class PlayerVars
 {
     static PlayerVars single;
-    int health, maxHealth, ammo;
+    public int maxHealth;
+    int health, ammo;
 
     public static PlayerVars get()
     {
@@ -49,5 +50,9 @@ public class PlayerVars
             ge.get().playerDied.Invoke();
         }
         Debug.Log("player health changed to: "+health);
+
+
+
     }
+
 }
