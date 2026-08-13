@@ -3435,8 +3435,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 961739749}
   serializedVersion: 2
-  m_LocalRotation: {x: 0.22969513, y: -0.11663258, z: 0.027737135, w: 0.9658508}
-  m_LocalPosition: {x: -619.361, y: -257.91, z: -9.476}
+  m_LocalRotation: {x: -0.084030665, y: -0.008944618, z: -0.00075420714, w: 0.99642277}
+  m_LocalPosition: {x: -658.93396, y: -247.19235, z: 23.614986}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -10590,6 +10590,63 @@ PrefabInstance:
       insertIndex: -1
       addedObject: {fileID: 1381828487}
   m_SourcePrefab: {fileID: 100100000, guid: ad4555b93027d354c84fa28bc64c3741, type: 3}
+--- !u!1001 &4438957498884125471
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 1634853616578081009, guid: b75ce3154bd763243aa481c18d6c1cce, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: -36.655674
+      objectReference: {fileID: 0}
+    - target: {fileID: 1634853616578081009, guid: b75ce3154bd763243aa481c18d6c1cce, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 12.684548
+      objectReference: {fileID: 0}
+    - target: {fileID: 1634853616578081009, guid: b75ce3154bd763243aa481c18d6c1cce, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 37.321484
+      objectReference: {fileID: 0}
+    - target: {fileID: 1634853616578081009, guid: b75ce3154bd763243aa481c18d6c1cce, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1634853616578081009, guid: b75ce3154bd763243aa481c18d6c1cce, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1634853616578081009, guid: b75ce3154bd763243aa481c18d6c1cce, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1634853616578081009, guid: b75ce3154bd763243aa481c18d6c1cce, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1634853616578081009, guid: b75ce3154bd763243aa481c18d6c1cce, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1634853616578081009, guid: b75ce3154bd763243aa481c18d6c1cce, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1634853616578081009, guid: b75ce3154bd763243aa481c18d6c1cce, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8464979802670476544, guid: b75ce3154bd763243aa481c18d6c1cce, type: 3}
+      propertyPath: m_Name
+      value: Lily Hill Area
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: b75ce3154bd763243aa481c18d6c1cce, type: 3}
 --- !u!1001 &5335008981456773713
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -10724,3 +10781,4 @@ SceneRoots:
   - {fileID: 1468085312434210724}
   - {fileID: 136444105}
   - {fileID: 1305221804}
+  - {fileID: 4438957498884125471}
