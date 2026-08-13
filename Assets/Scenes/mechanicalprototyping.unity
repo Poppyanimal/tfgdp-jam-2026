@@ -10373,6 +10373,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Dog Lunger
       objectReference: {fileID: 0}
+    - target: {fileID: 3920208073405025732, guid: ef516c3c27795ad49b3af768b05ee10e, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 7361950717468433359, guid: ef516c3c27795ad49b3af768b05ee10e, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
