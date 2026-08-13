@@ -135,9 +135,9 @@ public class InteractableController : MonoBehaviour
     public enum SPECIAL_MEMORY { UMBRELLA, STAIRS, LILIES }
     readonly public string[][] special_memory_texts = {
         new string[]{ 
-            "Don't forget your umbrella. It's supposed to rain tomorrow", 
+            "Don't forget your umbrella. It's supposed to rain all weekend.", 
             "My umbrella?", 
-            "... umbrella...", 
+            "My umbrella...", 
             "MY UMBRELLA!"
         },
         new string[]{ 
@@ -325,14 +325,14 @@ public class InteractableController : MonoBehaviour
     public string[][] replaceSpeakerNames(string[][] rawSplitDialogue) {
 		foreach (string[] dialoguePage in rawSplitDialogue) {
 			switch (dialoguePage[0]){
-				case "1": dialoguePage[0]="Protag"; break;
+				case "1": dialoguePage[0]="? ? ?"; break;
 				case "2": dialoguePage[0]="Friend"; break;
 				case "M": dialoguePage[0]="Mom"   ; break;
 				case "D": dialoguePage[0]="Dad"   ; break;
 				case "J": dialoguePage[0]="Jessica"; break;
 				case "R": dialoguePage[0]="Aunt Rosemary"; break;
 				case "3": dialoguePage[0]="Childhood Friend"; break;
-				case "1b":dialoguePage[0]="Protag(later)"; break;
+				case "1b":dialoguePage[0]="???, later"; break;
 			}
 		}
 

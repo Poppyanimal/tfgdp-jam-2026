@@ -74,7 +74,6 @@ public class TypewriterEffect : MonoBehaviour
 	}
 
 
-
 	IEnumerator Typewriter() {
 		TMP_TextInfo textInfo = textContainer.textInfo;
 
