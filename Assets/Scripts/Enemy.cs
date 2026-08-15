@@ -29,6 +29,7 @@ public class Enemy : MonoBehaviour
     public GameObject scanPoint;
     protected bool faceAgainstWall = false;
     public float wallCheckDistance = .3f;
+    public float distanceFromPlayerToDisable = 40f;
 
     protected int health = 1;
 
@@ -45,6 +46,9 @@ public class Enemy : MonoBehaviour
 
     // Update is called once per frame
     virtual public void Update() {
+        if(toofarfromplayer())
+            return;
+
         if(Vector3.Distance(body.position, player.body.position) > activationDistance)
         {
             anims.SetBool("closeToPlayer", false);
@@ -59,6 +63,8 @@ public class Enemy : MonoBehaviour
         checkForWall();
         lookForPlayer();
     }
+
+    protected bool toofarfromplayer() { return Vector3.Distance(body.position, player.transform.position) >= distanceFromPlayerToDisable; }
 
     void scanEnvironment() {
         lookAtAngle    = scanPoint.transform.rotation.eulerAngles.y;

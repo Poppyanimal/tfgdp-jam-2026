@@ -34,7 +34,7 @@ public class EnemyLunger : EnemySpinner
         /*Debug.Log("lungeCooldown: "+inLungeCooldown+", playerinsight? "+playerIsInSight+", waitingonwanderpause? "+waitingOnWanderPause+", inwanderframes? "+inWanderFrames
             +", remember player? "+playerIsRemembered+", near last player location? "+((lastKnownPlayerLocation-scanPoint.transform.position).magnitude< track_player_distance));*/
 
-        if (!inStunFrames && !isDead) decideMovement();
+        if (!inStunFrames && !isDead && !toofarfromplayer()) decideMovement();
     }
 
     Coroutine pauseWanderCoro;

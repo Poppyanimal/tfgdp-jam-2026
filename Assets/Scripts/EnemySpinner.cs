@@ -22,7 +22,7 @@ public class EnemySpinner : Enemy
 
     override public void Update() {
         base.Update();
-        if (!inStunFrames && !isDead && !skipOriginalDecideMovement) decideMovement();
+        if (!inStunFrames && !isDead && !skipOriginalDecideMovement && !toofarfromplayer()) decideMovement();
     }
 
     virtual protected void decideMovement() { 
