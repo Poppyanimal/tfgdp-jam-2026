@@ -11,12 +11,14 @@ public class EnemySpinner : Enemy
     bool inAttackCooldown; protected bool isDead; 
     public Rigidbody bodyDisableOnDeath; public Collider colliderDisableOnDeath;
     protected bool skipOriginalDecideMovement = false;
+    const float speed = .62f;
+    const float attack_speed_mod = .6f;
 
 	public override void Start() {
         base.Start();
 	    force_multiplier    =  20f    ;
         motion_drag 		=   3.8f  ; 
-        move_speed          =   0.62f ;
+        move_speed          =   speed ;
         health = 3;
 	}
 
@@ -47,6 +49,7 @@ public class EnemySpinner : Enemy
         inAttackCooldown = true;
         Debug.Log("starting Attack!");
         anims.SetTrigger("Attack");
+        move_speed = speed * attack_speed_mod;
     }
 
     virtual public void Wander() {
@@ -106,7 +109,7 @@ public class EnemySpinner : Enemy
         body.AddForce( Vector3.ProjectOnPlane(dir,(ground.collider!=null?ground.normal:Vector3.up)).normalized*force_multiplier*scale, ForceMode.Impulse);
     }
 
-    public void resolveAttack() { inAttackCooldown = false; }
+    public void resolveAttack() { inAttackCooldown = false; move_speed = speed; }
     
     public void resolveStun()
     {
