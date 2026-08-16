@@ -12,6 +12,7 @@ public class InteractableTP :  EmptyInteractionInteractable
 	protected InteractableTP SisterTP;
 	protected Vector3 position;
 	public CinemachineCamera camAfterTP;
+	public bool teleportingToOutside = true;
 
 	const float fadeTime=0.4f;
 	float fadeTimeElapsed;
@@ -71,6 +72,11 @@ public class InteractableTP :  EmptyInteractionInteractable
 		//TODO
 		//TODO
 		FindFirstObjectByType<PlayerController>().TeleportPlayer(SisterTP.transform.position + Vector3.up * teleportOffset);
+
+		if(teleportingToOutside)
+			GlobalEvents.get().goingOutdoors.Invoke();
+		else
+			GlobalEvents.get().goingIndoors.Invoke();
 
 
 		yield return new WaitForSeconds(fadeTime);
