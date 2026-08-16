@@ -10754,6 +10754,14 @@ PrefabInstance:
       propertyPath: m_Layer
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 7575545211667172091, guid: ad4555b93027d354c84fa28bc64c3741, type: 3}
+      propertyPath: VelocityModule.enabled
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7575545211667172091, guid: ad4555b93027d354c84fa28bc64c3741, type: 3}
+      propertyPath: ExternalForcesModule.enabled
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 8402988716459044940, guid: ad4555b93027d354c84fa28bc64c3741, type: 3}
       propertyPath: m_LocalPosition.x
       value: -621.3223
