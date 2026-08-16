@@ -10359,18 +10359,6 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 2751965713861156822, guid: 277402ffafc5f62449f7b0be33b27224, type: 3}
-      propertyPath: Loop
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 2751965713861156822, guid: 277402ffafc5f62449f7b0be33b27224, type: 3}
-      propertyPath: m_Volume
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 2751965713861156822, guid: 277402ffafc5f62449f7b0be33b27224, type: 3}
-      propertyPath: m_PlayOnAwake
-      value: 0
-      objectReference: {fileID: 0}
     - target: {fileID: 3471228730063015544, guid: 277402ffafc5f62449f7b0be33b27224, type: 3}
       propertyPath: promptContainer
       value: 
@@ -10395,14 +10383,6 @@ PrefabInstance:
       propertyPath: DialogueTextContainer
       value: 
       objectReference: {fileID: 1566921288}
-    - target: {fileID: 7183444541685899456, guid: 277402ffafc5f62449f7b0be33b27224, type: 3}
-      propertyPath: 'clips.Array.data[0]'
-      value: 
-      objectReference: {fileID: 8300000, guid: b9198bcd923beba4b8c05d02919109f6, type: 3}
-    - target: {fileID: 8113549091223326083, guid: 277402ffafc5f62449f7b0be33b27224, type: 3}
-      propertyPath: m_Volume
-      value: 0.7
-      objectReference: {fileID: 0}
     - target: {fileID: 9016423704104939456, guid: 277402ffafc5f62449f7b0be33b27224, type: 3}
       propertyPath: m_Name
       value: player entity

@@ -30,10 +30,6 @@ UX
 ~~~
 
 SFX Player
-  --UmbrellaAttack
-    ---Ranged charge
-       ----Ranged blast
-	   ----Ranged Explosion
 	--get hurt
 	--death
 	   
@@ -51,7 +47,7 @@ SFX Environment
 	---hill
 	
 SFX General
-	--Attack Connect Sound
+	--Attack Connect Sound for hit confirm
 	-sound sfx for interactables (not transition tiles)
 	
 ~~~
@@ -96,7 +92,13 @@ UI and UX
    --Options
      ---Sound
      ---Keybinds?
+ -hide game ui when dialogue open
 	 
+
+Effects
+ -increase camera vigentting when hit
+ -constant pulse camera vignetting on 1 hp
+ -hide ui on death
 
 -------------------------------------
 

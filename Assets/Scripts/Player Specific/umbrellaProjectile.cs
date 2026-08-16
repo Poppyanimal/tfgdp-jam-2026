@@ -9,6 +9,7 @@ public class umbrellaProjectile : MonoBehaviour
     public float timeBeforeDecay = 10f, emergencyExplodeTimer = 3f;
     public CinemachineImpulseSource impulse;
     public float impulseForce = 3f;
+    public sfxPlayer explodeSFX;
 
     Coroutine emergencyTimer;
 
@@ -29,6 +30,7 @@ public class umbrellaProjectile : MonoBehaviour
         
         stopSphereParticles();
         playExplosion();
+        explodeSFX.play();
         StartCoroutine(decayAndDestroy());
         anim.SetTrigger("explode");
         gameObject.GetComponent<Rigidbody>().linearVelocity = Vector3.zero;
