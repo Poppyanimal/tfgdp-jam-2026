@@ -74,6 +74,7 @@ MonoBehaviour:
   logDebugMessages: 0
   Sister: {fileID: 0}
   camAfterTP: {fileID: 0}
+  teleportingToOutside: 1
   canTeleport: 1
   teleportSFX: {fileID: 2750774495178077490}
 --- !u!1 &8633979087857564839
@@ -133,7 +134,7 @@ AudioSource:
   m_GameObject: {fileID: 8633979087857564839}
   m_Enabled: 1
   serializedVersion: 4
-  OutputAudioMixerGroup: {fileID: 0}
+  OutputAudioMixerGroup: {fileID: 24300002, guid: c01178e5453a26b4698df47405ee661a, type: 2}
   m_audioClip: {fileID: 0}
   m_Resource: {fileID: 0}
   m_PlayOnAwake: 0
