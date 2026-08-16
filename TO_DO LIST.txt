@@ -25,13 +25,15 @@ UX
  -Dialogue Boxes*
   --They Do Dialogue.
   --Multiple Sequencial Pages
+  
+Death
+	-restart level
 
 
 ~~~
 
 SFX Player
-	--get hurt
-	--death
+	--wound sfx
 	   
 SFX Enemy
 	--Enemy Swipe
