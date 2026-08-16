@@ -10526,6 +10526,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Doll Spinner
       objectReference: {fileID: 0}
+    - target: {fileID: 4412337108247171296, guid: 9fb5c52a8be4bf74fa86e16c6510c3fd, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 7693887275668170709, guid: 9fb5c52a8be4bf74fa86e16c6510c3fd, type: 3}
       propertyPath: m_LocalPosition.x
       value: -2.063

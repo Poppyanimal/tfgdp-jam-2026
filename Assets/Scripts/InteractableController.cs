@@ -155,6 +155,8 @@ public class InteractableController : MonoBehaviour
         initializeFields();
         emptyAndHidePrompt();
         GlobalEvents.get().hidePrompt.AddListener(emptyAndHidePrompt);
+        GlobalEvents.get().teleportLock.AddListener(startTeleportLock);
+        GlobalEvents.get().teleportUnlock.AddListener(endTeleportLock);
 	}
 
     void getComponentFields() { Player = FindFirstObjectByType<PlayerController>().gameObject; }
@@ -163,10 +165,15 @@ public class InteractableController : MonoBehaviour
         special_memories_seen= new bool[special_memory_texts.Length];
     }
 
+
+    public void startTeleportLock() { inTeleportInputLock = true; }
+    public void endTeleportLock() { inTeleportInputLock = false; }
+    bool inTeleportInputLock = false;
+
 	// Update is called once per frame
 	void Update()
     {   
-        if (targetInteractable!=null) handleInteraction();
+        if (targetInteractable!=null && !inTeleportInputLock) handleInteraction();
     }
 
 	#region Interact with Target

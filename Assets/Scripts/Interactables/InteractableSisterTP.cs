@@ -53,6 +53,7 @@ public class InteractableTP :  EmptyInteractionInteractable
 	IEnumerator TeleportPlayer() {
 		GlobalEvents.get().doFade.Invoke();
 		teleportSFX.play();
+		GlobalEvents.get().teleportLock.Invoke();
 		yield return new WaitForSeconds(fadeTime);
 
 		yield return new WaitForEndOfFrame();
@@ -73,6 +74,7 @@ public class InteractableTP :  EmptyInteractionInteractable
 
 
 		yield return new WaitForSeconds(fadeTime);
+		GlobalEvents.get().teleportUnlock.Invoke();
 		GlobalEvents.get().endFade.Invoke();
 	}
 
