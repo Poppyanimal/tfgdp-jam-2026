@@ -18,6 +18,8 @@ public class playerUI : MonoBehaviour
         ge.get().playerHurt.AddListener(updateHealth);
         ge.get().playerHeal.AddListener(updateHealth);
         ge.get().ammoChanged.AddListener(updateAmmo);
+        ge.get().doFade.AddListener(doFade);
+        ge.get().endFade.AddListener(endFade);
     }
 
     public void updateHealth()
@@ -56,4 +58,7 @@ public class playerUI : MonoBehaviour
         ammoText.text = a.ToString();
         ammoTextBG.text = a.ToString();
     }
+
+    public void doFade() { anims.SetBool("doFadeOut", true); }
+    public void endFade() { anims.SetBool("doFadeOut", false); }
 }

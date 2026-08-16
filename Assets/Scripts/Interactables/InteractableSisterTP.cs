@@ -1,5 +1,6 @@
 using System.Collections;
 using TMPro;
+using Unity.Cinemachine;
 using UnityEngine;
 using UnityEngine.UI;
 using static TMPro.SpriteAssetUtilities.TexturePacker_JsonArray;
@@ -10,16 +11,12 @@ public class InteractableTP :  EmptyInteractionInteractable
 	public GameObject Sister;
 	protected InteractableTP SisterTP;
 	protected Vector3 position;
-	public Camera camAfterTP;
+	public CinemachineCamera camAfterTP;
 
-	//TODO: replace this w an event call to the canvas animator
-	[SerializeField] GameObject FadePanel;
-	Color currentFade;
-	float fadeTime=0.75f;
+	const float fadeTime=0.4f;
 	float fadeTimeElapsed;
 
 	Coroutine teleporting;
-	Coroutine fading;
 	public bool canTeleport=true; 
 	float teleportCooldown=1;
 	WaitForSeconds cooldownWait;
@@ -50,41 +47,20 @@ public class InteractableTP :  EmptyInteractionInteractable
 	}
 
 	IEnumerator TeleportPlayer() {
-		if (fading!=null) StopCoroutine(fading);
-		fading= StartCoroutine( FadeOutBeforeTP() );
-		yield return new WaitUntil(() => fadeTimeElapsed >= fadeTime);
+		GlobalEvents.get().doFade.Invoke();
+		yield return new WaitForSeconds(fadeTime);
 
 		yield return new WaitForEndOfFrame();
 
+		if(camAfterTP != null)
+		{
+			((CinemachineCamera)FindFirstObjectByType<CinemachineBrain>().ActiveVirtualCamera).gameObject.SetActive(false);
+			camAfterTP.gameObject.SetActive(true);
+		}
+
 		Control.Player.GetComponent<PlayerController>().TeleportPlayer(SisterTP.position);
 		yield return new WaitForSeconds(fadeTime);
-		fading=StartCoroutine( FadeInAfterTP() );
-	}
-	IEnumerator FadeOutBeforeTP() {
-		while (fadeTimeElapsed<fadeTime) {		
-			fadeTimeElapsed+= Time.deltaTime;
-			Image tempImg = FadePanel.GetComponent<Image>();
-			Color tempColor = tempImg.color;
-			tempColor.a= Mathf.Lerp(0,1,fadeTimeElapsed/fadeTime);
-
-			tempImg.color=tempColor;
-			yield return new WaitForSeconds(0.001f);
-		}
-	}
-	IEnumerator FadeInAfterTP() {
-		while (fadeTimeElapsed>0) {		
-			fadeTimeElapsed-= Time.deltaTime;
-			Image tempImg = FadePanel.GetComponent<Image>();
-			Color tempColor = tempImg.color;
-			tempColor.a= Mathf.Lerp(0,1,fadeTimeElapsed/fadeTime);
-
-			tempImg.color=tempColor;
-			yield return new WaitForSeconds(0.001f);
-		}
-		Image tempImg2 = FadePanel.GetComponent<Image>();
-		Color tempColor2 = tempImg2.color;
-		tempColor2.a= 0;
-		tempImg2.color=tempColor2;
+		GlobalEvents.get().endFade.Invoke();
 	}
 
 }
