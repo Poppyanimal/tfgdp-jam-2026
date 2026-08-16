@@ -8,6 +8,7 @@ Interactable
 		- fix cant interact problem, cause?
  -SceneTransitionTrigger*
 		- fix double input problem, limit to one interactable during refactor
+-Dark Souls Message For Tutorials
 
 
 SFX
@@ -26,7 +27,7 @@ SFX
  -Ambient Sounds for
 	---forest
 	---starlight
-	---room
+	---room (starting locale for this)
 	---hill
 	
 	
