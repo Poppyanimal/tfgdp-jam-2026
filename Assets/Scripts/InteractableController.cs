@@ -25,7 +25,7 @@ public class InteractableController : MonoBehaviour
     public TextMeshProUGUI DialogueTextContainer;
 
     [Header ("Player")]
-    public GameObject Player;
+    GameObject Player;
 
     a_Interactable targetInteractable;
     a_Interactable prevInteractable;
@@ -157,7 +157,7 @@ public class InteractableController : MonoBehaviour
         GlobalEvents.get().hidePrompt.AddListener(emptyAndHidePrompt);
 	}
 
-    void getComponentFields() {}
+    void getComponentFields() { Player = FindFirstObjectByType<PlayerController>().gameObject; }
 
     void initializeFields() {
         special_memories_seen= new bool[special_memory_texts.Length];

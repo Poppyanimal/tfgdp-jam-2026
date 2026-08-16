@@ -19,9 +19,10 @@ public class PauseManager : MonoBehaviour {
             //Add them to ToggleInactiveComponents(b)
     PlayerController PlayerController; //.enabled=false
 
-    public GameObject Player;
+    GameObject Player;
 
     void Start() {
+        Player = FindFirstObjectByType<PlayerController>().gameObject;
         getComponentFields();
 		initializeNonComponentFields();
     }

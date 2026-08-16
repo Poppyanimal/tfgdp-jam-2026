@@ -2013,6 +2013,52 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
+--- !u!1 &3152327138168660613
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 31653525516196546}
+  - component: {fileID: 7611299901310257812}
+  m_Layer: 0
+  m_Name: HitStop Handler
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &31653525516196546
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3152327138168660613}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 4681935025468511040}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &7611299901310257812
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3152327138168660613}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4199c1af10548404dba789ad928235b9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  standard_duration: 0.033333335
+  explosion_duration: 0.06666667
 --- !u!1 &3176046579333524272
 GameObject:
   m_ObjectHideFlags: 0
@@ -5033,6 +5079,7 @@ Transform:
   m_Children:
   - {fileID: 614860412928195498}
   - {fileID: 2457671569712342828}
+  - {fileID: 31653525516196546}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &9145647573722800983
@@ -5089,7 +5136,6 @@ MonoBehaviour:
   - {fileID: 4198662283466651799}
   - {fileID: 5635427876199700205}
   - {fileID: 7512537702212707151}
-  Player: {fileID: 0}
 --- !u!114 &7176299833099113823
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5122,7 +5168,6 @@ MonoBehaviour:
   dialogueContainer: {fileID: 5554075805317230122}
   SpeakerTextContainer: {fileID: 6123791013835317800}
   DialogueTextContainer: {fileID: 1440340857338738532}
-  Player: {fileID: 0}
   special_memories_seen: 
 --- !u!1 &7051420812723924615
 GameObject:
@@ -6397,11 +6442,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3808834806915261931, guid: 2f176d25d7d69c644a38b7edfb2e46ab, type: 3}
       propertyPath: m_SizeDelta.x
-      value: 807
+      value: 1200
       objectReference: {fileID: 0}
     - target: {fileID: 3808834806915261931, guid: 2f176d25d7d69c644a38b7edfb2e46ab, type: 3}
       propertyPath: m_SizeDelta.y
-      value: 391
+      value: 1200
       objectReference: {fileID: 0}
     - target: {fileID: 3808834806915261931, guid: 2f176d25d7d69c644a38b7edfb2e46ab, type: 3}
       propertyPath: m_AnchoredPosition.y
