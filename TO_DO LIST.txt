@@ -36,8 +36,9 @@ SFX Player
 SFX Enemy
 	--Enemy Swipe
 	-Ambient Sound Near Figures
+		-figure swipe
 	-Growls and Snarls From Dog
-	-Snickers, Laughs, ehhhhs, from Doll
+		-dog swipe
 	
 SFX Environment
  -Ambient Sounds for
