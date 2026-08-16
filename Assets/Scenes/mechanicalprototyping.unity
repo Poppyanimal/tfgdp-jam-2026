@@ -10359,6 +10359,14 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 2618825453010150922, guid: 277402ffafc5f62449f7b0be33b27224, type: 3}
+      propertyPath: m_Volume
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2618825453010150922, guid: 277402ffafc5f62449f7b0be33b27224, type: 3}
+      propertyPath: panLevelCustomCurve.m_Curve.Array.data[0].value
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 3471228730063015544, guid: 277402ffafc5f62449f7b0be33b27224, type: 3}
       propertyPath: promptContainer
       value: 
@@ -10383,6 +10391,10 @@ PrefabInstance:
       propertyPath: DialogueTextContainer
       value: 
       objectReference: {fileID: 1566921288}
+    - target: {fileID: 8373457224798214027, guid: 277402ffafc5f62449f7b0be33b27224, type: 3}
+      propertyPath: clips.Array.size
+      value: 2
+      objectReference: {fileID: 0}
     - target: {fileID: 9016423704104939456, guid: 277402ffafc5f62449f7b0be33b27224, type: 3}
       propertyPath: m_Name
       value: player entity
@@ -10528,7 +10540,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4412337108247171296, guid: 9fb5c52a8be4bf74fa86e16c6510c3fd, type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 7693887275668170709, guid: 9fb5c52a8be4bf74fa86e16c6510c3fd, type: 3}
       propertyPath: m_LocalPosition.x
