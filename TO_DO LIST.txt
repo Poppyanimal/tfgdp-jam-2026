@@ -1,63 +1,93 @@
-Player 
- -Girl
-  -Additional Animations?
- -Umbrella  
-  --Ranged
-    ---Aim ?
-    ---Bullet Projectiles
- -Health/Death/Respawn            
+------------------------------------------
+For Jam Build
+-----------------------------------------
 
-Enemy
- -Create Model
-  --Animate/Polish
-
- -Dream Eater
-  --Dialogue, see dialogue boxes
-  --BossFight
 
 Interactable
  -Dialogue           *AfterDialogueBoxesExist
- -Item Pickup                     
-  --Umbrella
-  --Ammo
-  --Memories
- -PushBox?
+		- fix cant interact problem, cause?
  -SceneTransitionTrigger*
+		- fix double input problem, limit to one interactable during refactor
+
+
+SFX
+  --Walk steps
+  --UmbrellaAttack
+    ---Melee swing
+    ---Ranged charge
+       ----Ranged blast
+	   ----Ranged Explosion
+  --Enemy Swipe
+  --Attack Connect Sound
+ -Ambient Sound Near Figures
+ -Growls and Snarls From Dog
+ -Snickers, Laughs, ehhhhs, from Doll
+ -sound sfx for interactables (not transition tiles)
+ -Ambient Sounds for
+	---forest
+	---starlight
+	---room
+	---hill
+	
+	
+Level Design
+	-Forest
+	-Starlight
+	-Room
+	-Hill
+
+Memories
+	-ensure functional
+	-different memories for different places
+	-ensure dialogue sequence works correctly (and is progressable)
+
+UX
+ -Dialogue Boxes*
+  --They Do Dialogue.
+  --Multiple Sequencial Pages
+
+
+
+
+-----------------------------------
+For Finished Build
+-----------------------------------
+
+
+Music and Folio
+ -Music
+  --Fight Against The Dream Eater
+ -Folio
+ -Dialogue
+  --Vocal Quips
+  --Girl laughter (Oh-hyohyohyo)
 
 Story
  -Write a Story ?
   --Something something childhood toy possessed by dream eater.
 
-Level Design
- -The House/Cave/Garden/Dream
- -The Boss Arena
- -Decorations
+ -Dream Eater
+  --Dialogue, see dialogue boxes
+  --BossFight
 
-Music and Folio
- -Music
-  --Explore
-  --Combat
-  --Boss
- -Folio
-  --Walking
-  --UmbrellaAttack
-    ---Melee
-    ---Ranged
-       ----For each, Hit/Mis?
-  --Enemy Attack
-    --Hit
- -Ambient Sound
- -Dialogue
-  --Vocal Quips
-  --Girl laughter (Oh-hyohyohyo)
-
+Levels:
+	-Start
+	-Birthday
+	-Christmas
+	-House (exterior)
+	-Tomb
+	-DollToyWorld
+	-Finale
+	
+	
 UI and UX
  -Main Menu
- -Dialogue Boxes*
-  --They Do Dialogue.
-  --Multiple Sequencial Pages
  -Pause
    --Save
    --Options
      ---Sound
      ---Keybinds?
+
+-------------------------------------
+
+

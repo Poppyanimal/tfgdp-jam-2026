@@ -14,17 +14,31 @@ Player
   --Umbrella
     ---Melee
     ---Ranged (no proj)
- -Enum states for (hopefully) easier animation keying.
+ -Enum states for (hopefully) easier animation keying.Player 
+ -Girl Anims
+ -Umbrella  
+  --Ranged
+    ---Bullet Projectiles
+ -Take Damage/Death          
+
  
 Enemy
  -Spinner Enemy rotates and moves toward the player when it can see them.
   --Attacks player on contact (empty)
   --Player Attacks damage, stun and knock it back. 
+Enemy
+ -Create Model
+  --Animate/Polish
+
 
 
 Interactable
  -Framework for making Interactables
  -Glowy Thing
+ -Item Pickup                     
+  --Umbrella
+  --Ammo
+  --Memories
 
  Pause
   -The Game can be paused and unpaused.
