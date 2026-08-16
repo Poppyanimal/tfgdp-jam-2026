@@ -154,6 +154,7 @@ public class InteractableController : MonoBehaviour
         getComponentFields();
         initializeFields();
         emptyAndHidePrompt();
+        GlobalEvents.get().hidePrompt.AddListener(emptyAndHidePrompt);
 	}
 
     void getComponentFields() {}
@@ -252,7 +253,7 @@ public class InteractableController : MonoBehaviour
         promptTextContainer2.text = targetInteractable.Interaction_Prompt;
     }
 
-    void emptyAndHidePrompt() {
+    public void emptyAndHidePrompt() {
         promptContainer.gameObject.SetActive(false);
     }
 

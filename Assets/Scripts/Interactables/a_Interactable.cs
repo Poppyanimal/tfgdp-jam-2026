@@ -6,8 +6,10 @@ public abstract class a_Interactable : MonoBehaviour {
 
 	public enum   INTERACTION_STATE { UNTARGETED, TARGETING, UNTARGETING, TARGETED, ACTIVATING, DEACTIVATING, ACTIVE, FORCE_CANCEL_ACTIVE, EXHAUSTED, PREVENT_EXHAUSTION}
 	public INTERACTION_STATE Interaction_State  { set; get; } = INTERACTION_STATE.UNTARGETED;
+	//TODO: change this to not be a key but the input system's button, get key from first binding of that button!!!
 	public KeyCode           Interaction_Key    { set; get;}  = KeyCode.E;
-	public string            Interaction_Prompt { get; }      = "Press E to Interact";
+	[HideInInspector]
+	public string            Interaction_Prompt      = "Press E to Interact";
 
 	
 	virtual public void Start () { 

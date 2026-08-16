@@ -5,11 +5,17 @@ using static UnityEngine.ProBuilder.AutoUnwrapSettings;
 public class InteractableAmmo: EmptyInteractionInteractable
 {
 	int ammo_amount = 2;
+	
+    public override void Start()
+    {
+		base.Start();
+        Interaction_Prompt = "[E] Pick Up Lingering Charges";;
+    }
 
-	public override void activate() {
+    public override void activate() {
 
-		PlayerController pc= Control.Player.GetComponent<PlayerController>();
-		pc.ammoUp(ammo_amount);
+		FindFirstObjectByType<PlayerController>().ammoUp(ammo_amount);
+		GlobalEvents.get().hidePrompt.Invoke();
 	}
 
 	//To Generalize this for special memory classes

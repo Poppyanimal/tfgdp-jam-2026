@@ -4,10 +4,14 @@ using static UnityEngine.ProBuilder.AutoUnwrapSettings;
 
 public class InteractableHeal: EmptyInteractionInteractable
 {
+    public override void Start()
+    {
+		base.Start();
+		Interaction_Prompt = "[E] Heal From Stray Font";
+		GlobalEvents.get().hidePrompt.Invoke();
+    }
 	public override void activate() {
-		PlayerController pc;
-		if ( Control.Player.TryGetComponent<PlayerController>(out pc) )
-			pc.heal();
+		FindFirstObjectByType<PlayerController>().heal();
 	}
 
 	//To Generalize this for special memory classes

@@ -26,6 +26,7 @@ public class InteractableTP :  EmptyInteractionInteractable
 		SisterTP=Sister.GetComponent<InteractableTP>();
 		position= transform.position+Vector3.up*0.5f;
 		cooldownWait = new WaitForSeconds(teleportCooldown+3*fadeTime);
+		Interaction_Prompt = "[E] Continue Forward";
 	}
 
 	public override void activate()   {	
@@ -34,6 +35,7 @@ public class InteractableTP :  EmptyInteractionInteractable
 			if (teleporting != null) StopCoroutine(teleporting); 
 			teleporting=StartCoroutine(TeleportPlayer());	
 		}
+		GlobalEvents.get().hidePrompt.Invoke();
 	}
 
 	void tempDisableSister() {
@@ -58,7 +60,15 @@ public class InteractableTP :  EmptyInteractionInteractable
 			camAfterTP.gameObject.SetActive(true);
 		}
 
-		Control.Player.GetComponent<PlayerController>().TeleportPlayer(SisterTP.position);
+		SisterTP=Sister.GetComponent<InteractableTP>();
+		//TODO: INTERACTABLES SHOULD NOT RELY ON IS KEY DOWN, BUT INSTEAD ON THE INITIAL ONE FRAME PULSE!!!!!!!!!!
+		//DO NOT ALLOW MULTIPLE INTERACTABLE INTERACTIONS IN ONE FRAME!!!!
+		//TODO
+		//TODO
+		//TODO
+		FindFirstObjectByType<PlayerController>().TeleportPlayer(SisterTP.transform.position);
+
+
 		yield return new WaitForSeconds(fadeTime);
 		GlobalEvents.get().endFade.Invoke();
 	}

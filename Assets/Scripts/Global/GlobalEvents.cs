@@ -6,7 +6,7 @@ public class GlobalEvents
     static GlobalEvents single;
     public UnityEvent playerAttackResolved, ammoChanged, playerHeal, playerHurt, playerDied, useAmmo, playerSpawnProjectile;
     public UnityEvent hitStop, explosionHitStop;
-    public UnityEvent doFade, endFade;
+    public UnityEvent doFade, endFade, hidePrompt;
 
     public static GlobalEvents get()
     {
@@ -30,6 +30,7 @@ public class GlobalEvents
         
         doFade = new();
         endFade = new();
+        hidePrompt = new();
     }
 
 }

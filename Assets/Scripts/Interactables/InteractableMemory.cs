@@ -4,6 +4,13 @@ using static UnityEngine.ProBuilder.AutoUnwrapSettings;
 
 public class InteractableMemory: EmptyInteractionInteractable
 {
+    public override void Start()
+    {
+		base.Start();
+		Interaction_Prompt = "[E] Probe Memory";
+    }
+
+
 	public string[][] SpeakerDialogue;
 
 	public override void activate() {
