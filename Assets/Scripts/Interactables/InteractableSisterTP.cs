@@ -21,6 +21,7 @@ public class InteractableTP :  EmptyInteractionInteractable
 	float teleportCooldown=1;
 	WaitForSeconds cooldownWait;
 	const float teleportOffset = .1f;
+	public sfxPlayer teleportSFX;
 
 	public override void Start() {
 		base.Start();
@@ -51,6 +52,7 @@ public class InteractableTP :  EmptyInteractionInteractable
 
 	IEnumerator TeleportPlayer() {
 		GlobalEvents.get().doFade.Invoke();
+		teleportSFX.play();
 		yield return new WaitForSeconds(fadeTime);
 
 		yield return new WaitForEndOfFrame();
