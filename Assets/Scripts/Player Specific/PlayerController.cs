@@ -128,7 +128,8 @@ public class PlayerController : MonoBehaviour {
 
 	void handleInput() {
 		camInput= calcCamInput();
-		checkIfAttacking();
+		if(!isAttacking)
+			checkIfAttacking();
 	}
 			
 	Vector3 calcCamInput() {
