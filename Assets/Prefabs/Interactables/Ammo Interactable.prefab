@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 5458482516788973101}
   - component: {fileID: 2323017365454707204}
   - component: {fileID: 2455153058940290235}
-  m_Layer: 0
+  m_Layer: 14
   m_Name: Ammo Interactable
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -77,6 +77,14 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 5458482516788973101}
     m_Modifications:
+    - target: {fileID: 61152124246557437, guid: f00fd7dd296b4144f9f7c727e587a3e4, type: 3}
+      propertyPath: m_Layer
+      value: 14
+      objectReference: {fileID: 0}
+    - target: {fileID: 1048193511441982554, guid: f00fd7dd296b4144f9f7c727e587a3e4, type: 3}
+      propertyPath: m_Layer
+      value: 14
+      objectReference: {fileID: 0}
     - target: {fileID: 3047836835824468276, guid: f00fd7dd296b4144f9f7c727e587a3e4, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
@@ -117,9 +125,45 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 3136535570528122934, guid: f00fd7dd296b4144f9f7c727e587a3e4, type: 3}
+      propertyPath: m_Layer
+      value: 14
+      objectReference: {fileID: 0}
+    - target: {fileID: 3390591297593527180, guid: f00fd7dd296b4144f9f7c727e587a3e4, type: 3}
+      propertyPath: m_Layer
+      value: 14
+      objectReference: {fileID: 0}
+    - target: {fileID: 4577753343896743286, guid: f00fd7dd296b4144f9f7c727e587a3e4, type: 3}
+      propertyPath: m_Layer
+      value: 14
+      objectReference: {fileID: 0}
+    - target: {fileID: 5041724178590956309, guid: f00fd7dd296b4144f9f7c727e587a3e4, type: 3}
+      propertyPath: m_Layer
+      value: 14
+      objectReference: {fileID: 0}
     - target: {fileID: 6183926677382883751, guid: f00fd7dd296b4144f9f7c727e587a3e4, type: 3}
       propertyPath: m_Name
       value: Ammo Effect
+      objectReference: {fileID: 0}
+    - target: {fileID: 6183926677382883751, guid: f00fd7dd296b4144f9f7c727e587a3e4, type: 3}
+      propertyPath: m_Layer
+      value: 14
+      objectReference: {fileID: 0}
+    - target: {fileID: 6682294603276144435, guid: f00fd7dd296b4144f9f7c727e587a3e4, type: 3}
+      propertyPath: m_Layer
+      value: 14
+      objectReference: {fileID: 0}
+    - target: {fileID: 7913115883155086469, guid: f00fd7dd296b4144f9f7c727e587a3e4, type: 3}
+      propertyPath: m_Layer
+      value: 14
+      objectReference: {fileID: 0}
+    - target: {fileID: 8550077563424758442, guid: f00fd7dd296b4144f9f7c727e587a3e4, type: 3}
+      propertyPath: m_Layer
+      value: 14
+      objectReference: {fileID: 0}
+    - target: {fileID: 9110805929712251658, guid: f00fd7dd296b4144f9f7c727e587a3e4, type: 3}
+      propertyPath: m_Layer
+      value: 14
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

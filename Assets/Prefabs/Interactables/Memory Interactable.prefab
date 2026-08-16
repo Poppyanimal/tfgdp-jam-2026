@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 5857501396429856343}
   - component: {fileID: 1095238253839242078}
   - component: {fileID: 7544995144304981294}
-  m_Layer: 0
+  m_Layer: 14
   m_Name: Memory Interactable
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -77,6 +77,26 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 5857501396429856343}
     m_Modifications:
+    - target: {fileID: 61152124246557437, guid: 73a0a7bfd22f4074d81baf6ae6c14526, type: 3}
+      propertyPath: m_Layer
+      value: 14
+      objectReference: {fileID: 0}
+    - target: {fileID: 584437480315998071, guid: 73a0a7bfd22f4074d81baf6ae6c14526, type: 3}
+      propertyPath: m_Layer
+      value: 14
+      objectReference: {fileID: 0}
+    - target: {fileID: 1048193511441982554, guid: 73a0a7bfd22f4074d81baf6ae6c14526, type: 3}
+      propertyPath: m_Layer
+      value: 14
+      objectReference: {fileID: 0}
+    - target: {fileID: 2531266946367114080, guid: 73a0a7bfd22f4074d81baf6ae6c14526, type: 3}
+      propertyPath: m_Layer
+      value: 14
+      objectReference: {fileID: 0}
+    - target: {fileID: 2608821668554461038, guid: 73a0a7bfd22f4074d81baf6ae6c14526, type: 3}
+      propertyPath: m_Layer
+      value: 14
+      objectReference: {fileID: 0}
     - target: {fileID: 3047836835824468276, guid: 73a0a7bfd22f4074d81baf6ae6c14526, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
@@ -117,9 +137,37 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 3136535570528122934, guid: 73a0a7bfd22f4074d81baf6ae6c14526, type: 3}
+      propertyPath: m_Layer
+      value: 14
+      objectReference: {fileID: 0}
+    - target: {fileID: 5041724178590956309, guid: 73a0a7bfd22f4074d81baf6ae6c14526, type: 3}
+      propertyPath: m_Layer
+      value: 14
+      objectReference: {fileID: 0}
     - target: {fileID: 6183926677382883751, guid: 73a0a7bfd22f4074d81baf6ae6c14526, type: 3}
       propertyPath: m_Name
       value: Memory Effects
+      objectReference: {fileID: 0}
+    - target: {fileID: 6183926677382883751, guid: 73a0a7bfd22f4074d81baf6ae6c14526, type: 3}
+      propertyPath: m_Layer
+      value: 14
+      objectReference: {fileID: 0}
+    - target: {fileID: 6387530561219098487, guid: 73a0a7bfd22f4074d81baf6ae6c14526, type: 3}
+      propertyPath: m_Layer
+      value: 14
+      objectReference: {fileID: 0}
+    - target: {fileID: 7913115883155086469, guid: 73a0a7bfd22f4074d81baf6ae6c14526, type: 3}
+      propertyPath: m_Layer
+      value: 14
+      objectReference: {fileID: 0}
+    - target: {fileID: 8550077563424758442, guid: 73a0a7bfd22f4074d81baf6ae6c14526, type: 3}
+      propertyPath: m_Layer
+      value: 14
+      objectReference: {fileID: 0}
+    - target: {fileID: 9110805929712251658, guid: 73a0a7bfd22f4074d81baf6ae6c14526, type: 3}
+      propertyPath: m_Layer
+      value: 14
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
