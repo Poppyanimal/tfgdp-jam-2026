@@ -5,6 +5,7 @@ public class contactPointParticles : MonoBehaviour
     public ParticleSystem hitSparks;
     int triggerLayer = 2, interactableLayer = 14;
     public bool ignorePlayer = true;
+    public sfxPlayer contactSFX;
 
 
     void OnTriggerEnter(Collider collider)
@@ -21,5 +22,6 @@ public class contactPointParticles : MonoBehaviour
         hitSparks.transform.position = posApprox;
         hitSparks.transform.rotation = rotApprox;
         hitSparks.Play();
+        contactSFX.play();
     }
 }
