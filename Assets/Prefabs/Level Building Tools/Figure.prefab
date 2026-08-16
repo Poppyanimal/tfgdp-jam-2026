@@ -74,7 +74,7 @@ GameObject:
   - component: {fileID: 4338884671296533384}
   - component: {fileID: 2675647582421398844}
   m_Layer: 10
-  m_Name: approaching figure
+  m_Name: Figure
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -127,6 +127,7 @@ MonoBehaviour:
   activationDistance: 5
   scanPoint: {fileID: 5242506285857357682}
   wallCheckDistance: 0.3
+  distanceFromPlayerToDisable: 40
   inStunFrames: 0
   player_distance_deadzone: 0.5
   bodyDisableOnDeath: {fileID: 2675647582421398844}

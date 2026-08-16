@@ -247,7 +247,7 @@ Transform:
   m_GameObject: {fileID: 3920208073405025732}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 1.281, z: 0}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -283,6 +283,7 @@ MonoBehaviour:
   activationDistance: 15
   scanPoint: {fileID: 4555891497254711958}
   wallCheckDistance: 0.5
+  distanceFromPlayerToDisable: 40
   inStunFrames: 0
   player_distance_deadzone: 0.5
   bodyDisableOnDeath: {fileID: 1052211969867470433}
@@ -292,6 +293,8 @@ MonoBehaviour:
   wanderWallTurnTimer: 1
   lungeAtPlayerDistance: 2.5
   lungeSpeed: 3
+  force_multiplier_override: 10
+  particlesToStopOnDeath: []
 --- !u!1 &3967961443695527612
 GameObject:
   m_ObjectHideFlags: 0
@@ -427,7 +430,7 @@ Transform:
   m_GameObject: {fileID: 4535253204498071024}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: 0, y: 1.215, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
