@@ -52,6 +52,7 @@ public class InteractableMemory: EmptyInteractionInteractable
 	}
 
 	public override void deactivate() {
+		deactivateAllParticles();
 		if (Interaction_State != INTERACTION_STATE.PREVENT_EXHAUSTION) {
 			Interaction_State = INTERACTION_STATE.EXHAUSTED;
 		}

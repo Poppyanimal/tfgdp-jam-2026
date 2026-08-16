@@ -8,10 +8,11 @@ public class InteractableTP :  EmptyInteractionInteractable
 {
 
 	public GameObject Sister;
-	public InteractableTP SisterTP;
-	public Vector3 position;
+	protected InteractableTP SisterTP;
+	protected Vector3 position;
 	public Camera camAfterTP;
 
+	//TODO: replace this w an event call to the canvas animator
 	[SerializeField] GameObject FadePanel;
 	Color currentFade;
 	float fadeTime=0.75f;

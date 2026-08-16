@@ -14,6 +14,7 @@ public class InteractableAmmo: EmptyInteractionInteractable
 
 	//To Generalize this for special memory classes
 	public override void deactivate() {
+		deactivateAllParticles();
 		if (Interaction_State != INTERACTION_STATE.PREVENT_EXHAUSTION) {
 			Interaction_State = INTERACTION_STATE.EXHAUSTED;
 		}

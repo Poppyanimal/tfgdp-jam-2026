@@ -2,7 +2,7 @@
 
 public abstract class a_Interactable : MonoBehaviour { 
 	
-	public InteractableController Control;
+	protected InteractableController Control;
 
 	public enum   INTERACTION_STATE { UNTARGETED, TARGETING, UNTARGETING, TARGETED, ACTIVATING, DEACTIVATING, ACTIVE, FORCE_CANCEL_ACTIVE, EXHAUSTED, PREVENT_EXHAUSTION}
 	public INTERACTION_STATE Interaction_State  { set; get; } = INTERACTION_STATE.UNTARGETED;
@@ -40,6 +40,24 @@ public abstract class a_Interactable : MonoBehaviour {
 	public abstract void activate  ();
 	public abstract void deactivate();
 	public void abruptDeactivate() { deactivate(); detarget(); }
+
+
+	protected bool deactivateParticleCoreMesh = true;
+	public void deactivateAllParticles()
+	{
+		if(deactivateParticleCoreMesh)
+		{
+			MeshRenderer render = GetComponentInChildren<MeshRenderer>();
+			if(render != null)
+				render.enabled = false;
+		}
+
+		ParticleSystem[] particles = GetComponentsInChildren<ParticleSystem>();
+		foreach(ParticleSystem p in particles)
+		{
+			p.Stop();
+		}
+	}
 
 
 }
