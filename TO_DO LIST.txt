@@ -10,27 +10,6 @@ Interactable
 		- fix double input problem, limit to one interactable during refactor
 -Dark Souls Message For Tutorials
 
-
-SFX
-  --Walk steps
-  --UmbrellaAttack
-    ---Melee swing
-    ---Ranged charge
-       ----Ranged blast
-	   ----Ranged Explosion
-  --Enemy Swipe
-  --Attack Connect Sound
- -Ambient Sound Near Figures
- -Growls and Snarls From Dog
- -Snickers, Laughs, ehhhhs, from Doll
- -sound sfx for interactables (not transition tiles)
- -Ambient Sounds for
-	---forest
-	---starlight
-	---room (starting locale for this)
-	---hill
-	
-	
 Level Design
 	-Forest
 	-Starlight
@@ -46,6 +25,37 @@ UX
  -Dialogue Boxes*
   --They Do Dialogue.
   --Multiple Sequencial Pages
+
+
+~~~
+
+SFX Player
+  --Walk steps
+  --UmbrellaAttack
+    ---Melee swing
+    ---Ranged charge
+       ----Ranged blast
+	   ----Ranged Explosion
+	   
+SFX Enemy
+	--Enemy Swipe
+	-Ambient Sound Near Figures
+	-Growls and Snarls From Dog
+	-Snickers, Laughs, ehhhhs, from Doll
+	
+SFX Environment
+ -Ambient Sounds for
+	---forest
+	---starlight
+	---room (starting locale for this)
+	---hill
+	
+SFX General
+	--Attack Connect Sound
+	-sound sfx for interactables (not transition tiles)
+	
+~~~
+	
 
 
 
