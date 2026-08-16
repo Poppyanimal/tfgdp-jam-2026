@@ -30,12 +30,12 @@ UX
 ~~~
 
 SFX Player
-  --Walk steps
   --UmbrellaAttack
-    ---Melee swing
     ---Ranged charge
        ----Ranged blast
 	   ----Ranged Explosion
+	--get hurt
+	--death
 	   
 SFX Enemy
 	--Enemy Swipe

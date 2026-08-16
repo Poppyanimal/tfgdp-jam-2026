@@ -20,6 +20,7 @@ public class InteractableTP :  EmptyInteractionInteractable
 	public bool canTeleport=true; 
 	float teleportCooldown=1;
 	WaitForSeconds cooldownWait;
+	const float teleportOffset = .1f;
 
 	public override void Start() {
 		base.Start();
@@ -66,7 +67,7 @@ public class InteractableTP :  EmptyInteractionInteractable
 		//TODO
 		//TODO
 		//TODO
-		FindFirstObjectByType<PlayerController>().TeleportPlayer(SisterTP.transform.position);
+		FindFirstObjectByType<PlayerController>().TeleportPlayer(SisterTP.transform.position + Vector3.up * teleportOffset);
 
 
 		yield return new WaitForSeconds(fadeTime);
