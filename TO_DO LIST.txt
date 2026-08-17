@@ -6,14 +6,6 @@ For Jam Build
 Interactable
 	-occasional double teleport still? how?
 	
-Memories
-	-end screen for jam version on threshold met
-
-UX
- -Dialogue Boxes*
-  --They Do Dialogue.
-  --Multiple Sequencial Pages
-  
 Death
 	-restart level
 
@@ -32,7 +24,6 @@ SFX Enemy
 	
 SFX Environment
  -Ambient Sounds for
-	---forest
 	---starlight
 	---room (starting locale for this)
 	---hill
@@ -40,6 +31,7 @@ SFX Environment
 SFX General
 	--Attack Connect Sound for hit confirm
 	-sound sfx for interactables (not transition tiles)
+	-box destruction
 	
 ~~~
 	

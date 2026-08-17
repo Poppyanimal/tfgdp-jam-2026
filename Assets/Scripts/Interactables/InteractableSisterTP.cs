@@ -51,6 +51,8 @@ public class InteractableTP :  EmptyInteractionInteractable
 	}
 
 	IEnumerator TeleportPlayer() {
+		Vector3 newLocation = SisterTP.transform.position + Vector3.up * teleportOffset:
+
 		GetComponent<Collider>().enabled = false;
 		GlobalEvents.get().doFade.Invoke();
 		teleportSFX.play();
@@ -65,9 +67,8 @@ public class InteractableTP :  EmptyInteractionInteractable
 			camAfterTP.gameObject.SetActive(true);
 		}
 
-		SisterTP=Sister.GetComponent<InteractableTP>();
 		PlayerController player = FindFirstObjectByType<PlayerController>();
-		player.TeleportPlayer(SisterTP.transform.position + Vector3.up * teleportOffset);
+		player.TeleportPlayer(newLocation);
 		player.removeCollider(GetComponent<Collider>());
 
 		if(teleportingToOutside)
