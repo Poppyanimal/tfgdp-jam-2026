@@ -19,6 +19,7 @@ public class InteractableMemory: EmptyInteractionInteractable
 		Control.playMemory(memoryScript);
 		deactivateAllParticles();
 		disableCollision(GetComponent<Collider>());
+		ambience?.Stop();
 	}
 
 

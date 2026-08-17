@@ -2,6 +2,7 @@ using UnityEngine;
 
 public class EmptyInteractionInteractable :  a_Interactable
 {
+	public AudioSource ambience;
 
 	public override void detarget()   {		
 		//Implement what happens when the interactable stops being targeted.

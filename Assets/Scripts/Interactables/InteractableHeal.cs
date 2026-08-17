@@ -14,6 +14,7 @@ public class InteractableHeal: EmptyInteractionInteractable
 		FindFirstObjectByType<PlayerController>().heal();
 		disableCollision(GetComponent<Collider>());
 		deactivateAllParticles();
+		ambience?.Stop();
 	}
 
 

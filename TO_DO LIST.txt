@@ -16,8 +16,6 @@ SFX Enemy
 	-wound sfx dog
 	
 	
-SFX General
-	-ambient sfx for interactables (not transition tiles)
 	
 ~~~
 	

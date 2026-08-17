@@ -18,6 +18,7 @@ public class InteractableAmmo: EmptyInteractionInteractable
 		FindFirstObjectByType<PlayerController>().ammoUp(ammo_amount);
 		disableCollision(GetComponent<Collider>());
 		deactivateAllParticles();
+		ambience?.Stop();
 	}
 
 }
