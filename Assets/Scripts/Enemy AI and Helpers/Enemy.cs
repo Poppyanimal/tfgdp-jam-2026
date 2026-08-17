@@ -95,7 +95,7 @@ public class Enemy : MonoBehaviour
             if (hit.collider!=null && hit.transform.gameObject.layer==LayerMask.NameToLayer("Player") && hit.distance<find_player_distance) {
                 playerIsInSight=true; 
                 PlayerSeen=hit.transform.gameObject;   
-                Debug.Log("Sees Player");
+                //Debug.Log("Sees Player");
                 break; 
             }   
         }

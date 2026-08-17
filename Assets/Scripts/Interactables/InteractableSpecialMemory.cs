@@ -4,58 +4,10 @@ using static UnityEngine.ProBuilder.AutoUnwrapSettings;
 
 public class InteractableSpecialMemory: InteractableMemory
 {
-	[SerializeField] public InteractableController.SPECIAL_MEMORY mem;
 
 	public override void activate() {
-		SpeakerDialogue= parseMemory();
-		try { playCurrentMemory(); }
-		catch (NullReferenceException) { }
-
+		base.activate();
+		//todo: cause extra action on memory, like pick up umbrella
 	}
-
-	//To Generalize this for special memory classes
-	string[][] parseMemory() { 
-
-		
-		string[] currMemory = Control.special_memory_texts[ (int) mem];
-	
-		int itt=0;
-		string[][] toReturn = new string[currMemory.Length][];
-		foreach ( string quip in currMemory) {
-			if (quip.Contains("&") )		
-				toReturn[itt]= quip.Split("&");
-			else {		
-				toReturn[itt]= new string[2] { Control.mx_404_exception_name, quip };
-				toReturn[0]= new string[3] { toReturn[0][0], toReturn[0][1], "404" };
-			}
-			itt+=1;
-		}
-		toReturn= Control.replaceSpeakerNames(toReturn);
-
-
-		return toReturn;
-	//Replace Spearker IDs with Names by switch	
-	}
-
-	bool validateCurr(int curr) { 
-		bool currIsValid = 0 <=curr && curr< Control.memory_texts.Length;	
-		//if (! currIsValid) Debug.LogFormat("{0} tried to access invalid memory index {1}.", this.ToString(), curr);
-		
-		return currIsValid;
-	}
-
-	void playCurrentMemory() {
-		Control.playMemory(SpeakerDialogue);
-	}
-
-	public override void deactivate() {
-		if (Interaction_State != INTERACTION_STATE.PREVENT_EXHAUSTION) {
-			Interaction_State = INTERACTION_STATE.EXHAUSTED;
-		}
-		else {
-		Interaction_State = INTERACTION_STATE.TARGETING;
-		}
-	}
-
 
 }

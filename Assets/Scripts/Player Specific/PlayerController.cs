@@ -1,4 +1,5 @@
 using System.Collections;
+using System.Collections.Generic;
 using Unity.Burst.CompilerServices;
 using Unity.Cinemachine;
 using Unity.VisualScripting;
@@ -77,6 +78,8 @@ public class PlayerController : MonoBehaviour {
 	public float shakeImpulse = .1f;
 
 	public ParticleSystem bloodeffect;
+	InteractableController iController;
+	bool inTPPause = false;
 
 
 	// CODE 
@@ -98,11 +101,14 @@ public class PlayerController : MonoBehaviour {
 	}	
 	void initializeNonComponentFields() {
 		lookAtAngle = PlayerRotation.transform.rotation.eulerAngles.y;;
+		iController = FindFirstObjectByType<InteractableController>();
 	}
 	void initializeListeners() {
 		ge.get().playerAttackResolved.AddListener(attackingFinished);
 		ge.get().playerDied.AddListener(doDeath);
 		ge.get().playerSpawnProjectile.AddListener(shoot);
+        ge.get().teleportLock.AddListener(startTPLock);
+        ge.get().teleportUnlock.AddListener(endTPLock);
 	}
 
 
@@ -128,7 +134,7 @@ public class PlayerController : MonoBehaviour {
 
 	void handleInput() {
 		camInput= calcCamInput();
-		if(!isAttacking)
+		if(!isAttacking && !inTPPause)
 			checkIfAttacking();
 	}
 			
@@ -223,6 +229,12 @@ public class PlayerController : MonoBehaviour {
 				moving = false;
 
 			}
+		}
+		else if(Input.GetButtonDown("Interact") && interactableColList.Count > 0)
+		{
+			if(iController.getCurrentInteractable() == null)
+				iController.updateCurrentInteractable(interactableColList[interactableColList.Count - 1].GetComponent<a_Interactable>());
+			ge.get().interaction_input.Invoke();
 		}
 	}	
 
@@ -339,6 +351,7 @@ public class PlayerController : MonoBehaviour {
 
 	MOVE_STATE defineMoveState() {
 		if(isDead)	return MOVE_STATE.DEAD;
+		if (inTPPause) return MOVE_STATE.IDLE;
 		if (Move_State==MOVE_STATE.ATTACK && isAttacking) return Move_State; //If ATTACKING, KEEP ATTACKING. THE 'finish attacking' function will set to idle.
 
 		moving= rawInput.magnitude > input_deadzone;
@@ -552,9 +565,14 @@ public class PlayerController : MonoBehaviour {
 
 
 
-
+	List<Collider> interactableColList = new();
 	void OnTriggerEnter(Collider other) {
-		if(other.gameObject.layer != LayerMask.NameToLayer("EnemyAttack"))
+		if(other.gameObject.layer == LayerMask.NameToLayer("Interactable"))
+		{
+			interactableColList.Add(other);
+			iController.updateCurrentInteractable(other.GetComponent<a_Interactable>());
+		}
+		else if(other.gameObject.layer != LayerMask.NameToLayer("EnemyAttack"))
 		{
 			//assumes non-enemy triggers are camera switches
 			CameraSwitchTrigger cwt = other.GetComponent<CameraSwitchTrigger>();
@@ -577,5 +595,25 @@ public class PlayerController : MonoBehaviour {
 			takeDamage();
 		}
 	}
+
+    void OnTriggerExit(Collider other)
+	{
+		removeCollider(other);
+	}
+
+	public void removeCollider(Collider other)
+	{
+		if(other.gameObject.layer == LayerMask.NameToLayer("Interactable"))
+		{
+			interactableColList.Remove(other);
+			if(interactableColList.Count == 0)
+				iController.updateCurrentInteractable(null);
+			else
+				iController.updateCurrentInteractable(interactableColList[interactableColList.Count - 1].GetComponent<a_Interactable>());
+		}
+	}
+
+	public void startTPLock() { inTPPause = true; }
+	public void endTPLock() { inTPPause = false; }
 
 }

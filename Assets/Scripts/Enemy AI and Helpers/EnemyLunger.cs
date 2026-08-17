@@ -53,7 +53,7 @@ public class EnemyLunger : EnemySpinner
 
     Rigidbody playerBody;
     override public void MoveTowardPlayer(){
-        Debug.Log("moving toward player, lunge state: "+inLungeCooldown+", distance: "+Vector3.Distance(lastKnownPlayerLocation, scanPoint.transform.position));
+        //Debug.Log("moving toward player, lunge state: "+inLungeCooldown+", distance: "+Vector3.Distance(lastKnownPlayerLocation, scanPoint.transform.position));
         if(Vector3.Distance(lastKnownPlayerLocation, scanPoint.transform.position) <= lungeAtPlayerDistance && !inLungeCooldown)
         {
             Debug.Log("lungecode check");
@@ -68,7 +68,7 @@ public class EnemyLunger : EnemySpinner
 
         Vector3 movementVector = playerBody.position-body.position;
         movementVector.y = 0;
-        Debug.Log("moving toward player and failed lunge check, movementVector:"+movementVector+", "+movementVector.magnitude);
+        //Debug.Log("moving toward player and failed lunge check, movementVector:"+movementVector+", "+movementVector.magnitude);
 
         MoveInDirection(movementVector);   
 

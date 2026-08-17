@@ -2,7 +2,6 @@ using UnityEngine;
 
 public class EmptyInteractionInteractable :  a_Interactable
 {
-	[SerializeField] bool logDebugMessages= false;
 
 	public override void detarget()   {		
 		//Implement what happens when the interactable stops being targeted.
@@ -21,6 +20,12 @@ public class EmptyInteractionInteractable :  a_Interactable
 
 	public override void deactivate() {     
 		//Implement what happens when the interactble, while active and targeted, has its interact key released.	
+	}
+
+	public void disableCollision(Collider col)
+	{
+		FindFirstObjectByType<PlayerController>().removeCollider(col);
+		col.enabled = false;
 	}
 
 }

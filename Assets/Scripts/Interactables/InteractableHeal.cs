@@ -8,22 +8,14 @@ public class InteractableHeal: EmptyInteractionInteractable
     {
 		base.Start();
 		Interaction_Prompt = "[E] Heal From Stray Font";
-		GlobalEvents.get().hidePrompt.Invoke();
     }
-	public override void activate() {
+	public override void activate()
+	{
 		FindFirstObjectByType<PlayerController>().heal();
+		disableCollision(GetComponent<Collider>());
+		deactivateAllParticles();
 	}
 
-	//To Generalize this for special memory classes
-	public override void deactivate() {
-		deactivateAllParticles();
-		if (Interaction_State != INTERACTION_STATE.PREVENT_EXHAUSTION) {
-			Interaction_State = INTERACTION_STATE.EXHAUSTED;
-		}
-		else {
-		Interaction_State = INTERACTION_STATE.TARGETING;
-		}
-	}
 
 
 }

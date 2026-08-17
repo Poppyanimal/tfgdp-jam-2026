@@ -337,6 +337,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 3768121578641350537}
     m_Modifications:
+    - target: {fileID: 1095238253839242078, guid: bb0ea6b24025f11439a5bec85a3ba14b, type: 3}
+      propertyPath: memoryScript
+      value: 
+      objectReference: {fileID: 11400000, guid: 211fb601c1483c34abcd315c4175f4b3, type: 2}
     - target: {fileID: 4694238167621709464, guid: bb0ea6b24025f11439a5bec85a3ba14b, type: 3}
       propertyPath: m_Name
       value: Memory Interactable

@@ -7,6 +7,7 @@ public class GlobalEvents
     public UnityEvent playerAttackResolved, ammoChanged, playerHeal, playerHurt, playerDied, useAmmo, playerSpawnProjectile;
     public UnityEvent hitStop, explosionHitStop;
     public UnityEvent doFade, endFade, hidePrompt, teleportLock, teleportUnlock, goingIndoors, goingOutdoors;
+    public UnityEvent interaction_input, memory_threshold_reached;
 
     public static GlobalEvents get()
     {
@@ -37,6 +38,9 @@ public class GlobalEvents
 
         goingIndoors = new();
         goingOutdoors = new();
+
+        interaction_input = new();
+        memory_threshold_reached = new();
     }
 
 }

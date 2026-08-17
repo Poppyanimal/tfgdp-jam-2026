@@ -38,7 +38,6 @@ public class InteractableTP :  EmptyInteractionInteractable
 			if (teleporting != null) StopCoroutine(teleporting); 
 			teleporting=StartCoroutine(TeleportPlayer());	
 		}
-		GlobalEvents.get().hidePrompt.Invoke();
 	}
 
 	void tempDisableSister() {
@@ -52,6 +51,7 @@ public class InteractableTP :  EmptyInteractionInteractable
 	}
 
 	IEnumerator TeleportPlayer() {
+		GetComponent<Collider>().enabled = false;
 		GlobalEvents.get().doFade.Invoke();
 		teleportSFX.play();
 		GlobalEvents.get().teleportLock.Invoke();
@@ -66,12 +66,9 @@ public class InteractableTP :  EmptyInteractionInteractable
 		}
 
 		SisterTP=Sister.GetComponent<InteractableTP>();
-		//TODO: INTERACTABLES SHOULD NOT RELY ON IS KEY DOWN, BUT INSTEAD ON THE INITIAL ONE FRAME PULSE!!!!!!!!!!
-		//DO NOT ALLOW MULTIPLE INTERACTABLE INTERACTIONS IN ONE FRAME!!!!
-		//TODO
-		//TODO
-		//TODO
-		FindFirstObjectByType<PlayerController>().TeleportPlayer(SisterTP.transform.position + Vector3.up * teleportOffset);
+		PlayerController player = FindFirstObjectByType<PlayerController>();
+		player.TeleportPlayer(SisterTP.transform.position + Vector3.up * teleportOffset);
+		player.removeCollider(GetComponent<Collider>());
 
 		if(teleportingToOutside)
 			GlobalEvents.get().goingOutdoors.Invoke();
@@ -79,9 +76,12 @@ public class InteractableTP :  EmptyInteractionInteractable
 			GlobalEvents.get().goingIndoors.Invoke();
 
 
+
+
 		yield return new WaitForSeconds(fadeTime);
 		GlobalEvents.get().teleportUnlock.Invoke();
 		GlobalEvents.get().endFade.Invoke();
+		GetComponent<Collider>().enabled = true;
 	}
 
 }
