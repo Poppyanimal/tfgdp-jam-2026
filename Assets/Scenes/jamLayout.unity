@@ -9983,6 +9983,10 @@ PrefabInstance:
       propertyPath: camAfterTP
       value: 
       objectReference: {fileID: 575944725}
+    - target: {fileID: 4509715370327116771, guid: 0f46780c1539f674eb002769aaea325e, type: 3}
+      propertyPath: m_LocalScale.x
+      value: 18.510145
+      objectReference: {fileID: 0}
     - target: {fileID: 6237674112986294982, guid: 0f46780c1539f674eb002769aaea325e, type: 3}
       propertyPath: m_LocalPosition.x
       value: 130.1

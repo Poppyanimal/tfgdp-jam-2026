@@ -2,7 +2,7 @@ using UnityEngine;
 
 public class sfxHelper : MonoBehaviour
 {
-    public sfxPlayer leftFoot, rightFoot, umbrellaSwing, umbrellaCharge, umbrellaShoot, hurt, die,
+    public sfxPlayer leftFoot, rightFoot, umbrellaSwing, umbrellaCharge, umbrellaShoot, hurt, hurtalt, die,
     ready, jump, idle;
     public bool endIdleOnDeath = false;
     
@@ -12,6 +12,7 @@ public class sfxHelper : MonoBehaviour
     public void chargeSFX() { umbrellaCharge.play(); }
     public void shootSFX() { umbrellaShoot.play(); }
     public void hurtSFX() { hurt.play(); }
+    public void hurtaltSFX() { hurtalt.play(); }
     public void dieSFX() { die.play(); if(endIdleOnDeath) idle.stop(); }
 
     public void readySFX() { ready.play(); }

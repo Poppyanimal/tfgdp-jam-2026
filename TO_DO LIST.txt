@@ -6,19 +6,17 @@ For Jam Build
 Maybe:
 	-dark souls message for controls?
 
-~~~
-
-SFX Player
-	--wound sfx
-	   
 SFX Enemy
 	-dog jumping sfx
-	-wound sfx dog
 	
 	
-	
-~~~
-	
+
+
+
+
+
+
+
 
 
 -----------------------------------
