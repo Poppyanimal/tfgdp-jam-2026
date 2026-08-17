@@ -8,7 +8,7 @@ public class InteractableMemory: EmptyInteractionInteractable
     public override void Start()
     {
 		base.Start();
-		Interaction_Prompt = "[E] Probe Memory";
+		Interaction_Prompt = "[Z] Probe Memory";
     }
 
 

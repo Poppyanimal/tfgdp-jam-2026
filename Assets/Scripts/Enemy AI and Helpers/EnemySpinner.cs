@@ -41,7 +41,7 @@ public class EnemySpinner : Enemy
                 startAttack();
             return;   
         }
-        MoveInDirection(lastKnownPlayerLocation-body.position, true);   
+        MoveInDirection(lastKnownPlayerLocation-body.position);   
     }
 
     void startAttack()

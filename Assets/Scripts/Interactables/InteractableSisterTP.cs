@@ -29,7 +29,7 @@ public class InteractableTP :  EmptyInteractionInteractable
 		SisterTP=Sister.GetComponent<InteractableTP>();
 		position= transform.position+Vector3.up*0.5f;
 		cooldownWait = new WaitForSeconds(teleportCooldown+3*fadeTime);
-		Interaction_Prompt = "[E] Continue Forward";
+		Interaction_Prompt = "[Z] Continue Forward";
 	}
 
 	public override void activate()   {	

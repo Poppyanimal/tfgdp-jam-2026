@@ -22,7 +22,7 @@ MonoBehaviour:
   - speaker: 0
     line: I'm just not pretending to be the man you think I was supposed to be.
   speakers:
-  - name: Lily
+  - name: ???
     color: {r: 0.7472656, g: 0.57872015, b: 0.8018868, a: 1}
   - name: Dad
     color: {r: 0.18836774, g: 0.42221898, b: 0.4811321, a: 1}

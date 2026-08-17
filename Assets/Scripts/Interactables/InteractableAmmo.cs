@@ -9,7 +9,7 @@ public class InteractableAmmo: EmptyInteractionInteractable
     public override void Start()
     {
 		base.Start();
-        Interaction_Prompt = "[E] Pick Up Lingering Charges";;
+        Interaction_Prompt = "[Z] Pick Up Lingering Charges";;
     }
 
     public override void activate()

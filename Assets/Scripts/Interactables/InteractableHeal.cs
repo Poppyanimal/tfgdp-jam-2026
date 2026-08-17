@@ -7,7 +7,7 @@ public class InteractableHeal: EmptyInteractionInteractable
     public override void Start()
     {
 		base.Start();
-		Interaction_Prompt = "[E] Heal From Stray Font";
+		Interaction_Prompt = "[Z] Heal From Stray Font";
     }
 	public override void activate()
 	{
