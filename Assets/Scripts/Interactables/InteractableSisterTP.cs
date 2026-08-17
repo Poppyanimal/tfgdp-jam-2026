@@ -51,7 +51,7 @@ public class InteractableTP :  EmptyInteractionInteractable
 	}
 
 	IEnumerator TeleportPlayer() {
-		Vector3 newLocation = SisterTP.transform.position + Vector3.up * teleportOffset:
+		Vector3 newLocation = SisterTP.transform.position + Vector3.up * teleportOffset;
 
 		GetComponent<Collider>().enabled = false;
 		GlobalEvents.get().doFade.Invoke();

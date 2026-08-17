@@ -17,7 +17,7 @@ public class PlayerVars
     {
         health = 5;
         maxHealth = health;
-        ammo = 5;
+        ammo = 1;
         ge.get().useAmmo.AddListener(useAnAmmo);
     }
 

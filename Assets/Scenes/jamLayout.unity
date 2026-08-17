@@ -9635,6 +9635,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Room Area
       objectReference: {fileID: 0}
+    - target: {fileID: 6574753098446465479, guid: 6b2208084656ddf48ae2e7f529acf745, type: 3}
+      propertyPath: rolloffMode
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 9124425309919620613, guid: 6b2208084656ddf48ae2e7f529acf745, type: 3}
       propertyPath: Target.TrackingTarget
       value: 
@@ -9652,6 +9656,22 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 28928958020247198, guid: 277402ffafc5f62449f7b0be33b27224, type: 3}
+      propertyPath: rolloffMode
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 63368055117388782, guid: 277402ffafc5f62449f7b0be33b27224, type: 3}
+      propertyPath: rolloffMode
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 853976370028416335, guid: 277402ffafc5f62449f7b0be33b27224, type: 3}
+      propertyPath: rolloffMode
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1187716020843629158, guid: 277402ffafc5f62449f7b0be33b27224, type: 3}
+      propertyPath: rolloffMode
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 1323546249968007813, guid: 277402ffafc5f62449f7b0be33b27224, type: 3}
       propertyPath: m_LocalPosition.x
       value: -24.68309
@@ -9690,6 +9710,22 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1323546249968007813, guid: 277402ffafc5f62449f7b0be33b27224, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2618825453010150922, guid: 277402ffafc5f62449f7b0be33b27224, type: 3}
+      propertyPath: rolloffMode
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2751965713861156822, guid: 277402ffafc5f62449f7b0be33b27224, type: 3}
+      propertyPath: rolloffMode
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7202306238137214278, guid: 277402ffafc5f62449f7b0be33b27224, type: 3}
+      propertyPath: rolloffMode
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8113549091223326083, guid: 277402ffafc5f62449f7b0be33b27224, type: 3}
+      propertyPath: rolloffMode
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 9016423704104939456, guid: 277402ffafc5f62449f7b0be33b27224, type: 3}
@@ -9753,6 +9789,10 @@ PrefabInstance:
       propertyPath: Sister
       value: 
       objectReference: {fileID: 6424709947214753365}
+    - target: {fileID: 5012813925969196129, guid: b75ce3154bd763243aa481c18d6c1cce, type: 3}
+      propertyPath: rolloffMode
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 8464979802670476544, guid: b75ce3154bd763243aa481c18d6c1cce, type: 3}
       propertyPath: m_Name
       value: Lily Hill Area
@@ -9845,6 +9885,10 @@ PrefabInstance:
       propertyPath: Sister
       value: 
       objectReference: {fileID: 5337190075339171839}
+    - target: {fileID: 2468006928647976717, guid: 0f46780c1539f674eb002769aaea325e, type: 3}
+      propertyPath: rolloffMode
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 3521930236513263075, guid: 0f46780c1539f674eb002769aaea325e, type: 3}
       propertyPath: Sister
       value: 
@@ -9887,6 +9931,14 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6237674112986294982, guid: 0f46780c1539f674eb002769aaea325e, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6892378775316850585, guid: 0f46780c1539f674eb002769aaea325e, type: 3}
+      propertyPath: rolloffMode
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7113063874167734787, guid: 0f46780c1539f674eb002769aaea325e, type: 3}
+      propertyPath: rolloffMode
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 7711049927108116627, guid: 0f46780c1539f674eb002769aaea325e, type: 3}

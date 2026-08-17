@@ -3,7 +3,7 @@ For Jam Build
 -----------------------------------------
 
 
-Interactable
+BUG
 	-occasional double teleport still? how?
 	
 Death
