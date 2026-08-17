@@ -19,12 +19,6 @@ MonoBehaviour:
     line: If you wanted to, you could call me Lily.
   - speaker: 1
     line: What? but isnt that a girl's name?
-  - speaker: 0
-    line: My first memory is from two weeks after my fifteenth birthday.
-  - speaker: 1
-    line: Nothing before that?
-  - speaker: 1
-    line: Wouldn't it be weird?
   - speaker: 2
     line: Said if you wanted to...
   - speaker: 3
