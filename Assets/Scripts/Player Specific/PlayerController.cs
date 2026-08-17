@@ -127,8 +127,7 @@ public class PlayerController : MonoBehaviour {
 
 		animate();
 
-
-		//Debug.LogFormat("State: {0}, {1}, {2}. V:{3}",Wall_State,Ground_State,Move_State, body.linearVelocity.ToString());
+		clearDistantColliders();
 	}
 
 	void incrementCountersAndCooldowns() {
@@ -633,6 +632,16 @@ public class PlayerController : MonoBehaviour {
 				iController.updateCurrentInteractable(null);
 			else
 				iController.updateCurrentInteractable(interactableColList[interactableColList.Count - 1].GetComponent<a_Interactable>());
+		}
+	}
+
+	const float clearInterDistance = 1f;
+	void clearDistantColliders()
+	{
+		foreach(Collider col in interactableColList)
+		{
+			if(Vector3.Distance(col.ClosestPoint(body.position), body.position) >= clearInterDistance)
+				removeCollider(col);
 		}
 	}
 
