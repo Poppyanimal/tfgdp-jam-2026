@@ -5,6 +5,12 @@ For Jam Build
 
 BUG
 	-movement between scene changes fucky
+	
+Forest
+	-make ledge more readable
+	
+Dialogue
+-diferentiate other characters with ? with different quant of it
 
 ~~~
 
@@ -17,6 +23,7 @@ SFX Enemy
 		-figure swipe
 	-Growls and Snarls From Dog
 		-dog swipe
+	-wound sfx
 	
 	
 SFX General
