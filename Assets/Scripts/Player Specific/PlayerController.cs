@@ -185,6 +185,13 @@ public class PlayerController : MonoBehaviour {
 	}
 	void panCameraTank  (Vector2 panDir) { return; } //TODO: impliment?
 	
+	public void resetCameraInput()
+	{
+		float input_angle = SharedLib.angleBetweenVectors(rawInput.normalized,Vector2.right);
+		active_cam = (CinemachineCamera)cam_brain.ActiveVirtualCamera;
+		cached_input_angle = input_angle;
+	}
+
 	void scanEnvironment() { 
 		Vector3[] sweepDirections= new Vector3[3] { SharedLib.angleToVector3(lookAtAngle - scan_sweep_degree), SharedLib.angleToVector3(lookAtAngle), SharedLib.angleToVector3(lookAtAngle+scan_sweep_degree)};
 		Vector3[] slicePositions = new Vector3[3] { body.position-Vector3.up*(hitbox.height/2-scan_slice_values[0]),

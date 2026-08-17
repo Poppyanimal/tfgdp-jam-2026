@@ -9959,10 +9959,6 @@ PrefabInstance:
       propertyPath: camAfterTP
       value: 
       objectReference: {fileID: 144624827}
-    - target: {fileID: 2468006928647976717, guid: 0f46780c1539f674eb002769aaea325e, type: 3}
-      propertyPath: rolloffMode
-      value: 0
-      objectReference: {fileID: 0}
     - target: {fileID: 3521930236513263075, guid: 0f46780c1539f674eb002769aaea325e, type: 3}
       propertyPath: Sister
       value: 
@@ -10009,14 +10005,6 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6237674112986294982, guid: 0f46780c1539f674eb002769aaea325e, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 6892378775316850585, guid: 0f46780c1539f674eb002769aaea325e, type: 3}
-      propertyPath: rolloffMode
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 7113063874167734787, guid: 0f46780c1539f674eb002769aaea325e, type: 3}
-      propertyPath: rolloffMode
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 7711049927108116627, guid: 0f46780c1539f674eb002769aaea325e, type: 3}

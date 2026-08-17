@@ -82,6 +82,7 @@ public class InteractableTP :  EmptyInteractionInteractable
 		yield return new WaitForEndOfFrame();
 		yield return new WaitForFixedUpdate();
 		player.TeleportPlayer(newLocation);
+		player.resetCameraInput();
 
 		yield return new WaitForSeconds(fadeTime);
 		GlobalEvents.get().teleportUnlock.Invoke();
