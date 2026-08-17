@@ -6,6 +6,7 @@ using Unity.VisualScripting;
 using Unity.VisualScripting.Antlr3.Runtime.Tree;
 using UnityEngine;
 using UnityEngine.Rendering;
+using UnityEngine.SceneManagement;
 using ge = GlobalEvents;
 using pv = PlayerVars;
 
@@ -113,6 +114,8 @@ public class PlayerController : MonoBehaviour {
 
 
 	public void Update() {
+		if(active_cam == null)
+			getComponentFields();
 		incrementCountersAndCooldowns();
 		handleInput();
 		handleCamera();
@@ -269,8 +272,16 @@ public class PlayerController : MonoBehaviour {
 		playerAnimator.SetBool("isDead", true);
 		Move_State = MOVE_STATE.DEAD;
 		isDead = true;
-		//todo: run restart code
+		StartCoroutine(deathReload());
 	}
+
+	IEnumerator deathReload()
+	{
+		yield return new WaitForSeconds(timeTillSceneReloadOnDeath);
+		SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+	}
+
+	float timeTillSceneReloadOnDeath = 3f;
 
 	public void heal(int amount = -1) {
 		//TODO: Add Heal Animation ?
@@ -576,16 +587,7 @@ public class PlayerController : MonoBehaviour {
 		{
 			//assumes non-enemy triggers are camera switches
 			CameraSwitchTrigger cwt = other.GetComponent<CameraSwitchTrigger>();
-			if (cwt != null) {
-				cam_to_turnoff.gameObject.SetActive(false);
-				cwt.cam.gameObject.SetActive(true);
-				cam_to_turnoff = cwt.cam;
-
-				if (cwt.trackTarget)
-					cwt.cam.Target.TrackingTarget = cam_track_trans;
-				if (cwt.lookAtTarget)
-					cwt.cam.LookAt = cam_track_trans;
-			}
+			camSwitch(cwt);
 		}
 		else
 		{
@@ -593,6 +595,20 @@ public class PlayerController : MonoBehaviour {
 			bloodeffect.transform.rotation = Quaternion.FromToRotation(other.ClosestPoint(body.position), other.ClosestPointOnBounds(body.position));
 			bloodeffect.Play();
 			takeDamage();
+		}
+	}
+
+	public void camSwitch(CameraSwitchTrigger cwt)
+	{
+		if (cwt != null) {
+			cam_to_turnoff.gameObject.SetActive(false);
+			cwt.cam.gameObject.SetActive(true);
+			cam_to_turnoff = cwt.cam;
+
+			if (cwt.trackTarget)
+				cwt.cam.Target.TrackingTarget = cam_track_trans;
+			if (cwt.lookAtTarget)
+				cwt.cam.LookAt = cam_track_trans;
 		}
 	}
 

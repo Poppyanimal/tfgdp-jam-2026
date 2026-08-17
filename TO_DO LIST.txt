@@ -5,10 +5,7 @@ For Jam Build
 
 BUG
 	-occasional double teleport still? how?
-	
-Death
-	-restart level
-
+	-movement between scene changes fucky
 
 ~~~
 
@@ -24,7 +21,6 @@ SFX Enemy
 	
 SFX Environment
  -Ambient Sounds for
-	---starlight
 	---room (starting locale for this)
 	---hill
 	

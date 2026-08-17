@@ -61,15 +61,17 @@ public class InteractableTP :  EmptyInteractionInteractable
 
 		yield return new WaitForEndOfFrame();
 
-		if(camAfterTP != null)
-		{
-			((CinemachineCamera)FindFirstObjectByType<CinemachineBrain>().ActiveVirtualCamera).gameObject.SetActive(false);
-			camAfterTP.gameObject.SetActive(true);
-		}
 
 		PlayerController player = FindFirstObjectByType<PlayerController>();
 		player.TeleportPlayer(newLocation);
 		player.removeCollider(GetComponent<Collider>());
+		
+		if(camAfterTP != null)
+		{
+			((CinemachineCamera)FindFirstObjectByType<CinemachineBrain>().ActiveVirtualCamera).gameObject.SetActive(false);
+			camAfterTP.gameObject.SetActive(true);
+			player.camSwitch(camAfterTP.transform.parent.GetComponentInChildren<CameraSwitchTrigger>());
+		}
 
 		if(teleportingToOutside)
 			GlobalEvents.get().goingOutdoors.Invoke();

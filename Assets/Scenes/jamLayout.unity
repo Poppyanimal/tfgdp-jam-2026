@@ -355,6 +355,28 @@ Transform:
   - {fileID: 1124923879}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &144624827 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 4904966152128454362, guid: 1a2bcd61a4e230c43bbae96b51ea1cf7, type: 3}
+  m_PrefabInstance: {fileID: 5337190075339171838}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f9dfa5b682dcd46bda6128250e975f58, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &169272605 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 5960129146680962076, guid: b75ce3154bd763243aa481c18d6c1cce, type: 3}
+  m_PrefabInstance: {fileID: 4438957498884125471}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f9dfa5b682dcd46bda6128250e975f58, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!43 &188043881
 Mesh:
   m_ObjectHideFlags: 0
@@ -652,6 +674,17 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 39cf8ba040955d54c917e2491296314f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &204441119 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 2281763670959109770, guid: 0f46780c1539f674eb002769aaea325e, type: 3}
+  m_PrefabInstance: {fileID: 6424709947214753364}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f9dfa5b682dcd46bda6128250e975f58, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!43 &232145123
@@ -1712,6 +1745,17 @@ Mesh:
     offset: 0
     size: 0
     path: 
+--- !u!114 &575944725 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 9124425309919620613, guid: 6b2208084656ddf48ae2e7f529acf745, type: 3}
+  m_PrefabInstance: {fileID: 764480779012083618}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f9dfa5b682dcd46bda6128250e975f58, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &591442147
 GameObject:
   m_ObjectHideFlags: 0
@@ -9069,6 +9113,28 @@ Transform:
   m_Children: []
   m_Father: {fileID: 398076051}
   m_LocalEulerAnglesHint: {x: 0, y: 90, z: 0}
+--- !u!114 &1945127463 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 780164991875280380, guid: 0f46780c1539f674eb002769aaea325e, type: 3}
+  m_PrefabInstance: {fileID: 6424709947214753364}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f9dfa5b682dcd46bda6128250e975f58, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &1950975431 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 1930344584764213818, guid: 0f46780c1539f674eb002769aaea325e, type: 3}
+  m_PrefabInstance: {fileID: 6424709947214753364}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f9dfa5b682dcd46bda6128250e975f58, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &2020770225 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 2162029657691386093, guid: 6b2208084656ddf48ae2e7f529acf745, type: 3}
@@ -9591,6 +9657,10 @@ PrefabInstance:
       propertyPath: Sister
       value: 
       objectReference: {fileID: 6424709947214753366}
+    - target: {fileID: 678057895353841191, guid: 6b2208084656ddf48ae2e7f529acf745, type: 3}
+      propertyPath: camAfterTP
+      value: 
+      objectReference: {fileID: 204441119}
     - target: {fileID: 3934891395870449550, guid: 6b2208084656ddf48ae2e7f529acf745, type: 3}
       propertyPath: m_LocalPosition.x
       value: -24.68309
@@ -9789,6 +9859,10 @@ PrefabInstance:
       propertyPath: Sister
       value: 
       objectReference: {fileID: 6424709947214753365}
+    - target: {fileID: 1713569901387213697, guid: b75ce3154bd763243aa481c18d6c1cce, type: 3}
+      propertyPath: camAfterTP
+      value: 
+      objectReference: {fileID: 1950975431}
     - target: {fileID: 5012813925969196129, guid: b75ce3154bd763243aa481c18d6c1cce, type: 3}
       propertyPath: rolloffMode
       value: 0
@@ -9819,6 +9893,10 @@ PrefabInstance:
       propertyPath: Sister
       value: 
       objectReference: {fileID: 6424709947214753367}
+    - target: {fileID: 3303795774126847851, guid: 1a2bcd61a4e230c43bbae96b51ea1cf7, type: 3}
+      propertyPath: camAfterTP
+      value: 
+      objectReference: {fileID: 1945127463}
     - target: {fileID: 6363294760053032520, guid: 1a2bcd61a4e230c43bbae96b51ea1cf7, type: 3}
       propertyPath: m_Name
       value: starlight area
@@ -9885,6 +9963,10 @@ PrefabInstance:
       propertyPath: Sister
       value: 
       objectReference: {fileID: 5337190075339171839}
+    - target: {fileID: 1004409306772797561, guid: 0f46780c1539f674eb002769aaea325e, type: 3}
+      propertyPath: camAfterTP
+      value: 
+      objectReference: {fileID: 144624827}
     - target: {fileID: 2468006928647976717, guid: 0f46780c1539f674eb002769aaea325e, type: 3}
       propertyPath: rolloffMode
       value: 0
@@ -9893,6 +9975,10 @@ PrefabInstance:
       propertyPath: Sister
       value: 
       objectReference: {fileID: 2020770225}
+    - target: {fileID: 3521930236513263075, guid: 0f46780c1539f674eb002769aaea325e, type: 3}
+      propertyPath: camAfterTP
+      value: 
+      objectReference: {fileID: 575944725}
     - target: {fileID: 6237674112986294982, guid: 0f46780c1539f674eb002769aaea325e, type: 3}
       propertyPath: m_LocalPosition.x
       value: 130.1
@@ -9949,6 +10035,10 @@ PrefabInstance:
       propertyPath: Sister
       value: 
       objectReference: {fileID: 4438957498884125472}
+    - target: {fileID: 8076882891331201261, guid: 0f46780c1539f674eb002769aaea325e, type: 3}
+      propertyPath: camAfterTP
+      value: 
+      objectReference: {fileID: 169272605}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
