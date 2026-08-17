@@ -1,0 +1,28 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 172f7f786a367304fb00fd035662b95b, type: 3}
+  m_Name: Dad - change
+  m_EditorClassIdentifier: 
+  lines:
+  - speaker: 1
+    line: I lost my son and now you're telling me I'm not even allowed to grieve?
+  - speaker: 0
+    line: You didn't lose anything.
+  - speaker: 0
+    line: I'm still here, same as I ever was.
+  - speaker: 0
+    line: I'm just not pretending to be the man you think I was supposed to be.
+  speakers:
+  - name: Lily
+    color: {r: 0.7472656, g: 0.57872015, b: 0.8018868, a: 1}
+  - name: Dad
+    color: {r: 0.18836774, g: 0.42221898, b: 0.4811321, a: 1}

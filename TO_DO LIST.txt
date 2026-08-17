@@ -4,18 +4,10 @@ For Jam Build
 
 
 Interactable
- -FIX FIX FIX FIX FIX FIX
- -Dialogue           *AfterDialogueBoxesExist
-		- fix cant interact problem, cause?
- -SceneTransitionTrigger*
-		- fix double input problem, limit to one interactable during refactor
--Dark Souls Message For Tutorials
-
+	-occasional double teleport still? how?
+	
 Memories
-	-ensure functional
-	-different memories for different places
-	-ensure dialogue sequence works correctly (and is progressable)
-	-end screen for jam version on pickup all
+	-end screen for jam version on threshold met
 
 UX
  -Dialogue Boxes*

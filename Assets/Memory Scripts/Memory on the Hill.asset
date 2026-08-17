@@ -1,0 +1,40 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 172f7f786a367304fb00fd035662b95b, type: 3}
+  m_Name: Memory on the Hill
+  m_EditorClassIdentifier: 
+  lines:
+  - speaker: 0
+    line: Hey Jess I was thinking...
+  - speaker: 0
+    line: If you wanted to, you could call me Lily.
+  - speaker: 1
+    line: What? but isnt that a girl's name?
+  - speaker: 0
+    line: My first memory is from two weeks after my fifteenth birthday.
+  - speaker: 1
+    line: Nothing before that?
+  - speaker: 1
+    line: Wouldn't it be weird?
+  - speaker: 2
+    line: Said if you wanted to...
+  - speaker: 3
+    line: I guess Lily was a stupid name anyway.
+  speakers:
+  - name: ???
+    color: {r: 0.7472656, g: 0.57872015, b: 0.8018868, a: 1}
+  - name: Jess
+    color: {r: 0.43529415, g: 0.5371704, b: 0.9529412, a: 1}
+  - name: Lily?
+    color: {r: 0.7472656, g: 0.57872015, b: 0.8018868, a: 1}
+  - name: Not Lily?
+    color: {r: 0.7472656, g: 0.57872015, b: 0.8018868, a: 1}

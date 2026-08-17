@@ -19,7 +19,7 @@ public class InteractableController : MonoBehaviour
 
 
     int memorysSeen = 0;
-    public int memoriesTillEvent = 4;
+    const int memoriesTillEvent = 5;
 
     public void incrementMemorysSeen()
     {
