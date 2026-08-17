@@ -12,11 +12,10 @@ SFX Player
 	--wound sfx
 	   
 SFX Enemy
-	--Enemy Swipe
+	--Enemy Swipes
+	-dog jumping
 	-Ambient Sound Near Figures
 		-figure swipe
-	-Growls and Snarls From Dog
-		-dog swipe
 	-wound sfx
 	
 	
