@@ -59,8 +59,6 @@ public class InteractableTP :  EmptyInteractionInteractable
 		GlobalEvents.get().teleportLock.Invoke();
 		yield return new WaitForSeconds(fadeTime);
 
-		yield return new WaitForEndOfFrame();
-
 
 		PlayerController player = FindFirstObjectByType<PlayerController>();
 		player.TeleportPlayer(newLocation);
@@ -79,7 +77,11 @@ public class InteractableTP :  EmptyInteractionInteractable
 			GlobalEvents.get().goingIndoors.Invoke();
 
 
-
+		yield return new WaitForEndOfFrame();
+		yield return new WaitForEndOfFrame();
+		yield return new WaitForEndOfFrame();
+		yield return new WaitForFixedUpdate();
+		player.TeleportPlayer(newLocation);
 
 		yield return new WaitForSeconds(fadeTime);
 		GlobalEvents.get().teleportUnlock.Invoke();

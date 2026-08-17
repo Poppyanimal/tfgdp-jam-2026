@@ -4,7 +4,6 @@ For Jam Build
 
 
 BUG
-	-occasional double teleport still? how?
 	-movement between scene changes fucky
 
 ~~~
