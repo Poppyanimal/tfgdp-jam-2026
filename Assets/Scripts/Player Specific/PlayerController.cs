@@ -235,7 +235,7 @@ public class PlayerController : MonoBehaviour {
 		}
 		else if(Input.GetButtonDown("Interact") && interactableColList.Count > 0)
 		{
-			if(iController.getCurrentInteractable() == null)
+			if(!interactableColList.Contains(iController.getCurrentInteractable().GetComponent<Collider>()))
 				iController.updateCurrentInteractable(interactableColList[interactableColList.Count - 1].GetComponent<a_Interactable>());
 			ge.get().interaction_input.Invoke();
 		}

@@ -21,7 +21,6 @@ SFX Enemy
 	
 SFX Environment
  -Ambient Sounds for
-	---room (starting locale for this)
 	---hill
 	
 SFX General

@@ -9705,10 +9705,6 @@ PrefabInstance:
       propertyPath: m_Name
       value: Room Area
       objectReference: {fileID: 0}
-    - target: {fileID: 6574753098446465479, guid: 6b2208084656ddf48ae2e7f529acf745, type: 3}
-      propertyPath: rolloffMode
-      value: 0
-      objectReference: {fileID: 0}
     - target: {fileID: 9124425309919620613, guid: 6b2208084656ddf48ae2e7f529acf745, type: 3}
       propertyPath: Target.TrackingTarget
       value: 
