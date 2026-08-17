@@ -6740,6 +6740,14 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 2511016496346510427, guid: ab2461a53d648964eb99dfd0ff161a05, type: 3}
+      propertyPath: m_fontColor32.rgba
+      value: 16777215
+      objectReference: {fileID: 0}
+    - target: {fileID: 4481563818764629434, guid: ab2461a53d648964eb99dfd0ff161a05, type: 3}
+      propertyPath: m_fontColor32.rgba
+      value: 16777215
+      objectReference: {fileID: 0}
     - target: {fileID: 4681935025468511040, guid: ab2461a53d648964eb99dfd0ff161a05, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
@@ -6779,6 +6787,10 @@ PrefabInstance:
     - target: {fileID: 4681935025468511040, guid: ab2461a53d648964eb99dfd0ff161a05, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6485049998147980044, guid: ab2461a53d648964eb99dfd0ff161a05, type: 3}
+      propertyPath: m_fontColor32.rgba
+      value: 16777215
       objectReference: {fileID: 0}
     - target: {fileID: 7003999432387006079, guid: ab2461a53d648964eb99dfd0ff161a05, type: 3}
       propertyPath: m_Name
@@ -9811,6 +9823,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 269211726626776604, guid: b75ce3154bd763243aa481c18d6c1cce, type: 3}
+      propertyPath: m_Volume
+      value: 0.3
+      objectReference: {fileID: 0}
     - target: {fileID: 1634853616578081009, guid: b75ce3154bd763243aa481c18d6c1cce, type: 3}
       propertyPath: m_LocalPosition.x
       value: -36.655674
@@ -9859,6 +9875,10 @@ PrefabInstance:
       propertyPath: camAfterTP
       value: 
       objectReference: {fileID: 1950975431}
+    - target: {fileID: 2639007615993189647, guid: b75ce3154bd763243aa481c18d6c1cce, type: 3}
+      propertyPath: m_Volume
+      value: 0.8
+      objectReference: {fileID: 0}
     - target: {fileID: 8464979802670476544, guid: b75ce3154bd763243aa481c18d6c1cce, type: 3}
       propertyPath: m_Name
       value: Lily Hill Area
