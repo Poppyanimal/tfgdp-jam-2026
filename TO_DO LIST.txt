@@ -18,9 +18,6 @@ SFX Enemy
 	-Growls and Snarls From Dog
 		-dog swipe
 	
-SFX Environment
- -Ambient Sounds for
-	---hill
 	
 SFX General
 	--Attack Connect Sound for hit confirm

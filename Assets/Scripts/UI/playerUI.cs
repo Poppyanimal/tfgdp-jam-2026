@@ -20,6 +20,8 @@ public class playerUI : MonoBehaviour
         ge.get().ammoChanged.AddListener(updateAmmo);
         ge.get().doFade.AddListener(doFade);
         ge.get().endFade.AddListener(endFade);
+        updateHealth();
+        updateAmmo();
     }
 
     public void updateHealth()
