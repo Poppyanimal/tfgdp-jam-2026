@@ -402,6 +402,7 @@ MonoBehaviour:
   ready: {fileID: 0}
   jump: {fileID: 0}
   idle: {fileID: 0}
+  endIdleOnDeath: 0
 --- !u!1 &1063297036758029458
 GameObject:
   m_ObjectHideFlags: 0
@@ -11015,7 +11016,7 @@ AudioSource:
     m_Curve:
     - serializedVersion: 3
       time: 0
-      value: 1
+      value: 0.7
       inSlope: 0
       outSlope: 0
       tangentMode: 0

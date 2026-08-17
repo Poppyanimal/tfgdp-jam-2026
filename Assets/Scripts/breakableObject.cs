@@ -3,6 +3,7 @@ using UnityEngine;
 public class breakableObject : MonoBehaviour
 {
     public GameObject modelToHide;
+    public sfxPlayer sfx;
 
     Rigidbody body; Collider col;
 
@@ -19,6 +20,7 @@ public class breakableObject : MonoBehaviour
             body.isKinematic = true;
             col.enabled = false;
             modelToHide.SetActive(false);
+            sfx?.play();
             ParticleSystem[] parts = GetComponentsInChildren<ParticleSystem>();
             foreach(ParticleSystem part in parts)
             {

@@ -4,6 +4,7 @@ public class sfxHelper : MonoBehaviour
 {
     public sfxPlayer leftFoot, rightFoot, umbrellaSwing, umbrellaCharge, umbrellaShoot, hurt, die,
     ready, jump, idle;
+    public bool endIdleOnDeath = false;
     
     public void leftFootSFX() { leftFoot.play(); }
     public void rightFootSFX() { rightFoot.play(); }
@@ -11,7 +12,7 @@ public class sfxHelper : MonoBehaviour
     public void chargeSFX() { umbrellaCharge.play(); }
     public void shootSFX() { umbrellaShoot.play(); }
     public void hurtSFX() { hurt.play(); }
-    public void dieSFX() { die.play(); }
+    public void dieSFX() { die.play(); if(endIdleOnDeath) idle.stop(); }
 
     public void readySFX() { ready.play(); }
     public void jumpSFX() { jump.play(); }

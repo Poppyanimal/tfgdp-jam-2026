@@ -25,4 +25,6 @@ public class sfxPlayer : MonoBehaviour
     }
 
     public void play() { playRandomClip(); }
+
+    public void stop() { source.Stop(); }
 }

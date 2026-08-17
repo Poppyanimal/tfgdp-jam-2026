@@ -12,17 +12,14 @@ SFX Player
 	--wound sfx
 	   
 SFX Enemy
-	--Enemy Swipes
-	-dog jumping
-	-Ambient Sound Near Figures
-		-figure swipe
-	-wound sfx
+	-dog walk sfx
+	-dog jumping sfx
+	-wound sfx dog
 	
 	
 SFX General
 	--Attack Connect Sound for hit confirm
-	-sound sfx for interactables (not transition tiles)
-	-box destruction
+	-ambient sfx for interactables (not transition tiles)
 	
 ~~~
 	
